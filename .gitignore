@@ -6,6 +6,8 @@ build/
 DerivedData/
 xcuserdata/
 .build/
+.DS_Store
+.DS_Store?
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
