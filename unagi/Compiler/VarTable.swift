@@ -14,4 +14,12 @@ class VarTable {
 	init() {
 		dictFunc["global"] = Function(type: Type.empty, params: [])
 	}
+
+    func getDictFunc(name: String) -> Function? {
+        return dictFunc[name]
+    }
+    
+    func addFunc(name: String, function: Function) {
+        dictFunc[name] = function
+    }
 }
