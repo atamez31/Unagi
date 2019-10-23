@@ -14,27 +14,32 @@
 		6D055AF52356717F005D6A3D /* unagiListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D055AEF2356717F005D6A3D /* unagiListener.swift */; };
 		6D055AF62356717F005D6A3D /* unagiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D055AF02356717F005D6A3D /* unagiParser.swift */; };
 		6DA74DD3234456FC0016EA49 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA74DD2234456FC0016EA49 /* main.swift */; };
-		6DA74DE9234457B40016EA49 /* Antlr4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DA74DE1234457660016EA49 /* Antlr4.framework */; };
+		C2487A372360C35100CED702 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A322360C35100CED702 /* Types.swift */; };
+		C2487A382360C35100CED702 /* Var.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A332360C35100CED702 /* Var.swift */; };
+		C2487A392360C35100CED702 /* SemanticCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A342360C35100CED702 /* SemanticCube.swift */; };
+		C2487A3A2360C35100CED702 /* VarTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A352360C35100CED702 /* VarTable.swift */; };
+		C2487A3B2360C35100CED702 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A362360C35100CED702 /* Function.swift */; };
+		C2487A4E2360C42700CED702 /* Antlr4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2487A442360C3EC00CED702 /* Antlr4.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		6DA74DE0234457660016EA49 /* PBXContainerItemProxy */ = {
+		C2487A432360C3EC00CED702 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6DA74DD9234457660016EA49 /* Antlr4.xcodeproj */;
+			containerPortal = C2487A3C2360C3EC00CED702 /* Antlr4.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = "Antlr4::Antlr4::Product";
 			remoteInfo = Antlr4;
 		};
-		6DA74DE2234457660016EA49 /* PBXContainerItemProxy */ = {
+		C2487A452360C3EC00CED702 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6DA74DD9234457660016EA49 /* Antlr4.xcodeproj */;
+			containerPortal = C2487A3C2360C3EC00CED702 /* Antlr4.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = "Antlr4::Antlr4Tests::Product";
 			remoteInfo = Antlr4Tests;
 		};
-		6DA74DE62344578A0016EA49 /* PBXContainerItemProxy */ = {
+		C2487A482360C42000CED702 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 6DA74DD9234457660016EA49 /* Antlr4.xcodeproj */;
+			containerPortal = C2487A3C2360C3EC00CED702 /* Antlr4.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = "Antlr4::Antlr4";
 			remoteInfo = Antlr4;
@@ -66,8 +71,13 @@
 		6D055AF02356717F005D6A3D /* unagiParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiParser.swift; sourceTree = "<group>"; };
 		6DA74DCF234456FC0016EA49 /* unagi */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unagi; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DA74DD2234456FC0016EA49 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		6DA74DD9234457660016EA49 /* Antlr4.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Antlr4.xcodeproj; path = ../antlr4/runtime/Swift/Antlr4.xcodeproj; sourceTree = "<group>"; };
 		6DD9BA91234C1B96000D07D0 /* unagi.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = unagi.g4; sourceTree = "<group>"; };
+		C2487A322360C35100CED702 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		C2487A332360C35100CED702 /* Var.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Var.swift; sourceTree = "<group>"; };
+		C2487A342360C35100CED702 /* SemanticCube.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SemanticCube.swift; sourceTree = "<group>"; };
+		C2487A352360C35100CED702 /* VarTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VarTable.swift; sourceTree = "<group>"; };
+		C2487A362360C35100CED702 /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
+		C2487A3C2360C3EC00CED702 /* Antlr4.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Antlr4.xcodeproj; path = ../../../../../Downloads/Swift/Antlr4.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DA74DE9234457B40016EA49 /* Antlr4.framework in Frameworks */,
+				C2487A4E2360C42700CED702 /* Antlr4.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +95,7 @@
 		6DA74DC6234456FC0016EA49 = {
 			isa = PBXGroup;
 			children = (
-				6DA74DD9234457660016EA49 /* Antlr4.xcodeproj */,
+				C2487A3C2360C3EC00CED702 /* Antlr4.xcodeproj */,
 				6DA74DD1234456FC0016EA49 /* unagi */,
 				6DA74DD0234456FC0016EA49 /* Products */,
 				6DA74DE8234457B40016EA49 /* Frameworks */,
@@ -110,15 +120,6 @@
 			path = unagi;
 			sourceTree = "<group>";
 		};
-		6DA74DDA234457660016EA49 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6DA74DE1234457660016EA49 /* Antlr4.framework */,
-				6DA74DE3234457660016EA49 /* Antlr4Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		6DA74DE8234457B40016EA49 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +130,11 @@
 		6DD9BA7C234C19E2000D07D0 /* Compiler */ = {
 			isa = PBXGroup;
 			children = (
+				C2487A362360C35100CED702 /* Function.swift */,
+				C2487A342360C35100CED702 /* SemanticCube.swift */,
+				C2487A322360C35100CED702 /* Types.swift */,
+				C2487A332360C35100CED702 /* Var.swift */,
+				C2487A352360C35100CED702 /* VarTable.swift */,
 				6D055AE92356717F005D6A3D /* unagi.interp */,
 				6D055AEE2356717F005D6A3D /* unagi.tokens */,
 				6D055AEC2356717F005D6A3D /* unagiBaseListener.swift */,
@@ -141,6 +147,15 @@
 				6D055AE72356717F005D6A3D /* unagiParserATN.swift */,
 			);
 			path = Compiler;
+			sourceTree = "<group>";
+		};
+		C2487A3D2360C3EC00CED702 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C2487A442360C3EC00CED702 /* Antlr4.framework */,
+				C2487A462360C3EC00CED702 /* Antlr4Tests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,7 +172,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				6DA74DE72344578A0016EA49 /* PBXTargetDependency */,
+				C2487A492360C42000CED702 /* PBXTargetDependency */,
 			);
 			name = unagi;
 			productName = unagi;
@@ -191,8 +206,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 6DA74DDA234457660016EA49 /* Products */;
-					ProjectRef = 6DA74DD9234457660016EA49 /* Antlr4.xcodeproj */;
+					ProductGroup = C2487A3D2360C3EC00CED702 /* Products */;
+					ProjectRef = C2487A3C2360C3EC00CED702 /* Antlr4.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -203,18 +218,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		6DA74DE1234457660016EA49 /* Antlr4.framework */ = {
+		C2487A442360C3EC00CED702 /* Antlr4.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Antlr4.framework;
-			remoteRef = 6DA74DE0234457660016EA49 /* PBXContainerItemProxy */;
+			remoteRef = C2487A432360C3EC00CED702 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		6DA74DE3234457660016EA49 /* Antlr4Tests.xctest */ = {
+		C2487A462360C3EC00CED702 /* Antlr4Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = file;
 			path = Antlr4Tests.xctest;
-			remoteRef = 6DA74DE2234457660016EA49 /* PBXContainerItemProxy */;
+			remoteRef = C2487A452360C3EC00CED702 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -226,7 +241,12 @@
 			files = (
 				6D055AF52356717F005D6A3D /* unagiListener.swift in Sources */,
 				6D055AF22356717F005D6A3D /* unagiLexerATN.swift in Sources */,
+				C2487A3A2360C35100CED702 /* VarTable.swift in Sources */,
+				C2487A3B2360C35100CED702 /* Function.swift in Sources */,
+				C2487A392360C35100CED702 /* SemanticCube.swift in Sources */,
+				C2487A382360C35100CED702 /* Var.swift in Sources */,
 				6DA74DD3234456FC0016EA49 /* main.swift in Sources */,
+				C2487A372360C35100CED702 /* Types.swift in Sources */,
 				6D055AF12356717F005D6A3D /* unagiParserATN.swift in Sources */,
 				6D055AF42356717F005D6A3D /* unagiBaseListener.swift in Sources */,
 				6D055AF32356717F005D6A3D /* unagiLexer.swift in Sources */,
@@ -237,10 +257,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		6DA74DE72344578A0016EA49 /* PBXTargetDependency */ = {
+		C2487A492360C42000CED702 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Antlr4;
-			targetProxy = 6DA74DE62344578A0016EA49 /* PBXContainerItemProxy */;
+			targetProxy = C2487A482360C42000CED702 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

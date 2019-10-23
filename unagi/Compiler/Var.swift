@@ -9,14 +9,14 @@
 import Foundation
 
 class Var {
-	var name: String
-	var type: Type
-	var memory_address: Int
+	let name: String
+	let type: Type
+	let memory_address: Int
 
 	init(name: String, type: Type) {
 		self.name = name
 		self.type = type
 		// TODO: Initialize memory_address
-		// self.memory_address = 
+        self.memory_address = -1
 	}
 }

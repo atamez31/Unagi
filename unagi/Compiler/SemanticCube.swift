@@ -14,53 +14,53 @@ class SemanticCube {
 
     init() {
         let sumOperations: [[Type]] = [
-            // num          decimal         bool       char          phrase
-            [ Type.num,     Type.decimal,   nil,       nil,           nil        ],
-            [ Type.decimal, Type.decimal,   nil,       nil,           nil        ],
-            [ nil,          nil,            nil,       nil,           nil        ],
-            [ nil,          nil,            nil,       Type.phrase,   Type.phrase ],
-            [ nil,          nil,            nil,       Type.phrase,   Type.phrase ]
+            // num          decimal        bool       char          phrase
+            [ Type.num,     Type.decimal,  Type.none,  Type.none,   Type.none    ],
+            [ Type.decimal, Type.decimal,  Type.none,  Type.none,   Type.none    ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,   Type.none    ],
+            [ Type.none,    Type.none,     Type.none,  Type.phrase, Type.phrase  ],
+            [ Type.none,    Type.none,     Type.none,  Type.phrase, Type.phrase  ]
         ]
 
         let minusMultiplyDivideOperations: [[Type]] = [
             // num          decimal        bool        char          phrase
-            [ Type.num,     Type.decimal,  nil,        nil,          nil        ],
-            [ Type.decimal, Type.decimal,  nil,        nil,          nil        ],
-            [ nil,          nil,           nil,        nil,          nil        ],
-            [ nil,          nil,           nil,        nil,          nil        ],
-            [ nil,          nil,           nil,        nil,          nil        ]
+            [ Type.num,     Type.decimal,  Type.none,  Type.none,    Type.none   ],
+            [ Type.decimal, Type.decimal,  Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ]
         ]
 
         // == <>
         let relationalEqualAndNotEqual: [[Type]] = [
-            // num          decimal        bool        char            phrase
-            [ Type.bool,    Type.bool,     nil,        nil,            nil         ],
-            [ Type.bool,    Type.bool,     nil,        nil,            nil         ],
-            [ nil,          nil,           nil,        nil,            nil         ],
-            [ nil,          nil,           nil,        Type.bool,      nil         ],
-            [ nil,          nil,           nil,        nil,            Type.bool    ]
+            // num          decimal        bool        char          phrase
+            [ Type.bool,    Type.bool,     Type.none,  Type.none,    Type.none   ],
+            [ Type.bool,    Type.bool,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.bool,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.bool   ]
         ]
 
         // > < >= <=
         let relationalOperations: [[Type]] = [
-            // num          decimal        bool        char            phrase
-            [ Type.bool,    Type.bool,     nil,        nil,            nil         ],
-            [ Type.bool,    Type.bool,     nil,        nil,            nil         ],
-            [ nil,          nil,           nil,        nil,            nil         ],
-            [ nil,          nil,           nil,        Type.bool,      nil         ],
-            [ nil,          nil,           nil,        nil,            nil         ]
+            // num          decimal        bool        char          phrase
+            [ Type.bool,    Type.bool,     Type.none,  Type.none,    Type.none   ],
+            [ Type.bool,    Type.bool,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.bool,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ]
         ]
 
         let logicalOperators: [[Type]] = [
-            // num          decimal        bool        char            phrase
-            [ nil,          nil,           nil,        nil,            nil         ],
-            [ nil,          nil,           nil,        nil,            nil         ],
-            [ nil,          nil,           Type.bool,  nil,            nil         ],
-            [ nil,          nil,           nil,        nil,            nil         ],
-            [ nil,          nil,           nil,        nil,            nil         ]
+            // num          decimal        bool        char          phrase
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.bool,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ]
         ]
 
-        let unaryOperators: [[Type]] = [ Type.num, Type.decimal, nil, nil, nil]
+        let unaryOperators: [[Type]] = [[Type.num, Type.decimal, Type.none, Type.none, Type.none]]
 
         self.semanticCube = [
             sumOperations,
@@ -89,6 +89,6 @@ class SemanticCube {
             operatorIndex = 5
         }
 
-        return semanticCube[operatorIndex][leftOp-1][rightOp-1]
+        return semanticCube[operatorIndex][leftOp.hashValue-1][rightOp.hashValue-1]
     }
 }

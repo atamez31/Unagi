@@ -9,6 +9,7 @@
 import Foundation
 
 enum Type:Int {
+    case none = -1
     case num = 1
     case decimal = 2
     case bool = 3
@@ -31,8 +32,10 @@ enum Type:Int {
             self = .phrase
         case "empty":
             self = .empty
-        default:
+        case "list":
             self = .list
+        default:
+            self = .none
         }
     }
 }
