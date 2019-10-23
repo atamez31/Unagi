@@ -89,6 +89,6 @@ class SemanticCube {
             operatorIndex = 5
         }
 
-        return semanticCube[operatorIndex][leftOp.hashValue-1][rightOp.hashValue-1]
+        return semanticCube[operatorIndex][leftOp.rawValue-1][rightOp.rawValue-1]
     }
 }
