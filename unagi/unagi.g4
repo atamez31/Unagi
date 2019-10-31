@@ -19,7 +19,7 @@ loop:
 WHILE '(' superexp ')' '{' statement* '}'
 | FOR '(' superexp '->' superexp ')' '{' statement* '}';
 
-assigment: VAR type ID '=' superexp ';';
+assigment: ID '=' superexp ';';
 
 functions:
 FUNC functype ID '(' argfunc ')' '{' declaration* statement* '}';
@@ -91,11 +91,6 @@ drawcircle:
 color: 'red' | 'blue' | 'green' | 'yellow';
 
 // Regex
-ID: [A-z][A-z0-9]*;
-CTE_N: [0-9]+;
-CTE_D: [0-9]+ '.' [0-9]+;
-CTE_C: [A-z];
-CTE_P: '"' [A-z0-9]* '"';
 NUM: 'num';
 DECIMAL: 'decimal';
 BOOL: 'bool';
@@ -114,4 +109,10 @@ FUNC: 'func';
 AND: 'and';
 OR: 'or';
 LIST: 'list';
-
+WHITESPACE: ([ \t]+ | ' ') -> skip;
+NEWLINE: ( '\r' '\n'? | '\n') -> skip;
+ID: [A-z][A-z0-9]*;
+CTE_N: [0-9]+;
+CTE_D: [0-9]+ '.' [0-9]+;
+CTE_C: '\'' . '\'';
+CTE_P: '"' (.)*? '"';
