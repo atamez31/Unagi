@@ -79,6 +79,8 @@ class Memory {
     }
     
     func writePhrase(phrase: String) -> Int {
-        phraseMap[phraseStart + phraseMap.count] = phrase
+        let address = phraseStart + phraseMap.count
+        phraseMap[address] = phrase
+        return address
     }
 }
