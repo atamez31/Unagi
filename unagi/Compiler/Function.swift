@@ -9,17 +9,19 @@
 import Foundation
 
 class Function {
-	var type: Type
+	let type: Type
 	var address: Int
     var variable: [String: Var]
 	var params: [String: Var]
+    let size: Int
 
-    init(type: Type, params: [Var]) {
+    init(type: Type, params: [Var], size: Int) {
 		self.type = type
         // TODO: Change default adress
         self.address = -1
         self.variable = [:]
         self.params = Function.copyParams(parameters: params)
+        self.size = size
 	}
 
     static private func copyParams(parameters: [Var]) -> [String: Var] {
