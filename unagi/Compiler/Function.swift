@@ -17,7 +17,7 @@ class Function {
 
     init(type: Type, params: [Var], size: Int) {
 		self.type = type
-        // TODO: Change default adress
+        // TODO: Change default address
         self.address = -1
         self.variable = [:]
         self.params = Function.copyParams(parameters: params)
