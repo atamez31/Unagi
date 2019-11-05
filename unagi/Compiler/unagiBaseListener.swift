@@ -9,13 +9,35 @@ import Antlr4
  * of the available methods.
  */
 open class unagiBaseListener: unagiListener {
+
+    var scope = "global"
+
+    var semanticCube = SemanticCube.init()
+
+    var varTable = VarTable()
+
+    var POper = [String]()
+    var PSaltos = [Int]()
+    // Pila con direcciones de los operandos en memoria
+    var PilaO = [Int]()
+    var PTypes = [Type]()
+
+    var quads = [Quadruple]()
+
+    var quadIndex = 0
+
+    var globalMemory = Memory.init(realMemorySpace: 0)
+    var localMemory = Memory.init(realMemorySpace: 10000)
      public init() { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterProgram(_ ctx: unagiParser.ProgramContext) { }
+	open func enterProgram(_ ctx: unagiParser.ProgramContext) {
+        quads.append(Quadruple.init(op: "GOTO", leftVal: -1, rightVal: -1, result: -1))
+        PSaltos.append(quads.count-1)
+    }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -34,7 +56,11 @@ open class unagiBaseListener: unagiListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitDeclaration(_ ctx: unagiParser.DeclarationContext) { }
+	open func exitDeclaration(_ ctx: unagiParser.DeclarationContext) {
+        for vars in ctx.ID() {
+            varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: Type.init(type: ctx.type()!.getText()))
+        }
+    }
 
 	/**
 	 * {@inheritDoc}
@@ -86,7 +112,30 @@ open class unagiBaseListener: unagiListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitAssigment(_ ctx: unagiParser.AssigmentContext) { }
+	open func exitAssigment(_ ctx: unagiParser.AssigmentContext) {
+        let varAddress: Int
+        let variableType: Type
+        let op = POper.popLast()!
+        if let varName = ctx.ID()?.getText() {
+            let leftVal = PilaO.popLast()
+            if let variable = varTable.getDictFunc(name: scope)?.variables[varName] {
+                varAddress = variable.memory_address
+                variableType = variable.type
+            } else if let variable = varTable.getDictFunc(name: "global")?.variables[varName] {
+                varAddress = variable.memory_address
+                variableType = variable.type
+            } else {
+                varAddress = -1
+                variableType = Type.none
+            }
+            let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: variableType)
+            if resultType == Type.none {
+                // TODO: throw an error. Incompatible types for operator.
+            } else {
+                quads.append(Quadruple.init(op: op, leftVal: leftVal!, rightVal: -1, result: varAddress))
+            }
+        }
+    }
 
 	/**
 	 * {@inheritDoc}
