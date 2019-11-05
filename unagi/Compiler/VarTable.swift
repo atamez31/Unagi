@@ -12,7 +12,8 @@ class VarTable {
 	var dictFunc: [String: Function] = [:]
 
 	init() {
-        dictFunc["global"] = Function(type: Type.empty, params: [])
+        // TODO: Set function size
+        dictFunc["global"] = Function(type: Type.empty, params: [], size: 0)
 	}
 
     func getDictFunc(name: String) -> Function? {
