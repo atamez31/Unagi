@@ -20,15 +20,15 @@ open class unagiParser: Parser {
                  T__6 = 7, T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, 
                  T__12 = 13, T__13 = 14, T__14 = 15, T__15 = 16, T__16 = 17, 
                  T__17 = 18, T__18 = 19, T__19 = 20, T__20 = 21, T__21 = 22, 
-                 T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, T__26 = 27, 
-                 T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
-                 T__32 = 33, T__33 = 34, T__34 = 35, T__35 = 36, T__36 = 37, 
-                 T__37 = 38, T__38 = 39, NUM = 40, DECIMAL = 41, BOOL = 42, 
-                 CHAR = 43, PHRASE = 44, IF = 45, ELIF = 46, ELSE = 47, 
-                 WHILE = 48, FOR = 49, EMPTY = 50, VAR = 51, PRINT = 52, 
-                 RETURN = 53, FUNC = 54, AND = 55, OR = 56, LIST = 57, WHITESPACE = 58, 
-                 NEWLINE = 59, ID = 60, CTE_N = 61, CTE_D = 62, CTE_C = 63, 
-                 CTE_P = 64
+                 T__22 = 23, T__23 = 24, T__24 = 25, ARROW = 26, ASG = 27, 
+                 LESS = 28, MORETHAN = 29, LESSOREQUAL = 30, MOREOREQUAL = 31, 
+                 EQUAL = 32, NOTEQUAL = 33, SUM = 34, SUB = 35, MULT = 36, 
+                 DIV = 37, LEFTP = 38, RIGHTP = 39, LEFTBRACE = 40, RIGHTBRACE = 41, 
+                 NUM = 42, DECIMAL = 43, BOOL = 44, CHAR = 45, PHRASE = 46, 
+                 IF = 47, ELIF = 48, ELSE = 49, WHILE = 50, FOR = 51, EMPTY = 52, 
+                 VAR = 53, PRINT = 54, RETURN = 55, FUNC = 56, AND = 57, 
+                 OR = 58, LIST = 59, WHITESPACE = 60, NEWLINE = 61, ID = 62, 
+                 CTE_N = 63, CTE_D = 64, CTE_C = 65, CTE_P = 66
 	}
 
 	public
@@ -51,22 +51,23 @@ open class unagiParser: Parser {
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
-		nil, "'program'", "':'", "','", "';'", "'start'", "'{'", "'}'", "'('", 
-		"')'", "'->'", "'='", "'<'", "'>'", "'>='", "'<='", "'<>'", "'=='", "'+'", 
-		"'-'", "'*'", "'/'", "'.'", "'true'", "'false'", "'get'", "'remove'", 
-		"'add'", "'first'", "'last'", "'root'", "'perimeter'", "'drawSquare'", 
-		"'drawTriangle'", "'drawRectangle'", "'drawCircle'", "'red'", "'blue'", 
-		"'green'", "'yellow'", "'num'", "'decimal'", "'bool'", "'char'", "'phrase'", 
-		"'if'", "'elif'", "'else'", "'while'", "'for'", "'empty'", "'var'", "'print'", 
-		"'return'", "'func'", "'and'", "'or'", "'list'"
+		nil, "'program'", "':'", "','", "';'", "'start'", "'NOTEQUAL'", "'EQUAL'", 
+		"'.'", "'true'", "'false'", "'get'", "'remove'", "'add'", "'first'", "'last'", 
+		"'root'", "'perimeter'", "'drawSquare'", "'drawTriangle'", "'drawRectangle'", 
+		"'drawCircle'", "'red'", "'blue'", "'green'", "'yellow'", "'->'", "'='", 
+		"'<'", "'>'", "'<='", "'>='", "'=='", "'<>'", "'+'", "'-'", "'*'", "'/'", 
+		"'('", "')'", "'{'", "'}'", "'num'", "'decimal'", "'bool'", "'char'", 
+		"'phrase'", "'if'", "'elif'", "'else'", "'while'", "'for'", "'empty'", 
+		"'var'", "'print'", "'return'", "'func'", "'and'", "'or'", "'list'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
 		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 
-		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 
-		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, "NUM", "DECIMAL", 
-		"BOOL", "CHAR", "PHRASE", "IF", "ELIF", "ELSE", "WHILE", "FOR", "EMPTY", 
-		"VAR", "PRINT", "RETURN", "FUNC", "AND", "OR", "LIST", "WHITESPACE", "NEWLINE", 
-		"ID", "CTE_N", "CTE_D", "CTE_C", "CTE_P"
+		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, "ARROW", "ASG", 
+		"LESS", "MORETHAN", "LESSOREQUAL", "MOREOREQUAL", "EQUAL", "NOTEQUAL", 
+		"SUM", "SUB", "MULT", "DIV", "LEFTP", "RIGHTP", "LEFTBRACE", "RIGHTBRACE", 
+		"NUM", "DECIMAL", "BOOL", "CHAR", "PHRASE", "IF", "ELIF", "ELSE", "WHILE", 
+		"FOR", "EMPTY", "VAR", "PRINT", "RETURN", "FUNC", "AND", "OR", "LIST", 
+		"WHITESPACE", "NEWLINE", "ID", "CTE_N", "CTE_D", "CTE_C", "CTE_P"
 	]
 	public
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
@@ -283,6 +284,14 @@ open class unagiParser: Parser {
 
 	public class MainContext: ParserRuleContext {
 			open
+			func LEFTBRACE() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTBRACE.rawValue, 0)
+			}
+			open
+			func RIGHTBRACE() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTBRACE.rawValue, 0)
+			}
+			open
 			func declaration() -> [DeclarationContext] {
 				return getRuleContexts(DeclarationContext.self)
 			}
@@ -328,7 +337,7 @@ open class unagiParser: Parser {
 		 	setState(85)
 		 	try match(unagiParser.Tokens.T__4.rawValue)
 		 	setState(86)
-		 	try match(unagiParser.Tokens.T__5.rawValue)
+		 	try match(unagiParser.Tokens.LEFTBRACE.rawValue)
 		 	setState(90)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
@@ -351,7 +360,7 @@ open class unagiParser: Parser {
 		 	while (//closure
 		 	 { () -> Bool in
 		 	      let testSet: Bool = {  () -> Bool in
-		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__29.rawValue,unagiParser.Tokens.T__30.rawValue,unagiParser.Tokens.T__31.rawValue,unagiParser.Tokens.T__32.rawValue,unagiParser.Tokens.T__33.rawValue,unagiParser.Tokens.T__34.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
+		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__15.rawValue,unagiParser.Tokens.T__16.rawValue,unagiParser.Tokens.T__17.rawValue,unagiParser.Tokens.T__18.rawValue,unagiParser.Tokens.T__19.rawValue,unagiParser.Tokens.T__20.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	      return testSet
@@ -365,7 +374,7 @@ open class unagiParser: Parser {
 		 		_la = try _input.LA(1)
 		 	}
 		 	setState(99)
-		 	try match(unagiParser.Tokens.T__6.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTBRACE.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -454,12 +463,12 @@ open class unagiParser: Parser {
 		 		try printing()
 
 		 		break
-		 	case .T__29:fallthrough
-		 	case .T__30:fallthrough
-		 	case .T__31:fallthrough
-		 	case .T__32:fallthrough
-		 	case .T__33:fallthrough
-		 	case .T__34:
+		 	case .T__15:fallthrough
+		 	case .T__16:fallthrough
+		 	case .T__17:fallthrough
+		 	case .T__18:fallthrough
+		 	case .T__19:fallthrough
+		 	case .T__20:
 		 		try enterOuterAlt(_localctx, 4)
 		 		setState(104)
 		 		try special()
@@ -502,12 +511,28 @@ open class unagiParser: Parser {
 				return getToken(unagiParser.Tokens.WHILE.rawValue, 0)
 			}
 			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
 			func superexp() -> [SuperexpContext] {
 				return getRuleContexts(SuperexpContext.self)
 			}
 			open
 			func superexp(_ i: Int) -> SuperexpContext? {
 				return getRuleContext(SuperexpContext.self, i)
+			}
+			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
+			}
+			open
+			func LEFTBRACE() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTBRACE.rawValue, 0)
+			}
+			open
+			func RIGHTBRACE() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTBRACE.rawValue, 0)
 			}
 			open
 			func statement() -> [StatementContext] {
@@ -520,6 +545,10 @@ open class unagiParser: Parser {
 			open
 			func FOR() -> TerminalNode? {
 				return getToken(unagiParser.Tokens.FOR.rawValue, 0)
+			}
+			open
+			func ARROW() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.ARROW.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
@@ -555,20 +584,20 @@ open class unagiParser: Parser {
 		 		setState(112)
 		 		try match(unagiParser.Tokens.WHILE.rawValue)
 		 		setState(113)
-		 		try match(unagiParser.Tokens.T__7.rawValue)
+		 		try match(unagiParser.Tokens.LEFTP.rawValue)
 		 		setState(114)
 		 		try superexp()
 		 		setState(115)
-		 		try match(unagiParser.Tokens.T__8.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 		setState(116)
-		 		try match(unagiParser.Tokens.T__5.rawValue)
+		 		try match(unagiParser.Tokens.LEFTBRACE.rawValue)
 		 		setState(120)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      let testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__29.rawValue,unagiParser.Tokens.T__30.rawValue,unagiParser.Tokens.T__31.rawValue,unagiParser.Tokens.T__32.rawValue,unagiParser.Tokens.T__33.rawValue,unagiParser.Tokens.T__34.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
+		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__15.rawValue,unagiParser.Tokens.T__16.rawValue,unagiParser.Tokens.T__17.rawValue,unagiParser.Tokens.T__18.rawValue,unagiParser.Tokens.T__19.rawValue,unagiParser.Tokens.T__20.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		      return testSet
@@ -582,7 +611,7 @@ open class unagiParser: Parser {
 		 			_la = try _input.LA(1)
 		 		}
 		 		setState(123)
-		 		try match(unagiParser.Tokens.T__6.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTBRACE.rawValue)
 
 		 		break
 
@@ -591,24 +620,24 @@ open class unagiParser: Parser {
 		 		setState(125)
 		 		try match(unagiParser.Tokens.FOR.rawValue)
 		 		setState(126)
-		 		try match(unagiParser.Tokens.T__7.rawValue)
+		 		try match(unagiParser.Tokens.LEFTP.rawValue)
 		 		setState(127)
 		 		try superexp()
 		 		setState(128)
-		 		try match(unagiParser.Tokens.T__9.rawValue)
+		 		try match(unagiParser.Tokens.ARROW.rawValue)
 		 		setState(129)
 		 		try superexp()
 		 		setState(130)
-		 		try match(unagiParser.Tokens.T__8.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 		setState(131)
-		 		try match(unagiParser.Tokens.T__5.rawValue)
+		 		try match(unagiParser.Tokens.LEFTBRACE.rawValue)
 		 		setState(135)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      let testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__29.rawValue,unagiParser.Tokens.T__30.rawValue,unagiParser.Tokens.T__31.rawValue,unagiParser.Tokens.T__32.rawValue,unagiParser.Tokens.T__33.rawValue,unagiParser.Tokens.T__34.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
+		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__15.rawValue,unagiParser.Tokens.T__16.rawValue,unagiParser.Tokens.T__17.rawValue,unagiParser.Tokens.T__18.rawValue,unagiParser.Tokens.T__19.rawValue,unagiParser.Tokens.T__20.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		      return testSet
@@ -622,7 +651,7 @@ open class unagiParser: Parser {
 		 			_la = try _input.LA(1)
 		 		}
 		 		setState(138)
-		 		try match(unagiParser.Tokens.T__6.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTBRACE.rawValue)
 
 		 		break
 		 	default:
@@ -642,6 +671,10 @@ open class unagiParser: Parser {
 			open
 			func ID() -> TerminalNode? {
 				return getToken(unagiParser.Tokens.ID.rawValue, 0)
+			}
+			open
+			func ASG() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.ASG.rawValue, 0)
 			}
 			open
 			func superexp() -> SuperexpContext? {
@@ -676,7 +709,7 @@ open class unagiParser: Parser {
 		 	setState(142)
 		 	try match(unagiParser.Tokens.ID.rawValue)
 		 	setState(143)
-		 	try match(unagiParser.Tokens.T__10.rawValue)
+		 	try match(unagiParser.Tokens.ASG.rawValue)
 		 	setState(144)
 		 	try superexp()
 		 	setState(145)
@@ -706,8 +739,24 @@ open class unagiParser: Parser {
 				return getToken(unagiParser.Tokens.ID.rawValue, 0)
 			}
 			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
 			func argfunc() -> ArgfuncContext? {
 				return getRuleContext(ArgfuncContext.self, 0)
+			}
+			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
+			}
+			open
+			func LEFTBRACE() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTBRACE.rawValue, 0)
+			}
+			open
+			func RIGHTBRACE() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTBRACE.rawValue, 0)
 			}
 			open
 			func declaration() -> [DeclarationContext] {
@@ -759,13 +808,13 @@ open class unagiParser: Parser {
 		 	setState(149)
 		 	try match(unagiParser.Tokens.ID.rawValue)
 		 	setState(150)
-		 	try match(unagiParser.Tokens.T__7.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(151)
 		 	try argfunc()
 		 	setState(152)
-		 	try match(unagiParser.Tokens.T__8.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 	setState(153)
-		 	try match(unagiParser.Tokens.T__5.rawValue)
+		 	try match(unagiParser.Tokens.LEFTBRACE.rawValue)
 		 	setState(157)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
@@ -788,7 +837,7 @@ open class unagiParser: Parser {
 		 	while (//closure
 		 	 { () -> Bool in
 		 	      let testSet: Bool = {  () -> Bool in
-		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__29.rawValue,unagiParser.Tokens.T__30.rawValue,unagiParser.Tokens.T__31.rawValue,unagiParser.Tokens.T__32.rawValue,unagiParser.Tokens.T__33.rawValue,unagiParser.Tokens.T__34.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
+		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__15.rawValue,unagiParser.Tokens.T__16.rawValue,unagiParser.Tokens.T__17.rawValue,unagiParser.Tokens.T__18.rawValue,unagiParser.Tokens.T__19.rawValue,unagiParser.Tokens.T__20.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	      return testSet
@@ -802,7 +851,7 @@ open class unagiParser: Parser {
 		 		_la = try _input.LA(1)
 		 	}
 		 	setState(166)
-		 	try match(unagiParser.Tokens.T__6.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTBRACE.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -966,8 +1015,16 @@ open class unagiParser: Parser {
 				return getToken(unagiParser.Tokens.LIST.rawValue, 0)
 			}
 			open
+			func LESS() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LESS.rawValue, 0)
+			}
+			open
 			func type() -> TypeContext? {
 				return getRuleContext(TypeContext.self, 0)
+			}
+			open
+			func MORETHAN() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.MORETHAN.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
@@ -998,11 +1055,11 @@ open class unagiParser: Parser {
 		 	setState(174)
 		 	try match(unagiParser.Tokens.LIST.rawValue)
 		 	setState(175)
-		 	try match(unagiParser.Tokens.T__11.rawValue)
+		 	try match(unagiParser.Tokens.LESS.rawValue)
 		 	setState(176)
 		 	try type()
 		 	setState(177)
-		 	try match(unagiParser.Tokens.T__12.rawValue)
+		 	try match(unagiParser.Tokens.MORETHAN.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -1200,6 +1257,22 @@ open class unagiParser: Parser {
 			func exp(_ i: Int) -> ExpContext? {
 				return getRuleContext(ExpContext.self, i)
 			}
+			open
+			func MORETHAN() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.MORETHAN.rawValue, 0)
+			}
+			open
+			func LESS() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LESS.rawValue, 0)
+			}
+			open
+			func MOREOREQUAL() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.MOREOREQUAL.rawValue, 0)
+			}
+			open
+			func LESSOREQUAL() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LESSOREQUAL.rawValue, 0)
+			}
 		override open
 		func getRuleIndex() -> Int {
 			return unagiParser.RULE_expression
@@ -1235,7 +1308,7 @@ open class unagiParser: Parser {
 		 	if (//closure
 		 	 { () -> Bool in
 		 	      let testSet: Bool = {  () -> Bool in
-		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__11.rawValue,unagiParser.Tokens.T__12.rawValue,unagiParser.Tokens.T__13.rawValue,unagiParser.Tokens.T__14.rawValue,unagiParser.Tokens.T__15.rawValue,unagiParser.Tokens.T__16.rawValue]
+		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__5.rawValue,unagiParser.Tokens.T__6.rawValue,unagiParser.Tokens.LESS.rawValue,unagiParser.Tokens.MORETHAN.rawValue,unagiParser.Tokens.LESSOREQUAL.rawValue,unagiParser.Tokens.MOREOREQUAL.rawValue]
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	      return testSet
@@ -1245,7 +1318,7 @@ open class unagiParser: Parser {
 		 		if (!(//closure
 		 		 { () -> Bool in
 		 		      let testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__11.rawValue,unagiParser.Tokens.T__12.rawValue,unagiParser.Tokens.T__13.rawValue,unagiParser.Tokens.T__14.rawValue,unagiParser.Tokens.T__15.rawValue,unagiParser.Tokens.T__16.rawValue]
+		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__5.rawValue,unagiParser.Tokens.T__6.rawValue,unagiParser.Tokens.LESS.rawValue,unagiParser.Tokens.MORETHAN.rawValue,unagiParser.Tokens.LESSOREQUAL.rawValue,unagiParser.Tokens.MOREOREQUAL.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		      return testSet
@@ -1280,6 +1353,22 @@ open class unagiParser: Parser {
 			open
 			func term(_ i: Int) -> TermContext? {
 				return getRuleContext(TermContext.self, i)
+			}
+			open
+			func SUM() -> [TerminalNode] {
+				return getTokens(unagiParser.Tokens.SUM.rawValue)
+			}
+			open
+			func SUM(_ i:Int) -> TerminalNode? {
+				return getToken(unagiParser.Tokens.SUM.rawValue, i)
+			}
+			open
+			func SUB() -> [TerminalNode] {
+				return getTokens(unagiParser.Tokens.SUB.rawValue)
+			}
+			open
+			func SUB(_ i:Int) -> TerminalNode? {
+				return getToken(unagiParser.Tokens.SUB.rawValue, i)
 			}
 		override open
 		func getRuleIndex() -> Int {
@@ -1320,7 +1409,7 @@ open class unagiParser: Parser {
 		 			_la = try _input.LA(1)
 		 			if (!(//closure
 		 			 { () -> Bool in
-		 			      let testSet: Bool = _la == unagiParser.Tokens.T__17.rawValue || _la == unagiParser.Tokens.T__18.rawValue
+		 			      let testSet: Bool = _la == unagiParser.Tokens.SUM.rawValue || _la == unagiParser.Tokens.SUB.rawValue
 		 			      return testSet
 		 			 }())) {
 		 			try _errHandler.recoverInline(self)
@@ -1358,6 +1447,22 @@ open class unagiParser: Parser {
 			func factor(_ i: Int) -> FactorContext? {
 				return getRuleContext(FactorContext.self, i)
 			}
+			open
+			func MULT() -> [TerminalNode] {
+				return getTokens(unagiParser.Tokens.MULT.rawValue)
+			}
+			open
+			func MULT(_ i:Int) -> TerminalNode? {
+				return getToken(unagiParser.Tokens.MULT.rawValue, i)
+			}
+			open
+			func DIV() -> [TerminalNode] {
+				return getTokens(unagiParser.Tokens.DIV.rawValue)
+			}
+			open
+			func DIV(_ i:Int) -> TerminalNode? {
+				return getToken(unagiParser.Tokens.DIV.rawValue, i)
+			}
 		override open
 		func getRuleIndex() -> Int {
 			return unagiParser.RULE_term
@@ -1392,14 +1497,14 @@ open class unagiParser: Parser {
 		 	_la = try _input.LA(1)
 		 	while (//closure
 		 	 { () -> Bool in
-		 	      let testSet: Bool = _la == unagiParser.Tokens.T__19.rawValue || _la == unagiParser.Tokens.T__20.rawValue
+		 	      let testSet: Bool = _la == unagiParser.Tokens.MULT.rawValue || _la == unagiParser.Tokens.DIV.rawValue
 		 	      return testSet
 		 	 }()) {
 		 		setState(212)
 		 		_la = try _input.LA(1)
 		 		if (!(//closure
 		 		 { () -> Bool in
-		 		      let testSet: Bool = _la == unagiParser.Tokens.T__19.rawValue || _la == unagiParser.Tokens.T__20.rawValue
+		 		      let testSet: Bool = _la == unagiParser.Tokens.MULT.rawValue || _la == unagiParser.Tokens.DIV.rawValue
 		 		      return testSet
 		 		 }())) {
 		 		try _errHandler.recoverInline(self)
@@ -1429,6 +1534,10 @@ open class unagiParser: Parser {
 
 	public class FactorContext: ParserRuleContext {
 			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
 			func superexp() -> [SuperexpContext] {
 				return getRuleContexts(SuperexpContext.self)
 			}
@@ -1437,8 +1546,20 @@ open class unagiParser: Parser {
 				return getRuleContext(SuperexpContext.self, i)
 			}
 			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
+			}
+			open
 			func constant() -> ConstantContext? {
 				return getRuleContext(ConstantContext.self, 0)
+			}
+			open
+			func SUM() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.SUM.rawValue, 0)
+			}
+			open
+			func SUB() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.SUB.rawValue, 0)
 			}
 			open
 			func ID() -> TerminalNode? {
@@ -1477,20 +1598,20 @@ open class unagiParser: Parser {
 		 	setState(240)
 		 	try _errHandler.sync(self)
 		 	switch (unagiParser.Tokens(rawValue: try _input.LA(1))!) {
-		 	case .T__7:
+		 	case .LEFTP:
 		 		try enterOuterAlt(_localctx, 1)
 		 		setState(219)
-		 		try match(unagiParser.Tokens.T__7.rawValue)
+		 		try match(unagiParser.Tokens.LEFTP.rawValue)
 		 		setState(220)
 		 		try superexp()
 		 		setState(221)
-		 		try match(unagiParser.Tokens.T__8.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTP.rawValue)
 
 		 		break
-		 	case .T__17:fallthrough
-		 	case .T__18:fallthrough
-		 	case .T__22:fallthrough
-		 	case .T__23:fallthrough
+		 	case .T__8:fallthrough
+		 	case .T__9:fallthrough
+		 	case .SUM:fallthrough
+		 	case .SUB:fallthrough
 		 	case .CTE_N:fallthrough
 		 	case .CTE_D:fallthrough
 		 	case .CTE_C:fallthrough
@@ -1501,14 +1622,14 @@ open class unagiParser: Parser {
 		 		_la = try _input.LA(1)
 		 		if (//closure
 		 		 { () -> Bool in
-		 		      let testSet: Bool = _la == unagiParser.Tokens.T__17.rawValue || _la == unagiParser.Tokens.T__18.rawValue
+		 		      let testSet: Bool = _la == unagiParser.Tokens.SUM.rawValue || _la == unagiParser.Tokens.SUB.rawValue
 		 		      return testSet
 		 		 }()) {
 		 			setState(223)
 		 			_la = try _input.LA(1)
 		 			if (!(//closure
 		 			 { () -> Bool in
-		 			      let testSet: Bool = _la == unagiParser.Tokens.T__17.rawValue || _la == unagiParser.Tokens.T__18.rawValue
+		 			      let testSet: Bool = _la == unagiParser.Tokens.SUM.rawValue || _la == unagiParser.Tokens.SUB.rawValue
 		 			      return testSet
 		 			 }())) {
 		 			try _errHandler.recoverInline(self)
@@ -1534,15 +1655,15 @@ open class unagiParser: Parser {
 		 		switch (try getInterpreter().adaptivePredict(_input,20,_ctx)) {
 		 		case 1:
 		 			setState(228)
-		 			try match(unagiParser.Tokens.T__7.rawValue)
+		 			try match(unagiParser.Tokens.LEFTP.rawValue)
 		 			setState(232)
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 			while (//closure
 		 			 { () -> Bool in
 		 			      let testSet: Bool = {  () -> Bool in
-		 			   let testArray: [Int] = [_la, unagiParser.Tokens.T__7.rawValue,unagiParser.Tokens.T__17.rawValue,unagiParser.Tokens.T__18.rawValue,unagiParser.Tokens.T__22.rawValue,unagiParser.Tokens.T__23.rawValue,unagiParser.Tokens.ID.rawValue,unagiParser.Tokens.CTE_N.rawValue,unagiParser.Tokens.CTE_D.rawValue,unagiParser.Tokens.CTE_C.rawValue,unagiParser.Tokens.CTE_P.rawValue]
-		 			    return  Utils.testBitLeftShiftArray(testArray, 8)
+		 			   let testArray: [Int] = [_la, unagiParser.Tokens.T__8.rawValue,unagiParser.Tokens.T__9.rawValue,unagiParser.Tokens.SUM.rawValue,unagiParser.Tokens.SUB.rawValue,unagiParser.Tokens.LEFTP.rawValue,unagiParser.Tokens.ID.rawValue,unagiParser.Tokens.CTE_N.rawValue,unagiParser.Tokens.CTE_D.rawValue,unagiParser.Tokens.CTE_C.rawValue,unagiParser.Tokens.CTE_P.rawValue]
+		 			    return  Utils.testBitLeftShiftArray(testArray, 9)
 		 			}()
 		 			      return testSet
 		 			 }()) {
@@ -1555,12 +1676,12 @@ open class unagiParser: Parser {
 		 				_la = try _input.LA(1)
 		 			}
 		 			setState(235)
-		 			try match(unagiParser.Tokens.T__8.rawValue)
+		 			try match(unagiParser.Tokens.RIGHTP.rawValue)
 
 		 			break
 		 		case 2:
 		 			setState(236)
-		 			try match(unagiParser.Tokens.T__21.rawValue)
+		 			try match(unagiParser.Tokens.T__7.rawValue)
 		 			setState(237)
 		 			try listfunc()
 
@@ -1631,8 +1752,8 @@ open class unagiParser: Parser {
 		 	if (!(//closure
 		 	 { () -> Bool in
 		 	      let testSet: Bool = {  () -> Bool in
-		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__22.rawValue,unagiParser.Tokens.T__23.rawValue,unagiParser.Tokens.CTE_N.rawValue,unagiParser.Tokens.CTE_D.rawValue,unagiParser.Tokens.CTE_C.rawValue,unagiParser.Tokens.CTE_P.rawValue]
-		 	    return  Utils.testBitLeftShiftArray(testArray, 23)
+		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__8.rawValue,unagiParser.Tokens.T__9.rawValue,unagiParser.Tokens.CTE_N.rawValue,unagiParser.Tokens.CTE_D.rawValue,unagiParser.Tokens.CTE_C.rawValue,unagiParser.Tokens.CTE_P.rawValue]
+		 	    return  Utils.testBitLeftShiftArray(testArray, 9)
 		 	}()
 		 	      return testSet
 		 	 }())) {
@@ -1659,12 +1780,44 @@ open class unagiParser: Parser {
 				return getToken(unagiParser.Tokens.IF.rawValue, 0)
 			}
 			open
+			func LEFTP() -> [TerminalNode] {
+				return getTokens(unagiParser.Tokens.LEFTP.rawValue)
+			}
+			open
+			func LEFTP(_ i:Int) -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, i)
+			}
+			open
 			func superexp() -> [SuperexpContext] {
 				return getRuleContexts(SuperexpContext.self)
 			}
 			open
 			func superexp(_ i: Int) -> SuperexpContext? {
 				return getRuleContext(SuperexpContext.self, i)
+			}
+			open
+			func RIGHTP() -> [TerminalNode] {
+				return getTokens(unagiParser.Tokens.RIGHTP.rawValue)
+			}
+			open
+			func RIGHTP(_ i:Int) -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, i)
+			}
+			open
+			func LEFTBRACE() -> [TerminalNode] {
+				return getTokens(unagiParser.Tokens.LEFTBRACE.rawValue)
+			}
+			open
+			func LEFTBRACE(_ i:Int) -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTBRACE.rawValue, i)
+			}
+			open
+			func RIGHTBRACE() -> [TerminalNode] {
+				return getTokens(unagiParser.Tokens.RIGHTBRACE.rawValue)
+			}
+			open
+			func RIGHTBRACE(_ i:Int) -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTBRACE.rawValue, i)
 			}
 			open
 			func statement() -> [StatementContext] {
@@ -1716,20 +1869,20 @@ open class unagiParser: Parser {
 		 	setState(244)
 		 	try match(unagiParser.Tokens.IF.rawValue)
 		 	setState(245)
-		 	try match(unagiParser.Tokens.T__7.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(246)
 		 	try superexp()
 		 	setState(247)
-		 	try match(unagiParser.Tokens.T__8.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 	setState(248)
-		 	try match(unagiParser.Tokens.T__5.rawValue)
+		 	try match(unagiParser.Tokens.LEFTBRACE.rawValue)
 		 	setState(252)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (//closure
 		 	 { () -> Bool in
 		 	      let testSet: Bool = {  () -> Bool in
-		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__29.rawValue,unagiParser.Tokens.T__30.rawValue,unagiParser.Tokens.T__31.rawValue,unagiParser.Tokens.T__32.rawValue,unagiParser.Tokens.T__33.rawValue,unagiParser.Tokens.T__34.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
+		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__15.rawValue,unagiParser.Tokens.T__16.rawValue,unagiParser.Tokens.T__17.rawValue,unagiParser.Tokens.T__18.rawValue,unagiParser.Tokens.T__19.rawValue,unagiParser.Tokens.T__20.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	      return testSet
@@ -1743,7 +1896,7 @@ open class unagiParser: Parser {
 		 		_la = try _input.LA(1)
 		 	}
 		 	setState(255)
-		 	try match(unagiParser.Tokens.T__6.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTBRACE.rawValue)
 		 	setState(271)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
@@ -1755,20 +1908,20 @@ open class unagiParser: Parser {
 		 		setState(256)
 		 		try match(unagiParser.Tokens.ELIF.rawValue)
 		 		setState(257)
-		 		try match(unagiParser.Tokens.T__7.rawValue)
+		 		try match(unagiParser.Tokens.LEFTP.rawValue)
 		 		setState(258)
 		 		try superexp()
 		 		setState(259)
-		 		try match(unagiParser.Tokens.T__8.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 		setState(260)
-		 		try match(unagiParser.Tokens.T__5.rawValue)
+		 		try match(unagiParser.Tokens.LEFTBRACE.rawValue)
 		 		setState(264)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      let testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__29.rawValue,unagiParser.Tokens.T__30.rawValue,unagiParser.Tokens.T__31.rawValue,unagiParser.Tokens.T__32.rawValue,unagiParser.Tokens.T__33.rawValue,unagiParser.Tokens.T__34.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
+		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__15.rawValue,unagiParser.Tokens.T__16.rawValue,unagiParser.Tokens.T__17.rawValue,unagiParser.Tokens.T__18.rawValue,unagiParser.Tokens.T__19.rawValue,unagiParser.Tokens.T__20.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		      return testSet
@@ -1782,7 +1935,7 @@ open class unagiParser: Parser {
 		 			_la = try _input.LA(1)
 		 		}
 		 		setState(267)
-		 		try match(unagiParser.Tokens.T__6.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTBRACE.rawValue)
 
 
 		 		setState(273)
@@ -1800,14 +1953,14 @@ open class unagiParser: Parser {
 		 		setState(274)
 		 		try match(unagiParser.Tokens.ELSE.rawValue)
 		 		setState(275)
-		 		try match(unagiParser.Tokens.T__5.rawValue)
+		 		try match(unagiParser.Tokens.LEFTBRACE.rawValue)
 		 		setState(279)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		while (//closure
 		 		 { () -> Bool in
 		 		      let testSet: Bool = {  () -> Bool in
-		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__29.rawValue,unagiParser.Tokens.T__30.rawValue,unagiParser.Tokens.T__31.rawValue,unagiParser.Tokens.T__32.rawValue,unagiParser.Tokens.T__33.rawValue,unagiParser.Tokens.T__34.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
+		 		   let testArray: [Int] = [_la, unagiParser.Tokens.T__15.rawValue,unagiParser.Tokens.T__16.rawValue,unagiParser.Tokens.T__17.rawValue,unagiParser.Tokens.T__18.rawValue,unagiParser.Tokens.T__19.rawValue,unagiParser.Tokens.T__20.rawValue,unagiParser.Tokens.IF.rawValue,unagiParser.Tokens.WHILE.rawValue,unagiParser.Tokens.FOR.rawValue,unagiParser.Tokens.PRINT.rawValue,unagiParser.Tokens.RETURN.rawValue,unagiParser.Tokens.ID.rawValue]
 		 		    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 		}()
 		 		      return testSet
@@ -1821,7 +1974,7 @@ open class unagiParser: Parser {
 		 			_la = try _input.LA(1)
 		 		}
 		 		setState(282)
-		 		try match(unagiParser.Tokens.T__6.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTBRACE.rawValue)
 
 		 	}
 
@@ -1840,6 +1993,14 @@ open class unagiParser: Parser {
 			open
 			func PRINT() -> TerminalNode? {
 				return getToken(unagiParser.Tokens.PRINT.rawValue, 0)
+			}
+			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
 			}
 			open
 			func superexp() -> [SuperexpContext] {
@@ -1887,7 +2048,7 @@ open class unagiParser: Parser {
 		 	setState(285)
 		 	try match(unagiParser.Tokens.PRINT.rawValue)
 		 	setState(286)
-		 	try match(unagiParser.Tokens.T__7.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(289)
 		 	try _errHandler.sync(self)
 		 	switch(try getInterpreter().adaptivePredict(_input,27, _ctx)) {
@@ -1935,7 +2096,7 @@ open class unagiParser: Parser {
 		 		_la = try _input.LA(1)
 		 	}
 		 	setState(301)
-		 	try match(unagiParser.Tokens.T__8.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 	setState(302)
 		 	try match(unagiParser.Tokens.T__3.rawValue)
 
@@ -1950,6 +2111,14 @@ open class unagiParser: Parser {
 	}
 
 	public class ListfuncContext: ParserRuleContext {
+			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
+			}
 			open
 			func CTE_N() -> TerminalNode? {
 				return getToken(unagiParser.Tokens.CTE_N.rawValue, 0)
@@ -1995,14 +2164,14 @@ open class unagiParser: Parser {
 		 	setState(323)
 		 	try _errHandler.sync(self)
 		 	switch (unagiParser.Tokens(rawValue: try _input.LA(1))!) {
-		 	case .T__24:fallthrough
-		 	case .T__25:
+		 	case .T__10:fallthrough
+		 	case .T__11:
 		 		try enterOuterAlt(_localctx, 1)
 		 		setState(304)
 		 		_la = try _input.LA(1)
 		 		if (!(//closure
 		 		 { () -> Bool in
-		 		      let testSet: Bool = _la == unagiParser.Tokens.T__24.rawValue || _la == unagiParser.Tokens.T__25.rawValue
+		 		      let testSet: Bool = _la == unagiParser.Tokens.T__10.rawValue || _la == unagiParser.Tokens.T__11.rawValue
 		 		      return testSet
 		 		 }())) {
 		 		try _errHandler.recoverInline(self)
@@ -2012,7 +2181,7 @@ open class unagiParser: Parser {
 		 			try consume()
 		 		}
 		 		setState(305)
-		 		try match(unagiParser.Tokens.T__7.rawValue)
+		 		try match(unagiParser.Tokens.LEFTP.rawValue)
 		 		setState(309)
 		 		try _errHandler.sync(self)
 		 		switch(try getInterpreter().adaptivePredict(_input,30, _ctx)) {
@@ -2034,16 +2203,16 @@ open class unagiParser: Parser {
 		 		default: break
 		 		}
 		 		setState(311)
-		 		try match(unagiParser.Tokens.T__8.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTP.rawValue)
 
 		 		break
 
-		 	case .T__26:
+		 	case .T__12:
 		 		try enterOuterAlt(_localctx, 2)
 		 		setState(312)
-		 		try match(unagiParser.Tokens.T__26.rawValue)
+		 		try match(unagiParser.Tokens.T__12.rawValue)
 		 		setState(313)
-		 		try match(unagiParser.Tokens.T__7.rawValue)
+		 		try match(unagiParser.Tokens.LEFTP.rawValue)
 		 		setState(317)
 		 		try _errHandler.sync(self)
 		 		switch(try getInterpreter().adaptivePredict(_input,31, _ctx)) {
@@ -2065,17 +2234,17 @@ open class unagiParser: Parser {
 		 		default: break
 		 		}
 		 		setState(319)
-		 		try match(unagiParser.Tokens.T__8.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTP.rawValue)
 
 		 		break
-		 	case .T__27:fallthrough
-		 	case .T__28:
+		 	case .T__13:fallthrough
+		 	case .T__14:
 		 		try enterOuterAlt(_localctx, 3)
 		 		setState(320)
 		 		_la = try _input.LA(1)
 		 		if (!(//closure
 		 		 { () -> Bool in
-		 		      let testSet: Bool = _la == unagiParser.Tokens.T__27.rawValue || _la == unagiParser.Tokens.T__28.rawValue
+		 		      let testSet: Bool = _la == unagiParser.Tokens.T__13.rawValue || _la == unagiParser.Tokens.T__14.rawValue
 		 		      return testSet
 		 		 }())) {
 		 		try _errHandler.recoverInline(self)
@@ -2085,9 +2254,9 @@ open class unagiParser: Parser {
 		 			try consume()
 		 		}
 		 		setState(321)
-		 		try match(unagiParser.Tokens.T__7.rawValue)
+		 		try match(unagiParser.Tokens.LEFTP.rawValue)
 		 		setState(322)
-		 		try match(unagiParser.Tokens.T__8.rawValue)
+		 		try match(unagiParser.Tokens.RIGHTP.rawValue)
 
 		 		break
 		 	default:
@@ -2157,37 +2326,37 @@ open class unagiParser: Parser {
 		 	setState(331)
 		 	try _errHandler.sync(self)
 		 	switch (unagiParser.Tokens(rawValue: try _input.LA(1))!) {
-		 	case .T__31:
+		 	case .T__17:
 		 		setState(325)
 		 		try drawsquare()
 
 		 		break
 
-		 	case .T__32:
+		 	case .T__18:
 		 		setState(326)
 		 		try drawtriangle()
 
 		 		break
 
-		 	case .T__33:
+		 	case .T__19:
 		 		setState(327)
 		 		try drawrectangle()
 
 		 		break
 
-		 	case .T__34:
+		 	case .T__20:
 		 		setState(328)
 		 		try drawcircle()
 
 		 		break
 
-		 	case .T__29:
+		 	case .T__15:
 		 		setState(329)
 		 		try root()
 
 		 		break
 
-		 	case .T__30:
+		 	case .T__16:
 		 		setState(330)
 		 		try perimeter()
 
@@ -2208,8 +2377,16 @@ open class unagiParser: Parser {
 
 	public class RootContext: ParserRuleContext {
 			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
 			func superexp() -> SuperexpContext? {
 				return getRuleContext(SuperexpContext.self, 0)
+			}
+			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
@@ -2238,13 +2415,13 @@ open class unagiParser: Parser {
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(333)
-		 	try match(unagiParser.Tokens.T__29.rawValue)
+		 	try match(unagiParser.Tokens.T__15.rawValue)
 		 	setState(334)
-		 	try match(unagiParser.Tokens.T__7.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(335)
 		 	try superexp()
 		 	setState(336)
-		 	try match(unagiParser.Tokens.T__8.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 	setState(337)
 		 	try match(unagiParser.Tokens.T__3.rawValue)
 
@@ -2259,6 +2436,14 @@ open class unagiParser: Parser {
 	}
 
 	public class PerimeterContext: ParserRuleContext {
+			open
+			func LEFTP() -> [TerminalNode] {
+				return getTokens(unagiParser.Tokens.LEFTP.rawValue)
+			}
+			open
+			func LEFTP(_ i:Int) -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, i)
+			}
 			open
 			func superexp() -> [SuperexpContext] {
 				return getRuleContexts(SuperexpContext.self)
@@ -2295,9 +2480,9 @@ open class unagiParser: Parser {
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(339)
-		 	try match(unagiParser.Tokens.T__30.rawValue)
+		 	try match(unagiParser.Tokens.T__16.rawValue)
 		 	setState(340)
-		 	try match(unagiParser.Tokens.T__7.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(341)
 		 	try superexp()
 		 	setState(342)
@@ -2324,7 +2509,7 @@ open class unagiParser: Parser {
 		 	}
 
 		 	setState(350)
-		 	try match(unagiParser.Tokens.T__8.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(351)
 		 	try match(unagiParser.Tokens.T__3.rawValue)
 
@@ -2340,6 +2525,10 @@ open class unagiParser: Parser {
 
 	public class DrawsquareContext: ParserRuleContext {
 			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
 			func superexp() -> [SuperexpContext] {
 				return getRuleContexts(SuperexpContext.self)
 			}
@@ -2350,6 +2539,10 @@ open class unagiParser: Parser {
 			open
 			func color() -> ColorContext? {
 				return getRuleContext(ColorContext.self, 0)
+			}
+			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
@@ -2378,9 +2571,9 @@ open class unagiParser: Parser {
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(353)
-		 	try match(unagiParser.Tokens.T__31.rawValue)
+		 	try match(unagiParser.Tokens.T__17.rawValue)
 		 	setState(354)
-		 	try match(unagiParser.Tokens.T__7.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(355)
 		 	try superexp()
 		 	setState(356)
@@ -2396,7 +2589,7 @@ open class unagiParser: Parser {
 		 	setState(361)
 		 	try color()
 		 	setState(362)
-		 	try match(unagiParser.Tokens.T__8.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 	setState(363)
 		 	try match(unagiParser.Tokens.T__3.rawValue)
 
@@ -2412,6 +2605,10 @@ open class unagiParser: Parser {
 
 	public class DrawtriangleContext: ParserRuleContext {
 			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
 			func superexp() -> [SuperexpContext] {
 				return getRuleContexts(SuperexpContext.self)
 			}
@@ -2422,6 +2619,10 @@ open class unagiParser: Parser {
 			open
 			func color() -> ColorContext? {
 				return getRuleContext(ColorContext.self, 0)
+			}
+			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
@@ -2450,9 +2651,9 @@ open class unagiParser: Parser {
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(365)
-		 	try match(unagiParser.Tokens.T__32.rawValue)
+		 	try match(unagiParser.Tokens.T__18.rawValue)
 		 	setState(366)
-		 	try match(unagiParser.Tokens.T__7.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(367)
 		 	try superexp()
 		 	setState(368)
@@ -2476,7 +2677,7 @@ open class unagiParser: Parser {
 		 	setState(377)
 		 	try color()
 		 	setState(378)
-		 	try match(unagiParser.Tokens.T__8.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 	setState(379)
 		 	try match(unagiParser.Tokens.T__3.rawValue)
 
@@ -2492,6 +2693,10 @@ open class unagiParser: Parser {
 
 	public class DrawrectangleContext: ParserRuleContext {
 			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
 			func superexp() -> [SuperexpContext] {
 				return getRuleContexts(SuperexpContext.self)
 			}
@@ -2502,6 +2707,10 @@ open class unagiParser: Parser {
 			open
 			func color() -> ColorContext? {
 				return getRuleContext(ColorContext.self, 0)
+			}
+			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
@@ -2530,9 +2739,9 @@ open class unagiParser: Parser {
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(381)
-		 	try match(unagiParser.Tokens.T__33.rawValue)
+		 	try match(unagiParser.Tokens.T__19.rawValue)
 		 	setState(382)
-		 	try match(unagiParser.Tokens.T__7.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(383)
 		 	try superexp()
 		 	setState(384)
@@ -2552,7 +2761,7 @@ open class unagiParser: Parser {
 		 	setState(391)
 		 	try color()
 		 	setState(392)
-		 	try match(unagiParser.Tokens.T__8.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 	setState(393)
 		 	try match(unagiParser.Tokens.T__3.rawValue)
 
@@ -2568,6 +2777,10 @@ open class unagiParser: Parser {
 
 	public class DrawcircleContext: ParserRuleContext {
 			open
+			func LEFTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.LEFTP.rawValue, 0)
+			}
+			open
 			func superexp() -> [SuperexpContext] {
 				return getRuleContexts(SuperexpContext.self)
 			}
@@ -2578,6 +2791,10 @@ open class unagiParser: Parser {
 			open
 			func color() -> ColorContext? {
 				return getRuleContext(ColorContext.self, 0)
+			}
+			open
+			func RIGHTP() -> TerminalNode? {
+				return getToken(unagiParser.Tokens.RIGHTP.rawValue, 0)
 			}
 		override open
 		func getRuleIndex() -> Int {
@@ -2606,9 +2823,9 @@ open class unagiParser: Parser {
 		do {
 		 	try enterOuterAlt(_localctx, 1)
 		 	setState(395)
-		 	try match(unagiParser.Tokens.T__34.rawValue)
+		 	try match(unagiParser.Tokens.T__20.rawValue)
 		 	setState(396)
-		 	try match(unagiParser.Tokens.T__7.rawValue)
+		 	try match(unagiParser.Tokens.LEFTP.rawValue)
 		 	setState(397)
 		 	try superexp()
 		 	setState(398)
@@ -2624,7 +2841,7 @@ open class unagiParser: Parser {
 		 	setState(403)
 		 	try color()
 		 	setState(404)
-		 	try match(unagiParser.Tokens.T__8.rawValue)
+		 	try match(unagiParser.Tokens.RIGHTP.rawValue)
 		 	setState(405)
 		 	try match(unagiParser.Tokens.T__3.rawValue)
 
@@ -2671,7 +2888,7 @@ open class unagiParser: Parser {
 		 	if (!(//closure
 		 	 { () -> Bool in
 		 	      let testSet: Bool = {  () -> Bool in
-		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__35.rawValue,unagiParser.Tokens.T__36.rawValue,unagiParser.Tokens.T__37.rawValue,unagiParser.Tokens.T__38.rawValue]
+		 	   let testArray: [Int] = [_la, unagiParser.Tokens.T__21.rawValue,unagiParser.Tokens.T__22.rawValue,unagiParser.Tokens.T__23.rawValue,unagiParser.Tokens.T__24.rawValue]
 		 	    return  Utils.testBitLeftShiftArray(testArray, 0)
 		 	}()
 		 	      return testSet

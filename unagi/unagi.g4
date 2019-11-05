@@ -5,7 +5,7 @@ program: 'program' ID ':' declaration* functions* main;
 
 declaration: VAR type ID (',' ID)* ';';
 
-main: 'start' '{' declaration* statement* '}';
+main: 'start' LEFTBRACE declaration* statement* RIGHTBRACE;
 
 statement:
 assigment
@@ -16,48 +16,48 @@ assigment
 | RETURN superexp ';';
 
 loop:
-WHILE '(' superexp ')' '{' statement* '}'
-| FOR '(' superexp '->' superexp ')' '{' statement* '}';
+WHILE LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE
+| FOR LEFTP superexp ARROW superexp RIGHTP LEFTBRACE statement* RIGHTBRACE;
 
-assigment: ID '=' superexp ';';
+assigment: ID ASG superexp ';';
 
 functions:
-FUNC functype ID '(' argfunc ')' '{' declaration* statement* '}';
+FUNC functype ID LEFTP argfunc RIGHTP LEFTBRACE declaration* statement* RIGHTBRACE;
 
 functype: EMPTY | type;
 
 type: NUM | DECIMAL | BOOL | CHAR | PHRASE | LIST;
 
-list: LIST '<' type '>';
+list: LIST LESS type MORE;
 
 argfunc: ((type ID) (',' type ID)*)?;
 
 superexp: expression ((AND | OR) expression)?;
 
-expression: exp (('>' | '<' | '>=' | '<=' | '<>' | '==') exp)?;
+expression: exp ((MORE | LESS | MOREOREQUAL | LESSOREQUAL | 'NOTEQUAL' | 'EQUAL') exp)?;
 
-exp: term (('+' | '-') term)*;
+exp: term ((SUM | SUB) term)*;
 
-term: factor (('*' | '/') factor)*;
+term: factor ((MULT | DIV) factor)*;
 
 factor:
-'(' superexp ')'
-| ('+' | '-')? constant
-| ID ('(' (superexp)* ')' | '.' listfunc)?;
+LEFTP superexp RIGHTP
+| (SUM | SUB)? constant
+| ID (LEFTP (superexp)* RIGHTP | '.' listfunc)?;
 
 constant: CTE_N | CTE_D | 'true' | 'false' | CTE_C | CTE_P;
 
 condition:
-IF '(' superexp ')' '{' statement* '}' (ELIF '(' superexp ')' '{' statement* '}')* (
-ELSE '{' statement* '}'
+IF LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE (ELIF LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE)* (
+ELSE LEFTBRACE statement* RIGHTBRACE
 )?;
 
 printing:
-PRINT '(' (superexp | CTE_P) (',' (superexp | CTE_P))* ')' ';';
+PRINT LEFTP (superexp | CTE_P) (',' (superexp | CTE_P))* RIGHTP ';';
 
-listfunc: ('get' | 'remove') '(' (CTE_N | ID | factor) ')'
-| 'add' '(' (constant | ID | factor) ')'
-| ('first' | 'last') '(' ')';
+listfunc: ('get' | 'remove') LEFTP (CTE_N | ID | factor) RIGHTP
+| 'add' LEFTP (constant | ID | factor) RIGHTP
+| ('first' | 'last') LEFTP RIGHTP;
 
 special: (
 drawsquare
@@ -68,29 +68,46 @@ drawsquare
 | perimeter
 );
 
-root: 'root' '(' superexp ')' ';';
+root: 'root' LEFTP superexp RIGHTP ';';
 
 perimeter:
-'perimeter' '(' superexp ',' superexp ',' superexp (
+'perimeter' LEFTP superexp ',' superexp ',' superexp (
 ',' superexp
-)? ')' ';';
+)? LEFTP ';';
 
 drawsquare:
-'drawSquare' '(' superexp ',' superexp ',' superexp ',' color ')' ';';
+'drawSquare' LEFTP superexp ',' superexp ',' superexp ',' color RIGHTP ';';
 
 drawtriangle:
-'drawTriangle' '(' superexp ',' superexp ',' superexp ',' superexp ',' superexp ',' color ')'
+'drawTriangle' LEFTP superexp ',' superexp ',' superexp ',' superexp ',' superexp ',' color RIGHTP
 ';';
 
 drawrectangle:
-'drawRectangle' '(' superexp ',' superexp ',' superexp ',' superexp ',' color ')' ';';
+'drawRectangle' LEFTP superexp ',' superexp ',' superexp ',' superexp ',' color RIGHTP ';';
 
 drawcircle:
-'drawCircle' '(' superexp ',' superexp ',' superexp ',' color ')' ';';
+'drawCircle' LEFTP superexp ',' superexp ',' superexp ',' color RIGHTP ';';
 
 color: 'red' | 'blue' | 'green' | 'yellow';
 
 // Regex
+ARROW = '->';
+ASG = '=';
+LESS : '<';
+MORE : '>';
+LESSOREQUAL : '<=';
+MOREOREQUAL : '>=';
+EQUAL : '==';
+NOTEQUAL : '<>';
+ASSIGN : '=';
+SUM : '+';
+SUB : '-';
+MULT : '*';
+DIV : '/';
+LEFTP : '(';
+RIGHTP : ')';
+LEFTBRACE : '{';
+RIGHTBRACE : '}';
 NUM: 'num';
 DECIMAL: 'decimal';
 BOOL: 'bool';
