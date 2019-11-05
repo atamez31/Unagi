@@ -28,17 +28,27 @@ functype: EMPTY | type;
 
 type: NUM | DECIMAL | BOOL | CHAR | PHRASE | LIST;
 
-list: LIST LESS type MORE;
+list: LIST LESS type MORETHAN;
 
 argfunc: ((type ID) (',' type ID)*)?;
 
 superexp: expression ((AND | OR) expression)?;
 
-expression: exp ((MORE | LESS | MOREOREQUAL | LESSOREQUAL | 'NOTEQUAL' | 'EQUAL') exp)?;
+expression:
+exp (
+(
+MORETHAN
+| LESS
+| MOREOREQUAL
+| LESSOREQUAL
+| 'NOTEQUAL'
+| 'EQUAL'
+) exp
+)?;
 
-exp: term ((SUM | SUB) term)*;
+exp: term ((SUM | SUB) exp)?;
 
-term: factor ((MULT | DIV) factor)*;
+term: factor ((MULT | DIV) term)?;
 
 factor:
 LEFTP superexp RIGHTP
@@ -48,9 +58,9 @@ LEFTP superexp RIGHTP
 constant: CTE_N | CTE_D | 'true' | 'false' | CTE_C | CTE_P;
 
 condition:
-IF LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE (ELIF LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE)* (
-ELSE LEFTBRACE statement* RIGHTBRACE
-)?;
+IF LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE (
+ELIF LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE
+)* (ELSE LEFTBRACE statement* RIGHTBRACE)?;
 
 printing:
 PRINT LEFTP (superexp | CTE_P) (',' (superexp | CTE_P))* RIGHTP ';';
@@ -79,8 +89,8 @@ drawsquare:
 'drawSquare' LEFTP superexp ',' superexp ',' superexp ',' color RIGHTP ';';
 
 drawtriangle:
-'drawTriangle' LEFTP superexp ',' superexp ',' superexp ',' superexp ',' superexp ',' color RIGHTP
-';';
+'drawTriangle' LEFTP superexp ',' superexp ',' superexp ',' superexp ',' superexp ',' color
+RIGHTP ';';
 
 drawrectangle:
 'drawRectangle' LEFTP superexp ',' superexp ',' superexp ',' superexp ',' color RIGHTP ';';
@@ -91,23 +101,22 @@ drawcircle:
 color: 'red' | 'blue' | 'green' | 'yellow';
 
 // Regex
-ARROW = '->';
-ASG = '=';
-LESS : '<';
-MORE : '>';
-LESSOREQUAL : '<=';
-MOREOREQUAL : '>=';
-EQUAL : '==';
-NOTEQUAL : '<>';
-ASSIGN : '=';
-SUM : '+';
-SUB : '-';
-MULT : '*';
-DIV : '/';
-LEFTP : '(';
-RIGHTP : ')';
-LEFTBRACE : '{';
-RIGHTBRACE : '}';
+ARROW: '->';
+ASG: '=';
+LESS: '<';
+MORETHAN: '>';
+LESSOREQUAL: '<=';
+MOREOREQUAL: '>=';
+EQUAL: '==';
+NOTEQUAL: '<>';
+SUM: '+';
+SUB: '-';
+MULT: '*';
+DIV: '/';
+LEFTP: '(';
+RIGHTP: ')';
+LEFTBRACE: '{';
+RIGHTBRACE: '}';
 NUM: 'num';
 DECIMAL: 'decimal';
 BOOL: 'bool';
