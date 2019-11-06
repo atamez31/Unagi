@@ -14,6 +14,12 @@ class Memory {
     private var boolStart = 4000
     private var charStart = 6000
     private var phraseStart = 8000
+
+    private var numTemporalCount = 0
+    private var decimalTemporalCount = 0
+    private var boolTemporalCount = 0
+    private var charTemporalCount = 0
+    private var phraseTemporalCount = 0
     
     private var numMap = [Int: Int]()
     private var decimalMap = [Int: Double]()
@@ -28,7 +34,7 @@ class Memory {
         self.charStart += realMemorySpace
         self.phraseStart += realMemorySpace
     }
-    
+
     // **************** Variable Getters ****************
     
     func getNum(address: Int) -> Int {
@@ -51,7 +57,7 @@ class Memory {
     func getPhrase(address: Int) -> String {
         return phraseMap[address] ?? "?"
     }
-    
+
     // **************** Variable Writters ****************
     
     func writeNum(num: Int) -> Int {
@@ -82,5 +88,32 @@ class Memory {
         let address = phraseStart + phraseMap.count
         phraseMap[address] = phrase
         return address
+    }
+
+    // **************** Get next memory address available ****************
+    func getNextAddress(type: Type) -> Int {
+        switch type {
+        case Type.num:
+            numTemporalCount += 1
+            return numStart + numTemporalCount - 1
+        case Type.decimal:
+            decimalTemporalCount += 1
+            return decimalStart + decimalTemporalCount - 1
+        case Type.bool:
+            boolTemporalCount += 1
+            return boolStart + boolTemporalCount - 1
+        case Type.char:
+            charTemporalCount += 1
+            return charStart + charTemporalCount - 1
+        case Type.phrase:
+            phraseTemporalCount += 1
+            return phraseStart + phraseTemporalCount - 1
+        case Type.list:
+            // TODO: Case for list
+            return 0
+        default:
+            // TODO: Throw error
+            return 0
+        }
     }
 }
