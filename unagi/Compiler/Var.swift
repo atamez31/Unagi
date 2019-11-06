@@ -9,13 +9,13 @@
 import Foundation
 
 class Var {
-	let name: String
-	let type: Type
-	let memory_address: Int
+  let name: String
+  let type: Type
+  let memory_address: Int
 
-	init(name: String, type: Type, memory_address: Int) {
-        self.name = name
-        self.type = type
-        self.memory_address = memory_address
-    }
+  init(name: String, type: Type, memory_address: Int) {
+  	self.name = name
+  	self.type = type
+  	self.memory_address = memory_address
+  }
 }
