@@ -9,11 +9,11 @@
 import Foundation
 
 class Function {
-	let type: Type
-	var address: Int
-    var variables: [String: Var]
-	var params: [String: Var]
-    let size: Int
+    private let type: Type
+    private var address: Int
+    private var variables: [String: Var]
+    private var params: [String: Var] = [:]
+    private let size: Int
     
     private var numStart = 0
     private var decimalStart = 2000
@@ -30,6 +30,10 @@ class Function {
         self.size = size
 	}
 
+  func getVariable(name: String) -> Var? {
+    return variables[name]
+  }
+
     static private func copyParams(parameters: [Var]) -> [String: Var] {
 	// TODO: Create new instances of params so it's passed by value.
         return [:]
@@ -43,19 +47,19 @@ class Function {
         switch type {
         case Type.num:
             variableAddress = numStart
-            numStart = numStart + 1
+            numStart += 1
         case Type.decimal:
             variableAddress = decimalStart
-            decimalStart = decimalStart + 1
+            decimalStart += 1
         case Type.bool:
             variableAddress = boolStart
-            boolStart = boolStart + 1
+            boolStart += 1
         case Type.char:
             variableAddress = charStart
-            charStart = charStart + 1
+            charStart += 1
         case Type.phrase:
             variableAddress = phraseStart
-            phraseStart = phraseStart + 1
+            phraseStart += 1
         case Type.list:
             // TODO: Case for list
             variableAddress = 0
