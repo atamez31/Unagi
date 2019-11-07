@@ -119,29 +119,28 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitAssigment(_ ctx: unagiParser.AssigmentContext) {
-//        let varAddress: Int
-//        let variableType: Type
-//        let op = POper.popLast()!
-//        if let varName = ctx.ID()?.getText() {
-//            let leftVal = PilaO.popLast()
-//            if let variable = varTable.getDictFunc(name: scope)?.variables[varName] {
-//                varAddress = variable.memory_address
-//                variableType = variable.type
-//            } else if let variable = varTable.getDictFunc(name: "global")?.variables[varName] {
-//                varAddress = variable.memory_address
-//                variableType = variable.type
-//            } else {
-//                varAddress = -1
-//                variableType = Type.none
-//            }
-//            let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: variableType)
-//            if resultType == Type.none {
-//                // TODO: throw an error. Incompatible types for operator.
-//            } else {
-//                quads.append(Quadruple.init(op: op, leftVal: leftVal!, rightVal: -1, result: varAddress))
-//            }
-//        }
+    let varAddress: Int
+    let variableType: Type
+    if let varName = ctx.ID()?.getText() {
+      let leftVal = PilaO.popLast()
+      if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: varName) {
+        varAddress = variable.memory_address
+        variableType = variable.type
+      } else if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: varName) {
+        varAddress = variable.memory_address
+        variableType = variable.type
+      } else {
+        varAddress = -1
+        variableType = Type.none
+      }
+      let resultType = semanticCube.validateOperation(op: "=", leftOp: PTypes.popLast()!, rightOp: variableType)
+      if resultType == Type.none {
+        // TODO: throw an error. Incompatible types for operator.
+      } else {
+        quads.append(Quadruple.init(op: "=", leftVal: leftVal!, rightVal: -1, result: varAddress))
+      }
     }
+  }
 
   /**
    * {@inheritDoc}
