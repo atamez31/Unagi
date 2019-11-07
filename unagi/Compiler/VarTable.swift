@@ -9,18 +9,18 @@
 import Foundation
 
 class VarTable {
-	var dictFunc: [String: Function] = [:]
+  var dictFunc: [String: Function] = [:]
 
-	init() {
-        // TODO: Set function size
-        dictFunc["global"] = Function(type: Type.empty, params: [], size: 0)
-	}
+  init() {
+    // TODO: Set function size
+    dictFunc["global"] = Function(type: Type.empty, params: [], size: 0)
+  }
 
-    func getDictFunc(name: String) -> Function? {
-        return dictFunc[name]
-    }
-    
-    func addFunc(name: String, function: Function) {
-        dictFunc[name] = function
-    }
+  func getDictFunc(name: String) -> Function? {
+    return dictFunc[name]
+  }
+
+  func addFunc(name: String, function: Function) {
+    dictFunc[name] = function
+  }
 }
