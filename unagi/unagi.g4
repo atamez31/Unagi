@@ -32,7 +32,7 @@ list: LIST LESS type MORETHAN;
 
 argfunc: ((type ID) (',' type ID)*)?;
 
-superexp: expression ((AND | OR) expression)?;
+superexp: expression ((AND | OR) superexp)?;
 
 expression:
 exp (
@@ -41,9 +41,9 @@ MORETHAN
 | LESS
 | MOREOREQUAL
 | LESSOREQUAL
-| 'NOTEQUAL'
-| 'EQUAL'
-) exp
+| NOTEQUAL
+| EQUAL
+) expression
 )?;
 
 exp: term ((SUM | SUB) exp)?;
