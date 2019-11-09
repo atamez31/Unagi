@@ -73,7 +73,12 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterMain(_ ctx: unagiParser.MainContext) { }
+  open func enterMain(_ ctx: unagiParser.MainContext) {
+    localMemory.reset()
+    let function = Function.init(type: Type.empty, params: [:])
+    varTable.addFunc(name: "start", function: function)
+    scope = "start"
+  }
   /**
    * {@inheritDoc}
    *
@@ -147,7 +152,25 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterFunctions(_ ctx: unagiParser.FunctionsContext) { }
+  open func enterFunctions(_ ctx: unagiParser.FunctionsContext) {
+    if let functionName = ctx.ID()?.getText() {
+      localMemory.reset()
+      var argsMap: [String: Var] = [:]
+      let argFunc = ctx.argfunc()
+      // Count will be used to iterate over the types and ids of each argument.
+      if let count = argFunc?.ID().count {
+        for i in 0...count-1 {
+          let argType = Type.init(type: (argFunc?.type()[i].getText())!)
+          let argName = (argFunc?.ID()[i].getText())!
+          argsMap[argName] = Var.init(name: argName, type: argType, memory_address: localMemory.getNextAddress(type: argType))
+        }
+      }
+      let funcReturnType = Type.init(type: (ctx.functype()?.getText())!)
+      let function = Function.init(type: funcReturnType, params: argsMap)
+      varTable.addFunc(name: functionName, function: function)
+      scope = functionName
+    }
+  }
   /**
    * {@inheritDoc}
    *
@@ -351,6 +374,9 @@ open class unagiBaseListener: unagiListener {
   open func exitFactor(_ ctx: unagiParser.FactorContext) {
     if let id = ctx.ID()?.getText() {
       if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: id) {
+        PTypes.append(variable.type)
+        PilaO.append(variable.memory_address)
+      } else if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: id) {
         PTypes.append(variable.type)
         PilaO.append(variable.memory_address)
       }
