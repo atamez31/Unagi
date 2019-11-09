@@ -12,6 +12,7 @@ class Function {
   private let type: Type
   private var address: Int
   private var variables: [String: Var]
+  private var params: [String: Var]
   private var size: Int
   
   private var numStart = 0
@@ -25,6 +26,7 @@ class Function {
     // TODO: Change default adress
     self.address = -1
     self.variables = params
+    self.params = params
     self.size = -1
   }
 
