@@ -36,7 +36,7 @@ class Memory {
   }
 
   // **************** Variable Getters ****************
-    
+
   func getNum(address: Int) -> Int {
     // Return MAXINT if address doesn't exist
     return numMap[address] ?? Int.max
@@ -58,8 +58,8 @@ class Memory {
         return phraseMap[address] ?? "?"
     }
 
-    // **************** Variable Writters ****************
-    
+  // **************** Variable Writters ****************
+
   func writeNum(num: Int) -> Int {
     let address = numStart + numMap.count
     numMap[address] = num
@@ -90,7 +90,8 @@ class Memory {
     return address
     }
 
-    // **************** Get next memory address available ****************
+  // **************** Get next memory address available ****************
+
   func getNextAddress(type: Type) -> Int {
     switch type {
       case Type.num:
@@ -115,5 +116,14 @@ class Memory {
         // TODO: Throw error
         return 0
     }
+  }
+
+  // Resets all of its variables. Used to initialize a new function during compilation.
+  func reset() {
+    numTemporalCount = 0
+    decimalTemporalCount = 0
+    boolTemporalCount = 0
+    charTemporalCount = 0
+    phraseTemporalCount = 0
   }
 }

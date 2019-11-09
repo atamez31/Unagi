@@ -12,8 +12,7 @@ class Function {
   private let type: Type
   private var address: Int
   private var variables: [String: Var]
-  private var params: [String: Var] = [:]
-  private let size: Int
+  private var size: Int
   
   private var numStart = 0
   private var decimalStart = 2000
@@ -21,17 +20,20 @@ class Function {
   private var charStart = 6000
   private var phraseStart = 8000
 
-  init(type: Type, params: [Var], size: Int) {
+  init(type: Type, params: [String: Var]) {
     self.type = type
     // TODO: Change default adress
     self.address = -1
-    self.variables = [:]
-    self.params = Function.copyParams(parameters: params)
-    self.size = size
+    self.variables = params
+    self.size = -1
   }
 
   func getVariable(name: String) -> Var? {
     return variables[name]
+  }
+
+  func setSize(size: Int) {
+    self.size = size
   }
 
   static private func copyParams(parameters: [Var]) -> [String: Var] {
