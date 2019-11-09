@@ -47,7 +47,7 @@ open class unagiBaseListener: unagiListener {
    */
   open func exitProgram(_ ctx: unagiParser.ProgramContext) {
     for quad in quads {
-      print(quad.op + " " + quad.leftVal + " " + quad.rightVal + " " + quad.result)
+      quad.printQuadruple()
     }
   }
 
@@ -74,6 +74,8 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func enterMain(_ ctx: unagiParser.MainContext) {
+    let firstQuad = quads[PSaltos.popLast()!]
+    firstQuad.updateResult(result: quads.count)
     localMemory.reset()
     let function = Function.init(type: Type.empty, params: [:])
     varTable.addFunc(name: "start", function: function)
