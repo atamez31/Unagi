@@ -143,6 +143,21 @@
 		6DD9BA7C234C19E2000D07D0 /* Compiler */ = {
 			isa = PBXGroup;
 			children = (
+				C2E646B4237647E80009F37A /* antlr */,
+				C2487A362360C35100CED702 /* Function.swift */,
+				C2CF2ECE2370B578005A88A8 /* Memory.swift */,
+				C2487A342360C35100CED702 /* SemanticCube.swift */,
+				C2487A322360C35100CED702 /* Types.swift */,
+				C2CF2EC52370A813005A88A8 /* Quadruple.swift */,
+				C2487A332360C35100CED702 /* Var.swift */,
+				C2487A352360C35100CED702 /* VarTable.swift */,
+			);
+			path = Compiler;
+			sourceTree = "<group>";
+		};
+		C2E646B4237647E80009F37A /* antlr */ = {
+			isa = PBXGroup;
+			children = (
 				6D6FE9802372359F002EF216 /* unagi.interp */,
 				6D6FE939236B7A3C002EF216 /* unagi.tokens */,
 				6D6FE936236B7A3C002EF216 /* unagiBaseListener.swift */,
@@ -153,15 +168,8 @@
 				6D6FE981237235BC002EF216 /* unagiParser.swift */,
 				6D6FE97E2372358D002EF216 /* unagiParserATN.swift */,
 				6D6FE93A236B7A3C002EF216 /* unagiListener.swift */,
-				C2487A362360C35100CED702 /* Function.swift */,
-				C2CF2ECE2370B578005A88A8 /* Memory.swift */,
-				C2487A342360C35100CED702 /* SemanticCube.swift */,
-				C2487A322360C35100CED702 /* Types.swift */,
-				C2CF2EC52370A813005A88A8 /* Quadruple.swift */,
-				C2487A332360C35100CED702 /* Var.swift */,
-				C2487A352360C35100CED702 /* VarTable.swift */,
 			);
-			path = Compiler;
+			path = antlr;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
