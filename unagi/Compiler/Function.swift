@@ -41,34 +41,10 @@ class Function {
     return [:]
   }
     
-  func addVariable(name: String, type: Type) {
+  func addVariable(name: String, type: Type, address: Int) {
     if variables[name] == nil {
         // TODO: Throw error for existing variable.
     }
-    let variableAddress: Int
-    switch type {
-    case Type.num:
-        variableAddress = numStart
-        numStart += 1
-    case Type.decimal:
-        variableAddress = decimalStart
-        decimalStart += 1
-    case Type.bool:
-        variableAddress = boolStart
-        boolStart += 1
-    case Type.char:
-        variableAddress = charStart
-        charStart += 1
-    case Type.phrase:
-        variableAddress = phraseStart
-        phraseStart += 1
-    case Type.list:
-        // TODO: Case for list
-        variableAddress = 0
-    default:
-        // TODO: Throw error
-        variableAddress = 0
-    }
-    self.variables[name] = Var.init(name: name, type: type, memory_address: variableAddress)
+    self.variables[name] = Var.init(name: name, type: type, memory_address: address)
   }
 }

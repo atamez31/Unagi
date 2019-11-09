@@ -64,7 +64,12 @@ open class unagiBaseListener: unagiListener {
    */
   open func exitDeclaration(_ ctx: unagiParser.DeclarationContext) {
     for vars in ctx.ID() {
-      varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: Type.init(type: ctx.type()!.getText()))
+      let varType = Type.init(type: ctx.type()!.getText())
+      if scope == "global" {
+        varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: varType, address: globalMemory.getNextAddress(type: varType))
+      } else {
+        varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: varType, address: localMemory.getNextAddress(type: varType))
+      }
     }
   }
 
@@ -265,7 +270,7 @@ open class unagiBaseListener: unagiListener {
       }
       let opRight = PilaO.popLast()!
       let opLeft = PilaO.popLast()!
-      let tempAddress = localMemory.getNextAddress(type: resultType)
+      let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
       quads.append(quad)
       PTypes.append(resultType)
@@ -302,7 +307,7 @@ open class unagiBaseListener: unagiListener {
       }
       let opRight = PilaO.popLast()!
       let opLeft = PilaO.popLast()!
-      let tempAddress = localMemory.getNextAddress(type: resultType)
+      let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
       quads.append(quad)
       PTypes.append(resultType)
@@ -346,7 +351,7 @@ open class unagiBaseListener: unagiListener {
       }
       let opRight = PilaO.popLast()!
       let opLeft = PilaO.popLast()!
-      let tempAddress = localMemory.getNextAddress(type: resultType)
+      let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
       quads.append(quad)
       PTypes.append(resultType)
@@ -392,7 +397,7 @@ open class unagiBaseListener: unagiListener {
       }
       let opRight = PilaO.popLast()!
       let opLeft = PilaO.popLast()!
-      let tempAddress = localMemory.getNextAddress(type: resultType)
+      let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
       quads.append(quad)
       PTypes.append(resultType)
