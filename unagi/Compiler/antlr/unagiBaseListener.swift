@@ -513,7 +513,9 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitPrinting(_ ctx: unagiParser.PrintingContext) { }
+  open func exitPrinting(_ ctx: unagiParser.PrintingContext) {
+    quads.append(Quadruple.init(op: "print", leftVal: -1, rightVal: -1, result: PilaO.popLast()!))
+  }
 
   /**
    * {@inheritDoc}
