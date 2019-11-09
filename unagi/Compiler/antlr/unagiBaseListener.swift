@@ -133,7 +133,7 @@ open class unagiBaseListener: unagiListener {
         varAddress = -1
         variableType = Type.none
       }
-      let resultType = semanticCube.validateOperation(op: "=", leftOp: PTypes.popLast()!, rightOp: variableType)
+      let resultType = semanticCube.validateOperation(op: "=", leftOp: variableType, rightOp: PTypes.popLast()!)
       if resultType == Type.none {
         // TODO: throw an error. Incompatible types for operator.
       } else {

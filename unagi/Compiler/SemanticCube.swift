@@ -60,6 +60,16 @@ class SemanticCube {
             [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ]
         ]
 
+        // Row represents variable type that will be assigned and column the value type to assign.
+        let assignmentOperations: [[Type]] = [
+            // num          decimal        bool        char          phrase
+            [ Type.num,     Type.num,      Type.none,  Type.none,    Type.none   ],
+            [ Type.decimal, Type.decimal,  Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.bool,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.char,    Type.none   ],
+            [ Type.none,    Type.none,     Type.none,  Type.phrase,  Type.phrase ]
+        ]
+
         let unaryOperators: [[Type]] = [[Type.num, Type.decimal, Type.none, Type.none, Type.none]]
 
         self.semanticCube = [
@@ -68,6 +78,7 @@ class SemanticCube {
             relationalEqualAndNotEqual,
             relationalOperations,
             logicalOperators,
+            assignmentOperations,
             unaryOperators
         ]
     }
@@ -85,8 +96,10 @@ class SemanticCube {
             operatorIndex = 3
         case "and", "or":
             operatorIndex = 4
-        default:
+        case "=":
             operatorIndex = 5
+        default:
+            operatorIndex = 6
         }
 
         return semanticCube[operatorIndex][leftOp.rawValue-1][rightOp.rawValue-1]
