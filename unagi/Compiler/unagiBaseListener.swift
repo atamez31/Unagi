@@ -231,7 +231,30 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitExpression(_ ctx: unagiParser.ExpressionContext) { }
+  open func exitExpression(_ ctx: unagiParser.ExpressionContext) {
+    if POper.last == "and" || POper.last == "or" {
+      let op = POper.popLast()!
+      let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
+      if  resultType == Type.none {
+        // TODO: Throw an error for incorrect operation.
+      }
+      let opRight = PilaO.popLast()!
+      let opLeft = PilaO.popLast()!
+      let tempAddress = localMemory.getNextAddress(type: resultType)
+      let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+      quads.append(quad)
+      PTypes.append(resultType)
+      PilaO.append(tempAddress)
+    }
+
+    if let parent = ctx.parent as? unagiParser.SuperexpContext {
+      if let and = parent.AND()?.getText() {
+        POper.append(and)
+      } else if let or = parent.OR()?.getText() {
+        POper.append(or)
+      }
+    }
+  }
 
   /**
    * {@inheritDoc}
@@ -244,7 +267,39 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitExp(_ ctx: unagiParser.ExpContext) { }
+  open func exitExp(_ ctx: unagiParser.ExpContext) {
+    if POper.last == ">" || POper.last == ">=" || POper.last == "<" ||
+       POper.last == "<=" || POper.last == "==" || POper.last == "<>" {
+      let op = POper.popLast()!
+      let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
+      if  resultType == Type.none {
+        // TODO: Throw an error for incorrect operation.
+      }
+      let opRight = PilaO.popLast()!
+      let opLeft = PilaO.popLast()!
+      let tempAddress = localMemory.getNextAddress(type: resultType)
+      let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+      quads.append(quad)
+      PTypes.append(resultType)
+      PilaO.append(tempAddress)
+    }
+
+    if let parent = ctx.parent as? unagiParser.ExpressionContext {
+      if let more = parent.MORETHAN()?.getText() {
+        POper.append(more)
+      } else if let moreOrEqual = parent.MOREOREQUAL()?.getText() {
+        POper.append(moreOrEqual)
+      } else if let less = parent.LESS()?.getText() {
+        POper.append(less)
+      } else if let lessOrEqual = parent.LESSOREQUAL()?.getText() {
+        POper.append(lessOrEqual)
+      } else if let equal = parent.EQUAL()?.getText() {
+        POper.append(equal)
+      } else if let notEqual = parent.NOTEQUAL()?.getText() {
+        POper.append(notEqual)
+      }
+    }
+  }
 
   /**
    * {@inheritDoc}
@@ -276,8 +331,7 @@ open class unagiBaseListener: unagiListener {
     if let parent = ctx.parent as? unagiParser.ExpContext {
       if let sum = parent.SUM()?.getText() {
         POper.append(sum)
-      }
-      if let sub = parent.SUB()?.getText() {
+      }else if let sub = parent.SUB()?.getText() {
         POper.append(sub)
       }
     }
@@ -320,8 +374,7 @@ open class unagiBaseListener: unagiListener {
     if let parent = ctx.parent as? unagiParser.TermContext {
       if let mult = parent.MULT()?.getText() {
         POper.append(mult)
-      }
-      if let div = parent.DIV()?.getText() {
+      }else if let div = parent.DIV()?.getText() {
         POper.append(div)
       }
     }
