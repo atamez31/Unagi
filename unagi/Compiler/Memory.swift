@@ -15,6 +15,12 @@ class Memory {
   private var charStart = 6000
   private var phraseStart = 8000
 
+  private var numCount = 0
+  private var decimalCount = 0
+  private var boolCount = 0
+  private var charCount = 0
+  private var phraseCount = 0
+
   private var numTemporalCount = 0
   private var decimalTemporalCount = 0
   private var boolTemporalCount = 0
@@ -36,7 +42,7 @@ class Memory {
   }
 
   // **************** Variable Getters ****************
-    
+
   func getNum(address: Int) -> Int {
     // Return MAXINT if address doesn't exist
     return numMap[address] ?? Int.max
@@ -58,8 +64,8 @@ class Memory {
         return phraseMap[address] ?? "?"
     }
 
-    // **************** Variable Writters ****************
-    
+  // **************** Variable Writters ****************
+
   func writeNum(num: Int) -> Int {
     let address = numStart + numMap.count
     numMap[address] = num
@@ -90,7 +96,8 @@ class Memory {
     return address
     }
 
-    // **************** Get next memory address available ****************
+  // **************** Get next memory address available ****************
+
   func getNextAddress(type: Type) -> Int {
     switch type {
       case Type.num:
@@ -115,5 +122,46 @@ class Memory {
         // TODO: Throw error
         return 0
     }
+  }
+
+  func getNextTemporalAddress(type: Type) -> Int {
+    switch type {
+      case Type.num:
+        numTemporalCount += 1
+        return numStart + 1000 + numTemporalCount - 1
+      case Type.decimal:
+        decimalTemporalCount += 1
+        return decimalStart + 1000 + decimalTemporalCount - 1
+      case Type.bool:
+        boolTemporalCount += 1
+        return boolStart + 1000 + boolTemporalCount - 1
+      case Type.char:
+        charTemporalCount += 1
+        return charStart + 1000 + charTemporalCount - 1
+      case Type.phrase:
+        phraseTemporalCount += 1
+        return phraseStart + 1000 + phraseTemporalCount - 1
+      case Type.list:
+        // TODO: Case for list
+        return 0
+        default:
+        // TODO: Throw error
+        return 0
+    }
+  }
+
+  // Resets all of its variables. Used to initialize a new function during compilation.
+  func reset() {
+    numTemporalCount = 0
+    decimalTemporalCount = 0
+    boolTemporalCount = 0
+    charTemporalCount = 0
+    phraseTemporalCount = 0
+
+    numCount = 0
+    decimalCount = 0
+    boolCount = 0
+    charCount = 0
+    phraseCount = 0
   }
 }
