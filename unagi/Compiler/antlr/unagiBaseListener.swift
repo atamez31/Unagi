@@ -242,13 +242,39 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterSuperexp(_ ctx: unagiParser.SuperexpContext) { }
+  open func enterSuperexp(_ ctx: unagiParser.SuperexpContext) {
+    if let parent = ctx.parent as? unagiParser.FactorContext {
+        if parent.LEFTP() != nil && parent.ID() == nil {
+            POper.append(parent.LEFTP()!.getText())
+        }
+      }
+    }
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitSuperexp(_ ctx: unagiParser.SuperexpContext) { }
+  open func exitSuperexp(_ ctx: unagiParser.SuperexpContext) {
+    if let parent = ctx.parent as? unagiParser.FactorContext {
+        if parent.RIGHTP() != nil && parent.ID() == nil {
+            while POper.last != "(" {
+                let op = POper.popLast()!
+                let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
+                if  resultType == Type.none {
+                    // TODO: Throw an error for incorrect operation.
+                }
+                let opRight = PilaO.popLast()!
+                let opLeft = PilaO.popLast()!
+                let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
+                let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+                quads.append(quad)
+                PTypes.append(resultType)
+                PilaO.append(tempAddress)
+          }
+            POper.popLast()
+        }
+      }
+    }
 
   /**
    * {@inheritDoc}

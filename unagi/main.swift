@@ -18,7 +18,7 @@ let test = """
         x = 10 * 5 / 6 * 5;
         y = 5;
 
-        if (x > 5 and x < 11) {
+        if (x > 5 and (x < 11 or x > 20)) {
             x = 5;
         } else {
             x = 10;
