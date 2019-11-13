@@ -21,6 +21,8 @@ open class unagiBaseListener: unagiListener {
   // Pila con direcciones de los operandos en memoria
   var PilaO = [Int]()
   var PTypes = [Type]()
+  // Pila para guardar la direccion de memoria de la variable temporal del primer parametro del for loop.
+  var PFor = [Int]()
 
   var quads = [Quadruple]()
 
@@ -46,7 +48,10 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitProgram(_ ctx: unagiParser.ProgramContext) {
+    var i = 0
     for quad in quads {
+      print(i)
+      i += 1
       quad.printQuadruple()
     }
   }
@@ -117,7 +122,24 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitLoop(_ ctx: unagiParser.LoopContext) { }
+  open func exitLoop(_ ctx: unagiParser.LoopContext) {
+      if ctx.FOR() != nil {
+        let iterator = PFor.last!
+        let constant: Int
+        if let constVar = constTable["1"] {
+          constant = constVar.memory_address
+        } else {
+          let address = constantMemory.getNextAddress(type: Type.num)
+          let variable = Var.init(name: "1", type: Type.num, memory_address: address)
+          constTable["1"] = variable
+          constant = address
+        }
+        quads.append(Quadruple.init(op: "+", leftVal: iterator, rightVal: constant, result: iterator))
+      }
+      let end = PSaltos.popLast()!
+      quads.append(Quadruple.init(op: "GOTO", leftVal: -1, rightVal: -1, result: PSaltos.popLast()!))
+      quads[end].updateResult(result: quads.count)
+  }
 
   /**
    * {@inheritDoc}
@@ -242,13 +264,78 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterSuperexp(_ ctx: unagiParser.SuperexpContext) { }
+  open func enterSuperexp(_ ctx: unagiParser.SuperexpContext) {
+    if let parent = ctx.parent as? unagiParser.FactorContext {
+        if parent.LEFTP() != nil && parent.ID() == nil {
+            POper.append(parent.LEFTP()!.getText())
+        }
+    } else if (ctx.parent as? unagiParser.LoopContext) != nil {
+      PSaltos.append(quads.count)
+    }
+  }
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitSuperexp(_ ctx: unagiParser.SuperexpContext) { }
+  open func exitSuperexp(_ ctx: unagiParser.SuperexpContext) {
+    if let parent = ctx.parent as? unagiParser.FactorContext {
+      if parent.RIGHTP() != nil && parent.ID() == nil {
+        while POper.last != "(" {
+              let op = POper.popLast()!
+              let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
+              if  resultType == Type.none {
+                  // TODO: Throw an error for incorrect operation.
+              }
+              let opRight = PilaO.popLast()!
+              let opLeft = PilaO.popLast()!
+              let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
+              let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+              quads.append(quad)
+              PTypes.append(resultType)
+              PilaO.append(tempAddress)
+        }
+        POper.removeLast()
+      }
+    } else if let parent = ctx.parent as? unagiParser.LoopContext {
+      if PTypes.last != Type.bool {
+        // TODO: Throw an error for incorrect operation.
+      }
+      if parent.FOR() != nil {
+        if (parent.children![2] as! unagiParser.SuperexpContext) == ctx {
+          // Create new temporal variable for the for loop iterator.
+          let type = PTypes.last!
+          if type == Type.num || type == Type.decimal {
+            let temp = PilaO.popLast()!
+            let tempAddress = localMemory.getNextTemporalAddress(type: type)
+            PilaO.append(tempAddress)
+            quads.append(Quadruple.init(op: "=", leftVal: temp, rightVal: -1, result: tempAddress))
+            PFor.append(tempAddress)
+          }
+        } else {
+          let op = "<"
+          let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
+          if  resultType == Type.none {
+            // TODO: Throw an error for incorrect operation.
+          }
+          let opRight = PilaO.popLast()!
+          let opLeft = PilaO.popLast()!
+          let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
+          let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+          quads.append(quad)
+
+          quads.append(Quadruple.init(op: "GOTOF", leftVal: tempAddress, rightVal: -1, result: -1))
+          PSaltos.append(quads.count-1)
+        }
+      }
+    } else if ((ctx.parent as? unagiParser.ConditionContext) != nil) {
+        if PTypes.last != Type.bool {
+            // TODO : Throw and error for incorrect opeation.
+        }
+        quads.append(Quadruple.init(op: "GOTOF", leftVal: PilaO.popLast()!, rightVal: -1, result: -1))
+        PSaltos.append(quads.count - 1)
+    }
+  }
 
   /**
    * {@inheritDoc}
@@ -501,13 +588,47 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterCondition(_ ctx: unagiParser.ConditionContext) { }
+  open func enterBody(_ ctx: unagiParser.BodyContext) {
+  }
+
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitCondition(_ ctx: unagiParser.ConditionContext) { }
+  open func exitBody(_ ctx: unagiParser.BodyContext) {
+    if let parent = ctx.parent as? unagiParser.ConditionContext {
+      if parent.children?.last as! unagiParser.BodyContext == ctx {
+        while !PSaltos.isEmpty && PSaltos.last != -1 {
+          let end = PSaltos.popLast()!
+          quads[end].updateResult(result: quads.count)
+        }
+      } else {
+        quads.append(Quadruple.init(op: "GOTO", leftVal: -1, rightVal: -1, result: -1))
+        let auxSalto = PSaltos.popLast()!
+        PSaltos.append(quads.count - 1)
+        quads[auxSalto].updateResult(result: quads.count)
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  open func enterCondition(_ ctx: unagiParser.ConditionContext) {
+    // Agregar fondo de if padre.
+    PSaltos.append(-1)
+  }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  open func exitCondition(_ ctx: unagiParser.ConditionContext) {
+    PSaltos.removeLast()
+  }
 
   /**
    * {@inheritDoc}
