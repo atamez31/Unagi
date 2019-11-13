@@ -16,8 +16,8 @@ assigment
 | RETURN superexp ';';
 
 loop:
-WHILE LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE
-| FOR LEFTP superexp ARROW superexp RIGHTP LEFTBRACE statement* RIGHTBRACE;
+WHILE LEFTP superexp RIGHTP body
+| FOR LEFTP superexp ARROW superexp RIGHTP body;
 
 assigment: ID ASG superexp ';';
 
@@ -57,10 +57,12 @@ LEFTP superexp RIGHTP
 
 constant: CTE_N | CTE_D | 'true' | 'false' | CTE_C | CTE_P;
 
+body: LEFTBRACE statement* RIGHTBRACE;
+
 condition:
-IF LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE (
-ELIF LEFTP superexp RIGHTP LEFTBRACE statement* RIGHTBRACE
-)* (ELSE LEFTBRACE statement* RIGHTBRACE)?;
+IF LEFTP superexp RIGHTP body (
+ELIF LEFTP superexp RIGHTP body
+)* (ELSE body)?;
 
 printing:
 PRINT LEFTP (superexp | CTE_P) (',' (superexp | CTE_P))* RIGHTP ';';

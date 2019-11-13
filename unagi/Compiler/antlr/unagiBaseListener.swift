@@ -328,6 +328,12 @@ open class unagiBaseListener: unagiListener {
           PSaltos.append(quads.count-1)
         }
       }
+    } else if ((ctx.parent as? unagiParser.ConditionContext) != nil) {
+        if PTypes.last != Type.bool {
+            // TODO : Throw and error for incorrect opeation.
+        }
+        quads.append(Quadruple.init(op: "GOTOF", leftVal: PilaO.popLast()!, rightVal: -1, result: -1))
+        PSaltos.append(quads.count - 1)
     }
   }
 
@@ -582,13 +588,47 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterCondition(_ ctx: unagiParser.ConditionContext) { }
+  open func enterBody(_ ctx: unagiParser.BodyContext) {
+  }
+
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitCondition(_ ctx: unagiParser.ConditionContext) { }
+  open func exitBody(_ ctx: unagiParser.BodyContext) {
+    if let parent = ctx.parent as? unagiParser.ConditionContext {
+      if parent.children?.last as! unagiParser.BodyContext == ctx {
+        while !PSaltos.isEmpty && PSaltos.last != -1 {
+          let end = PSaltos.popLast()!
+          quads[end].updateResult(result: quads.count)
+        }
+      } else {
+        quads.append(Quadruple.init(op: "GOTO", leftVal: -1, rightVal: -1, result: -1))
+        let auxSalto = PSaltos.popLast()!
+        PSaltos.append(quads.count - 1)
+        quads[auxSalto].updateResult(result: quads.count)
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  open func enterCondition(_ ctx: unagiParser.ConditionContext) {
+    // Agregar fondo de if padre.
+    PSaltos.append(-1)
+  }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  open func exitCondition(_ ctx: unagiParser.ConditionContext) {
+    PSaltos.removeLast()
+  }
 
   /**
    * {@inheritDoc}

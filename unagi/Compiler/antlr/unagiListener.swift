@@ -211,6 +211,18 @@ public protocol unagiListener: ParseTreeListener {
 	 */
 	func exitConstant(_ ctx: unagiParser.ConstantContext)
 	/**
+	 * Enter a parse tree produced by {@link unagiParser#body}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterBody(_ ctx: unagiParser.BodyContext)
+	/**
+	 * Exit a parse tree produced by {@link unagiParser#body}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitBody(_ ctx: unagiParser.BodyContext)
+	/**
 	 * Enter a parse tree produced by {@link unagiParser#condition}.
 	 - Parameters:
 	   - ctx: the parse tree
