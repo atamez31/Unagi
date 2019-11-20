@@ -15,6 +15,8 @@
 		6DC92CB82384BD880019B772 /* unagiLexerATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92CB02384BD880019B772 /* unagiLexerATN.swift */; };
 		6DC92CB92384BD880019B772 /* unagiListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92CB12384BD880019B772 /* unagiListener.swift */; };
 		6DC92CBA2384BD880019B772 /* unagiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92CB22384BD880019B772 /* unagiParser.swift */; };
+		6DC92CBF2384D01A0019B772 /* VirtualMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92CBE2384D01A0019B772 /* VirtualMachine.swift */; };
+		6DC92CC42384E2FE0019B772 /* OperationsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92CC32384E2FE0019B772 /* OperationsVM.swift */; };
 		C2487A372360C35100CED702 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A322360C35100CED702 /* Types.swift */; };
 		C2487A382360C35100CED702 /* Var.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A332360C35100CED702 /* Var.swift */; };
 		C2487A392360C35100CED702 /* SemanticCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A342360C35100CED702 /* SemanticCube.swift */; };
@@ -74,6 +76,8 @@
 		6DC92CB32384BD880019B772 /* unagi.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagi.interp; sourceTree = "<group>"; };
 		6DC92CB42384BD880019B772 /* unagiLexer.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagiLexer.tokens; sourceTree = "<group>"; };
 		6DC92CB52384BD880019B772 /* unagi.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagi.tokens; sourceTree = "<group>"; };
+		6DC92CBE2384D01A0019B772 /* VirtualMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualMachine.swift; sourceTree = "<group>"; };
+		6DC92CC32384E2FE0019B772 /* OperationsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationsVM.swift; sourceTree = "<group>"; };
 		6DD9BA91234C1B96000D07D0 /* unagi.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = unagi.g4; sourceTree = "<group>"; };
 		C2487A322360C35100CED702 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		C2487A332360C35100CED702 /* Var.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Var.swift; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 				C2CF2EC52370A813005A88A8 /* Quadruple.swift */,
 				C2487A332360C35100CED702 /* Var.swift */,
 				C2487A352360C35100CED702 /* VarTable.swift */,
+				6DC92CBE2384D01A0019B772 /* VirtualMachine.swift */,
+				6DC92CC32384E2FE0019B772 /* OperationsVM.swift */,
 			);
 			path = Compiler;
 			sourceTree = "<group>";
@@ -254,8 +260,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2487A3A2360C35100CED702 /* VarTable.swift in Sources */,
+				6DC92CBF2384D01A0019B772 /* VirtualMachine.swift in Sources */,
 				C2487A3B2360C35100CED702 /* Function.swift in Sources */,
 				C2CF2EC62370A813005A88A8 /* Quadruple.swift in Sources */,
+				6DC92CC42384E2FE0019B772 /* OperationsVM.swift in Sources */,
 				C2487A392360C35100CED702 /* SemanticCube.swift in Sources */,
 				C2487A382360C35100CED702 /* Var.swift in Sources */,
 				6D6FE93D236B7A3C002EF216 /* unagiBaseListener.swift in Sources */,

@@ -56,6 +56,10 @@ open class unagiBaseListener: unagiListener {
       i += 1
       quad.printQuadruple()
     }
+    
+    let virtualMachine = VirtualMachine.init(quadruples: quads, globalMemory: globalMemory, constantMemory: constantMemory, localMemory: localMemory)
+    
+    virtualMachine.executeVirtualMachine()
   }
 
   /**
@@ -569,6 +573,7 @@ open class unagiBaseListener: unagiListener {
         constTable[constant] = variable
         PilaO.append(address)
         PTypes.append(Type.num)
+        constantMemory.writeNum(num: Int(constant)!)
       }
     } else if let constant = ctx.CTE_D()?.getText() {
         if let constVar = constTable[constant] {
@@ -580,6 +585,7 @@ open class unagiBaseListener: unagiListener {
           constTable[constant] = variable
           PilaO.append(address)
           PTypes.append(Type.decimal)
+          constantMemory.writeDecimal(decimal: Double(constant)!)
         }
     } else if let constant = ctx.CTE_C()?.getText() {
         if let constVar = constTable[constant] {
@@ -591,6 +597,8 @@ open class unagiBaseListener: unagiListener {
           constTable[constant] = variable
           PilaO.append(address)
           PTypes.append(Type.char)
+          // TODO.
+          constantMemory.writeChar(char: constant.dropFirst().first!)
         }
     } else if let constant = ctx.CTE_P()?.getText() {
         if let constVar = constTable[constant] {
@@ -602,6 +610,8 @@ open class unagiBaseListener: unagiListener {
           constTable[constant] = variable
           PilaO.append(address)
           PTypes.append(Type.phrase)
+          // TODO.
+          constantMemory.writePhrase(phrase: String(constant.dropFirst().dropLast()))
         }
     } else {
       if ctx.getText() == "true" {
@@ -614,6 +624,7 @@ open class unagiBaseListener: unagiListener {
           constTable["true"] = variable
           PilaO.append(address)
           PTypes.append(Type.num)
+          constantMemory.writeBool(bool: true)
         }
       } else {
           if let constVar = constTable["false"] {
@@ -625,6 +636,7 @@ open class unagiBaseListener: unagiListener {
             constTable["false"] = variable
             PilaO.append(address)
             PTypes.append(Type.num)
+            constantMemory.writeBool(bool: false)
           }
       }
     }

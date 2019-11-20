@@ -9,10 +9,10 @@
 import Foundation
 
 class Quadruple {
-  private let op: String
-  private let leftVal: Int
-  private let rightVal: Int
-  private var result: Int
+  let op: String
+  let leftVal: Int
+  let rightVal: Int
+  var result: Int
     
   init(op: String, leftVal: Int, rightVal: Int, result: Int) {
       self.op = op
