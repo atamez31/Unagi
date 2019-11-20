@@ -88,7 +88,7 @@ open class unagiBaseListener: unagiListener {
     let firstQuad = quads[PSaltos.popLast()!]
     firstQuad.updateResult(result: quads.count)
     localMemory.reset()
-    let function = Function.init(type: Type.empty, params: [:], id: varTable.dictFunc.count-1)
+    let function = Function.init(type: Type.empty, params: [:], id: varTable.dictFunc.count)
     varTable.addFunc(name: "start", function: function)
     scope = "start"
   }
@@ -196,7 +196,7 @@ open class unagiBaseListener: unagiListener {
         }
       }
       let funcReturnType = Type.init(type: (ctx.functype()?.getText())!)
-      let function = Function.init(type: funcReturnType, params: argsMap, id: varTable.dictFunc.count-1)
+      let function = Function.init(type: funcReturnType, params: argsMap, id: varTable.dictFunc.count)
       varTable.addFunc(name: functionName, function: function)
       scope = functionName
     }
@@ -345,6 +345,16 @@ open class unagiBaseListener: unagiListener {
         }
         quads.append(Quadruple.init(op: "GOTOF", leftVal: PilaO.popLast()!, rightVal: -1, result: -1))
         PSaltos.append(quads.count - 1)
+    } else if let parent = ctx.parent as? unagiParser.EmptyfunccallContext {
+      // End of a empty function parameter.
+      if let function = varTable.getDictFunc(name: parent.ID()!.getText()) {
+        if function.getParams()[paramCount-1].type == PTypes.popLast() {
+          quads.append(Quadruple.init(op: "PARAM", leftVal: PilaO.popLast()!, rightVal: -1, result: paramCount))
+          paramCount += 1
+        } else {
+          // TODO: Throw error. Incorrect parameter type for function.
+        }
+      }
     }
   }
 
@@ -693,13 +703,26 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) { }
+  open func enterEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) {
+    if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
+      quads.append(Quadruple.init(op: "ERA", leftVal: -1, rightVal: -1, result: function.getId()))
+    } else {
+      // TODO: Throw error for function not found
+    }
+  }
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) { }
+  open func exitEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) {
+    if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
+      quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getId()))
+      paramCount = 1
+    } else {
+      // TODO: Throw error for function not found
+    }
+  }
 
   /**
    * {@inheritDoc}
