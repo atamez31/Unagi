@@ -259,6 +259,18 @@ public protocol unagiListener: ParseTreeListener {
 	 */
 	func exitListfunc(_ ctx: unagiParser.ListfuncContext)
 	/**
+	 * Enter a parse tree produced by {@link unagiParser#emptyfunccall}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext)
+	/**
+	 * Exit a parse tree produced by {@link unagiParser#emptyfunccall}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext)
+	/**
 	 * Enter a parse tree produced by {@link unagiParser#special}.
 	 - Parameters:
 	   - ctx: the parse tree

@@ -657,6 +657,19 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitListfunc(_ ctx: unagiParser.ListfuncContext) { }
+  
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  open func enterEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) { }
+  /**
+   * {@inheritDoc}
+   *
+   * <p>The default implementation does nothing.</p>
+   */
+  open func exitEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) { }
 
   /**
    * {@inheritDoc}

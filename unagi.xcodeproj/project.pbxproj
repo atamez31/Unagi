@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		6D6FE93D236B7A3C002EF216 /* unagiBaseListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6FE936236B7A3C002EF216 /* unagiBaseListener.swift */; };
 		6D6FE94E236B7B1A002EF216 /* Antlr4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D6FE949236B7ACC002EF216 /* Antlr4.framework */; };
-		6D7A5D25237B9D6300AE94A5 /* unagiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7A5D1C237B9D6200AE94A5 /* unagiParser.swift */; };
-		6D7A5D26237B9D6300AE94A5 /* unagiListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7A5D1F237B9D6200AE94A5 /* unagiListener.swift */; };
-		6D7A5D27237B9D6300AE94A5 /* unagiLexerATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7A5D20237B9D6200AE94A5 /* unagiLexerATN.swift */; };
-		6D7A5D28237B9D6300AE94A5 /* unagiLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7A5D21237B9D6200AE94A5 /* unagiLexer.swift */; };
-		6D7A5D29237B9D6300AE94A5 /* unagiParserATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D7A5D24237B9D6300AE94A5 /* unagiParserATN.swift */; };
 		6DA74DD3234456FC0016EA49 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA74DD2234456FC0016EA49 /* main.swift */; };
+		6DC92CA82384BB650019B772 /* unagiListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92C9F2384BB650019B772 /* unagiListener.swift */; };
+		6DC92CA92384BB650019B772 /* unagiParserATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92CA22384BB650019B772 /* unagiParserATN.swift */; };
+		6DC92CAA2384BB650019B772 /* unagiLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92CA42384BB650019B772 /* unagiLexer.swift */; };
+		6DC92CAB2384BB650019B772 /* unagiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92CA52384BB650019B772 /* unagiParser.swift */; };
+		6DC92CAC2384BB650019B772 /* unagiLexerATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC92CA62384BB650019B772 /* unagiLexerATN.swift */; };
 		C2487A372360C35100CED702 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A322360C35100CED702 /* Types.swift */; };
 		C2487A382360C35100CED702 /* Var.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A332360C35100CED702 /* Var.swift */; };
 		C2487A392360C35100CED702 /* SemanticCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A342360C35100CED702 /* SemanticCube.swift */; };
@@ -63,17 +63,17 @@
 /* Begin PBXFileReference section */
 		6D6FE936236B7A3C002EF216 /* unagiBaseListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiBaseListener.swift; sourceTree = "<group>"; };
 		6D6FE941236B7ACC002EF216 /* Antlr4.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Antlr4.xcodeproj; path = ../antlr4/runtime/Swift/Antlr4.xcodeproj; sourceTree = "<group>"; };
-		6D7A5D1C237B9D6200AE94A5 /* unagiParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiParser.swift; sourceTree = "<group>"; };
-		6D7A5D1D237B9D6200AE94A5 /* unagiLexer.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagiLexer.interp; sourceTree = "<group>"; };
-		6D7A5D1E237B9D6200AE94A5 /* unagi.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagi.tokens; sourceTree = "<group>"; };
-		6D7A5D1F237B9D6200AE94A5 /* unagiListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiListener.swift; sourceTree = "<group>"; };
-		6D7A5D20237B9D6200AE94A5 /* unagiLexerATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiLexerATN.swift; sourceTree = "<group>"; };
-		6D7A5D21237B9D6200AE94A5 /* unagiLexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiLexer.swift; sourceTree = "<group>"; };
-		6D7A5D22237B9D6200AE94A5 /* unagi.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagi.interp; sourceTree = "<group>"; };
-		6D7A5D23237B9D6200AE94A5 /* unagiLexer.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagiLexer.tokens; sourceTree = "<group>"; };
-		6D7A5D24237B9D6300AE94A5 /* unagiParserATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiParserATN.swift; sourceTree = "<group>"; };
 		6DA74DCF234456FC0016EA49 /* unagi */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unagi; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DA74DD2234456FC0016EA49 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		6DC92C9F2384BB650019B772 /* unagiListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiListener.swift; sourceTree = "<group>"; };
+		6DC92CA02384BB650019B772 /* unagiLexer.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagiLexer.interp; sourceTree = "<group>"; };
+		6DC92CA12384BB650019B772 /* unagiLexer.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagiLexer.tokens; sourceTree = "<group>"; };
+		6DC92CA22384BB650019B772 /* unagiParserATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiParserATN.swift; sourceTree = "<group>"; };
+		6DC92CA32384BB650019B772 /* unagi.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagi.interp; sourceTree = "<group>"; };
+		6DC92CA42384BB650019B772 /* unagiLexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiLexer.swift; sourceTree = "<group>"; };
+		6DC92CA52384BB650019B772 /* unagiParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiParser.swift; sourceTree = "<group>"; };
+		6DC92CA62384BB650019B772 /* unagiLexerATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiLexerATN.swift; sourceTree = "<group>"; };
+		6DC92CA72384BB650019B772 /* unagi.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagi.tokens; sourceTree = "<group>"; };
 		6DD9BA91234C1B96000D07D0 /* unagi.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = unagi.g4; sourceTree = "<group>"; };
 		C2487A322360C35100CED702 /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		C2487A332360C35100CED702 /* Var.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Var.swift; sourceTree = "<group>"; };
@@ -158,15 +158,15 @@
 		C2E646B4237647E80009F37A /* antlr */ = {
 			isa = PBXGroup;
 			children = (
-				6D7A5D22237B9D6200AE94A5 /* unagi.interp */,
-				6D7A5D1E237B9D6200AE94A5 /* unagi.tokens */,
-				6D7A5D1D237B9D6200AE94A5 /* unagiLexer.interp */,
-				6D7A5D21237B9D6200AE94A5 /* unagiLexer.swift */,
-				6D7A5D23237B9D6200AE94A5 /* unagiLexer.tokens */,
-				6D7A5D20237B9D6200AE94A5 /* unagiLexerATN.swift */,
-				6D7A5D1F237B9D6200AE94A5 /* unagiListener.swift */,
-				6D7A5D1C237B9D6200AE94A5 /* unagiParser.swift */,
-				6D7A5D24237B9D6300AE94A5 /* unagiParserATN.swift */,
+				6DC92CA32384BB650019B772 /* unagi.interp */,
+				6DC92CA72384BB650019B772 /* unagi.tokens */,
+				6DC92CA02384BB650019B772 /* unagiLexer.interp */,
+				6DC92CA42384BB650019B772 /* unagiLexer.swift */,
+				6DC92CA12384BB650019B772 /* unagiLexer.tokens */,
+				6DC92CA62384BB650019B772 /* unagiLexerATN.swift */,
+				6DC92C9F2384BB650019B772 /* unagiListener.swift */,
+				6DC92CA52384BB650019B772 /* unagiParser.swift */,
+				6DC92CA22384BB650019B772 /* unagiParserATN.swift */,
 				6D6FE936236B7A3C002EF216 /* unagiBaseListener.swift */,
 			);
 			path = antlr;
@@ -253,20 +253,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DC92CA82384BB650019B772 /* unagiListener.swift in Sources */,
 				C2487A3A2360C35100CED702 /* VarTable.swift in Sources */,
 				C2487A3B2360C35100CED702 /* Function.swift in Sources */,
+				6DC92CAA2384BB650019B772 /* unagiLexer.swift in Sources */,
 				C2CF2EC62370A813005A88A8 /* Quadruple.swift in Sources */,
-				6D7A5D26237B9D6300AE94A5 /* unagiListener.swift in Sources */,
+				6DC92CAC2384BB650019B772 /* unagiLexerATN.swift in Sources */,
 				C2487A392360C35100CED702 /* SemanticCube.swift in Sources */,
-				6D7A5D28237B9D6300AE94A5 /* unagiLexer.swift in Sources */,
+				6DC92CA92384BB650019B772 /* unagiParserATN.swift in Sources */,
 				C2487A382360C35100CED702 /* Var.swift in Sources */,
 				6D6FE93D236B7A3C002EF216 /* unagiBaseListener.swift in Sources */,
 				6DA74DD3234456FC0016EA49 /* main.swift in Sources */,
-				6D7A5D25237B9D6300AE94A5 /* unagiParser.swift in Sources */,
-				6D7A5D27237B9D6300AE94A5 /* unagiLexerATN.swift in Sources */,
 				C2CF2ECF2370B578005A88A8 /* Memory.swift in Sources */,
+				6DC92CAB2384BB650019B772 /* unagiParser.swift in Sources */,
 				C2487A372360C35100CED702 /* Types.swift in Sources */,
-				6D7A5D29237B9D6300AE94A5 /* unagiParserATN.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,6 +12,7 @@ assigment
 | condition
 | printing
 | special
+| emptyfunccall
 | loop
 | RETURN superexp ';';
 
@@ -53,7 +54,7 @@ term: factor ((MULT | DIV) term)?;
 factor:
 LEFTP superexp RIGHTP
 | (SUM | SUB)? constant
-| ID (LEFTP (superexp)* RIGHTP | '.' listfunc)?;
+| ID (LEFTP (superexp (',' superexp)*)? | '.' listfunc RIGHTP)?;
 
 constant: CTE_N | CTE_D | 'true' | 'false' | CTE_C | CTE_P;
 
@@ -70,6 +71,10 @@ PRINT LEFTP (superexp | CTE_P) (',' (superexp | CTE_P))* RIGHTP ';';
 listfunc: ('get' | 'remove') LEFTP (CTE_N | ID | factor) RIGHTP
 | 'add' LEFTP (constant | ID | factor) RIGHTP
 | ('first' | 'last') LEFTP RIGHTP;
+
+emptyfunccall:
+ID (
+LEFTP (superexp (',' superexp)*)? RIGHTP) ';';
 
 special: (
 drawsquare
