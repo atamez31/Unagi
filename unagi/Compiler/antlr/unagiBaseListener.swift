@@ -111,7 +111,11 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitStatement(_ ctx: unagiParser.StatementContext) { }
+  open func exitStatement(_ ctx: unagiParser.StatementContext) {
+    if ctx.RETURN() != nil {
+      quads.append(Quadruple.init(op: "RETURN", leftVal: -1, rightVal: -1, result: PilaO.popLast()!))
+    }
+  }
 
   /**
    * {@inheritDoc}
