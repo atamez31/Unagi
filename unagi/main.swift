@@ -38,6 +38,8 @@ let test = """
         for (1 -> 10) {
             print("Hello World!");
         }
+
+      test(1);
     }
 """
 
