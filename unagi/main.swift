@@ -14,6 +14,11 @@ let test = """
 
     var num x,y;
 
+    func num test(num n1) {
+      n1 = 4;
+      return n1;
+    }
+
     start {
         x = 10 * 5 / 6 * 5;
         y = 5;
@@ -27,7 +32,7 @@ let test = """
           x = 2 / 4;
         }
           elif (x == 10) {
-          x = 2 - 4;
+          x = 2 + 4;
         }
         else {
             y = 333;
@@ -39,11 +44,9 @@ let test = """
             print("Hello World!");
         }
 
-      test(1);
+        test(2);
     }
 """
-
-print("Hello, World!")
 
 do {
     let lexer = unagiLexer(ANTLRInputStream(test))

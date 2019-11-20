@@ -9,10 +9,11 @@
 import Foundation
 
 class Function {
+  private let id: Int
   private let type: Type
   private var address: Int
   private var variables: [String: Var]
-  private var params: [String: Var]
+  private var params: [Var]
   private var size: Int
   
   private var numStart = 0
@@ -21,17 +22,26 @@ class Function {
   private var charStart = 6000
   private var phraseStart = 8000
 
-  init(type: Type, params: [String: Var]) {
+  init(type: Type, params: [String: Var], id: Int) {
     self.type = type
     // TODO: Change default adress
     self.address = -1
     self.variables = params
-    self.params = params
+    self.params = Array(params.values)
     self.size = -1
+    self.id = id
   }
 
   func getVariable(name: String) -> Var? {
     return variables[name]
+  }
+  
+  func getId() -> Int {
+    return id
+  }
+  
+  func getParams() -> [Var] {
+    return params
   }
 
   func setSize(size: Int) {
