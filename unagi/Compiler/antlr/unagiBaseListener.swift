@@ -49,6 +49,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitProgram(_ ctx: unagiParser.ProgramContext) {
+    quads.append(Quadruple.init(op: "END", leftVal: -1, rightVal: -1, result: -1))
     var i = 0
     for quad in quads {
       print(i)
@@ -206,7 +207,9 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitFunctions(_ ctx: unagiParser.FunctionsContext) { }
+  open func exitFunctions(_ ctx: unagiParser.FunctionsContext) {
+    quads.append(Quadruple.init(op: "ENDPROC", leftVal: -1, rightVal: -1, result: -1))
+  }
 
   /**
    * {@inheritDoc}
