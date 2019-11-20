@@ -54,7 +54,8 @@ term: factor ((MULT | DIV) term)?;
 factor:
 LEFTP superexp RIGHTP
 | (SUM | SUB)? constant
-| ID (LEFTP (superexp (',' superexp)*)? | '.' listfunc RIGHTP)?;
+| ID (
+LEFTP (superexp (',' superexp)*)? RIGHTP | '.' listfunc)?;
 
 constant: CTE_N | CTE_D | 'true' | 'false' | CTE_C | CTE_P;
 
