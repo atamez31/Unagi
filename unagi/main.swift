@@ -15,7 +15,7 @@ let test = """
     var num x,y;
 
     start {
-y = 'T' + "hola";
+    y = "Alex" == 'a';
     }
 """
 
