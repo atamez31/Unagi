@@ -10,15 +10,23 @@ import Foundation
 import Antlr4
 
 let test = """
-    program test12 :
+program test12 :
 
-    var num x,y;
+  var num x,y;
 
-    start {
-      y = 10;
-      x = 10 * 2;
-      y = y + x;
+  start {
+    y = 10;
+    if (1 > 1.5) {
+      y = y * 2;
+    } elif ('a' <> 'a') {
+      y = y * 3;
+    } else {
+      y = y * 4;
     }
+  while(y > 0) {
+    y = y - 1;
+  }
+}
 """
 
 func getValueFromMemory<T>(valType: Type) -> T.Type {
@@ -27,13 +35,13 @@ func getValueFromMemory<T>(valType: Type) -> T.Type {
 
 do {
   
-    let lexer = unagiLexer(ANTLRInputStream(test))
-    let tokens = CommonTokenStream(lexer)
-    let parser = try unagiParser(tokens)
-    let tree = try parser.program()
-    let walker = ParseTreeWalker()
-    let basicLearn = unagiBaseListener.init()
-    try walker.walk(basicLearn, tree)
+  let lexer = unagiLexer(ANTLRInputStream(test))
+  let tokens = CommonTokenStream(lexer)
+  let parser = try unagiParser(tokens)
+  let tree = try parser.program()
+  let walker = ParseTreeWalker()
+  let basicLearn = unagiBaseListener.init()
+  try walker.walk(basicLearn, tree)
 } catch {
-    print("Parse error: \(error.localizedDescription)")
+  print("Parse error: \(error.localizedDescription)")
 }

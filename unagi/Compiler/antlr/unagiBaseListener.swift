@@ -58,7 +58,7 @@ open class unagiBaseListener: unagiListener {
     }
     
     let virtualMachine = VirtualMachine.init(quadruples: quads, globalMemory: globalMemory, constantMemory: constantMemory, localMemory: localMemory)
-    
+
     virtualMachine.executeVirtualMachine()
   }
 
@@ -349,6 +349,10 @@ open class unagiBaseListener: unagiListener {
           quads.append(Quadruple.init(op: "GOTOF", leftVal: tempAddress, rightVal: -1, result: -1))
           PSaltos.append(quads.count-1)
         }
+      } else {
+        let result = PilaO.popLast()!
+        quads.append(Quadruple.init(op: "GOTOF", leftVal: result, rightVal: -1, result: -1))
+        PSaltos.append(quads.count-1)
       }
     } else if ((ctx.parent as? unagiParser.ConditionContext) != nil) {
         if PTypes.last != Type.bool {
@@ -619,7 +623,7 @@ open class unagiBaseListener: unagiListener {
           PilaO.append(constVar.memory_address)
           PTypes.append(constVar.type)
         } else {
-          let address = constantMemory.getNextAddress(type: Type.num)
+          let address = constantMemory.getNextAddress(type: Type.bool)
           let variable = Var.init(name: "true", type: Type.num, memory_address: address)
           constTable["true"] = variable
           PilaO.append(address)
@@ -631,7 +635,7 @@ open class unagiBaseListener: unagiListener {
             PilaO.append(constVar.memory_address)
             PTypes.append(constVar.type)
           } else {
-            let address = constantMemory.getNextAddress(type: Type.num)
+            let address = constantMemory.getNextAddress(type: Type.bool)
             let variable = Var.init(name: "false", type: Type.num, memory_address: address)
             constTable["false"] = variable
             PilaO.append(address)

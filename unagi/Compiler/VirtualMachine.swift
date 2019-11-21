@@ -178,7 +178,7 @@ class VirtualMachine {
       case "+":
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
           // TODO Error
-          print("Error address doesn't have a value" + String(quadPointer))
+          print("Error address doesn't have a value " + String(quadPointer) )
           return
         }
         guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
@@ -217,6 +217,18 @@ class VirtualMachine {
 
         relationalOperands(leftValue: leftOpValue, rightValue: rightOpValue, result: currentQuad.result, op: currentQuad.op)
         break
+      case "GOTO":
+        quadPointer = currentQuad.result - 1
+        break
+      case "GOTOF":
+        guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+        if !(leftOpValue as! Bool) {
+          quadPointer = currentQuad.result - 1
+        }
       default:
         break
       }
