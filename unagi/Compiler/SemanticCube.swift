@@ -63,11 +63,11 @@ class SemanticCube {
         // Row represents variable type that will be assigned and column the value type to assign.
         let assignmentOperations: [[Type]] = [
             // num          decimal        bool        char          phrase
-            [ Type.num,     Type.num,      Type.none,  Type.none,    Type.none   ],
-            [ Type.decimal, Type.decimal,  Type.none,  Type.none,    Type.none   ],
+            [ Type.num,     Type.none,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.decimal,  Type.none,  Type.none,    Type.none   ],
             [ Type.none,    Type.none,     Type.bool,  Type.none,    Type.none   ],
             [ Type.none,    Type.none,     Type.none,  Type.char,    Type.none   ],
-            [ Type.none,    Type.none,     Type.none,  Type.phrase,  Type.phrase ]
+            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.phrase ]
         ]
 
         let unaryOperators: [[Type]] = [[Type.num, Type.decimal, Type.none, Type.none, Type.none]]
