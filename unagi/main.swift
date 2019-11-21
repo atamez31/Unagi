@@ -16,9 +16,8 @@ let test = """
 
     start {
       y = 10;
-      y =  1;
       x = 10 * 2;
-      y = y + x
+      y = y + x;
     }
 """
 

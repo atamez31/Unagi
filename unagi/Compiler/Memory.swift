@@ -59,20 +59,20 @@ class Memory {
     return Type.phrase
   }
   
-  func getValueFromMemory(address: Int) -> Any {
+  func getValueFromMemory(address: Int) -> Any? {
     if address < self.decimalStart {
-      return numMap[address] ?? Int.max
+      return numMap[address] ?? nil
     }
     if address < self.boolStart {
-      return decimalMap[address] ?? -1
+      return decimalMap[address] ?? nil
     }
     if address < self.charStart {
-      return boolMap[address] ?? false
+      return boolMap[address] ?? nil
     }
     if address < self.phraseStart {
-      return charMap[address] ?? "?"
+      return charMap[address] ?? nil
     }
-    return phraseMap[address] ?? "?"
+    return phraseMap[address] ?? nil
   }
   
 //  func getNum(address: Int) -> Int {

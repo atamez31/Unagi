@@ -158,46 +158,62 @@ class VirtualMachine {
     var quadPointer = 0;
     while quadPointer < self.listQuad.count {
       let currentQuad = self.listQuad[quadPointer]
+
+      let leftOp = currentQuad.leftVal
+      let rightOp = currentQuad.rightVal
+
+      let leftOpMemScope = getMemoryScope(address: leftOp)
+      let rightOpMemScope = getMemoryScope(address: rightOp)
+
       switch currentQuad.op {
       case "=":
-        let temp = currentQuad.leftVal
-        let tempMemScope = getMemoryScope(address: temp)
-        let tempValue = tempMemScope.getValueFromMemory(address: temp)
-        assignValue(tempValue: tempValue, result: currentQuad.result)
+        guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+
+        assignValue(tempValue: leftOpValue, result: currentQuad.result)
         break
       case "+":
-        let leftOp = currentQuad.leftVal
-        let rightOp = currentQuad.rightVal
+        guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+        guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
 
-        let leftOpMemScope = getMemoryScope(address: leftOp)
-        let rightOpMemScope = getMemoryScope(address: rightOp)
-
-        let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp)
-        let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp)
-        
         sumOperands(leftValue: leftOpValue, rightValue: rightOpValue, result: currentQuad.result)
         break
       case "-", "*", "/":
-        let leftOp = currentQuad.leftVal
-        let rightOp = currentQuad.rightVal
-
-        let leftOpMemScope = getMemoryScope(address: leftOp)
-        let rightOpMemScope = getMemoryScope(address: rightOp)
-
-        let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp)
-        let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp)
+        guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+        guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
 
         arithmeticOperands(leftValue: leftOpValue, rightValue: rightOpValue, result: currentQuad.result, op: currentQuad.op)
         break
       case ">", ">=", "<", "<=", "<>", "==" :
-        let leftOp = currentQuad.leftVal
-        let rightOp = currentQuad.rightVal
-
-        let leftOpMemScope = getMemoryScope(address: leftOp)
-        let rightOpMemScope = getMemoryScope(address: rightOp)
-
-        let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp)
-        let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp)
+        guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+        guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
 
         relationalOperands(leftValue: leftOpValue, rightValue: rightOpValue, result: currentQuad.result, op: currentQuad.op)
         break
