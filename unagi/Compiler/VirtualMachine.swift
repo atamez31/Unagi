@@ -127,13 +127,44 @@ class VirtualMachine {
     localMemory.writeBool(bool: resultFromOp, address: result)
     print(resultFromOp)
   }
+  
+  func assignValue(tempValue: Any , result: Int) {
+    let resultMemScope = getMemoryScope(address: result)    
+    let resultType = resultMemScope.getAddressType(address: result)
+    
+    switch resultType {
+    case Type.num:
+      resultMemScope.writeNum(num: tempValue as! Int, address: result)
+      break
+    case Type.decimal:
+      resultMemScope.writeDecimal(decimal: tempValue as! Double, address: result)
+      break
+    case Type.phrase:
+      resultMemScope.writePhrase(phrase: tempValue as! String, address: result)
+      break
+    case Type.char:
+      resultMemScope.writeChar(char: tempValue as! Character, address: result)
+      break
+    case Type.bool:
+      resultMemScope.writeBool(bool: tempValue as! Bool, address: result)
+      break
+    default:
+      // TODO: Error
+      break
+    }
+  }
 
   func executeVirtualMachine() {
     var quadPointer = 0;
-  
     while quadPointer < self.listQuad.count {
       let currentQuad = self.listQuad[quadPointer]
       switch currentQuad.op {
+      case "=":
+        let temp = currentQuad.leftVal
+        let tempMemScope = getMemoryScope(address: temp)
+        let tempValue = tempMemScope.getValueFromMemory(address: temp)
+        assignValue(tempValue: tempValue, result: currentQuad.result)
+        break
       case "+":
         let leftOp = currentQuad.leftVal
         let rightOp = currentQuad.rightVal
@@ -143,6 +174,7 @@ class VirtualMachine {
 
         let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp)
         let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp)
+        
         sumOperands(leftValue: leftOpValue, rightValue: rightOpValue, result: currentQuad.result)
         break
       case "-", "*", "/":

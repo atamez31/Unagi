@@ -15,7 +15,10 @@ let test = """
     var num x,y;
 
     start {
-    y = "Alex" == 'a';
+      y = 10;
+      y =  1;
+      x = 10 * 2;
+      y = y + x
     }
 """
 
