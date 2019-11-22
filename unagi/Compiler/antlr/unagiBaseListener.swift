@@ -16,7 +16,7 @@ open class unagiBaseListener: unagiListener {
 
   var varTable = VarTable()
   var constTable: [String: Var] = [:]
-
+  var funcSize = 0
   var POper = [String]()
   var PSaltos = [Int]()
   // Pila con direcciones de los operandos en memoria
@@ -49,6 +49,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitProgram(_ ctx: unagiParser.ProgramContext) {
+    print("size: " + String(varTable.getDictFunc(name: "start")!.getSize()))
     quads.append(Quadruple.init(op: "END", leftVal: -1, rightVal: -1, result: -1))
     var i = 0
     for quad in quads {
@@ -93,16 +94,20 @@ open class unagiBaseListener: unagiListener {
     let firstQuad = quads[PSaltos.popLast()!]
     firstQuad.updateResult(result: quads.count)
     localMemory.reset()
-    let function = Function.init(type: Type.empty, params: [:], id: varTable.dictFunc.count)
+    let function = Function.init(type: Type.empty, params: [:], id: varTable.dictFunc.count, quadStart: quads.count)
     varTable.addFunc(name: "start", function: function)
     scope = "start"
+    funcSize = 0
   }
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitMain(_ ctx: unagiParser.MainContext) { }
+  open func exitMain(_ ctx: unagiParser.MainContext) {
+    let function = varTable.getDictFunc(name: scope)!
+    function.setSize(size: funcSize + function.getVarCount())
+  }
 
   /**
    * {@inheritDoc}
@@ -197,7 +202,7 @@ open class unagiBaseListener: unagiListener {
       var argsMap: [String: Var] = [:]
       let argFunc = ctx.argfunc()
       // Count will be used to iterate over the types and ids of each argument.
-      if let count = argFunc?.ID().count {
+      if let count = argFunc?.ID().count, count > 0 {
         for i in 0...count-1 {
           let argType = Type.init(type: (argFunc?.type()[i].getText())!)
           let argName = (argFunc?.ID()[i].getText())!
@@ -205,10 +210,11 @@ open class unagiBaseListener: unagiListener {
         }
       }
       let funcReturnType = Type.init(type: (ctx.functype()?.getText())!)
-      let function = Function.init(type: funcReturnType, params: argsMap, id: varTable.dictFunc.count)
+      let function = Function.init(type: funcReturnType, params: argsMap, id: varTable.dictFunc.count, quadStart: quads.count)
       varTable.addFunc(name: functionName, function: function)
       scope = functionName
     }
+    funcSize = 0
   }
   /**
    * {@inheritDoc}
@@ -216,6 +222,8 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitFunctions(_ ctx: unagiParser.FunctionsContext) {
+    let function = varTable.getDictFunc(name: scope)!
+    function.setSize(size: funcSize + function.getVarCount())
     quads.append(Quadruple.init(op: "ENDPROC", leftVal: -1, rightVal: -1, result: -1))
   }
 
@@ -303,6 +311,7 @@ open class unagiBaseListener: unagiListener {
               let opLeft = PilaO.popLast()!
               let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
               let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+              funcSize += 1
               quads.append(quad)
               PTypes.append(resultType)
               PilaO.append(tempAddress)
@@ -332,6 +341,7 @@ open class unagiBaseListener: unagiListener {
             let tempAddress = localMemory.getNextTemporalAddress(type: type)
             PilaO.append(tempAddress)
             quads.append(Quadruple.init(op: "=", leftVal: temp, rightVal: -1, result: tempAddress))
+            funcSize += 1
             PFor.append(tempAddress)
           }
         } else {
@@ -344,6 +354,7 @@ open class unagiBaseListener: unagiListener {
           let opLeft = PilaO.popLast()!
           let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
           let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+          funcSize += 1
           quads.append(quad)
 
           quads.append(Quadruple.init(op: "GOTOF", leftVal: tempAddress, rightVal: -1, result: -1))
@@ -395,6 +406,7 @@ open class unagiBaseListener: unagiListener {
       let opLeft = PilaO.popLast()!
       let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+      funcSize += 1
       quads.append(quad)
       PTypes.append(resultType)
       PilaO.append(tempAddress)
@@ -432,6 +444,7 @@ open class unagiBaseListener: unagiListener {
       let opLeft = PilaO.popLast()!
       let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+      funcSize += 1
       quads.append(quad)
       PTypes.append(resultType)
       PilaO.append(tempAddress)
@@ -476,6 +489,7 @@ open class unagiBaseListener: unagiListener {
       let opLeft = PilaO.popLast()!
       let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+      funcSize += 1
       quads.append(quad)
       PTypes.append(resultType)
       PilaO.append(tempAddress)
@@ -513,7 +527,7 @@ open class unagiBaseListener: unagiListener {
   open func exitFactor(_ ctx: unagiParser.FactorContext) {
     if ctx.ID() != nil && ctx.LEFTP() != nil {
       if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
-        quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getId()))
+        quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getQuadStart()))
         paramCount = 1
       } else {
         // TODO: Throw error for function not found
@@ -540,6 +554,7 @@ open class unagiBaseListener: unagiListener {
         let opLeft = PilaO.popLast()!
         let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
         let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+        funcSize += 1
         quads.append(quad)
         PTypes.append(resultType)
         PilaO.append(tempAddress)
@@ -740,7 +755,7 @@ open class unagiBaseListener: unagiListener {
    */
   open func exitEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) {
     if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
-      quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getId()))
+      quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getQuadStart()))
       paramCount = 1
     } else {
       // TODO: Throw error for function not found

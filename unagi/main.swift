@@ -14,19 +14,18 @@ program test12 :
 
   var num x,y;
 
-  start {
-    y = 10;
-    if (1 > 1.5) {
-      y = y * 2;
-    } elif ('a' <> 'a') {
-      y = y * 3;
-    } else {
-      y = y * 4;
-    }
-  while(y > 0) {
-    y = y - 1;
+  func num uno() {
+    x = 10 + 3;
+    return x;
   }
-}
+
+  start {
+  var num n;
+  y = 10 + 1;
+  x = y;
+  n = 0 + 1;
+  print(x);
+  }
 """
 
 func getValueFromMemory<T>(valType: Type) -> T.Type {

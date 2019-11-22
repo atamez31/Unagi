@@ -17,7 +17,7 @@ class VirtualMachine {
   var results = [String]()
   var semanticCube = SemanticCube.init()
   let memoryDistance = 10000
-  
+  var subPointerStk = [Int]()
   let operationsVM = OperationsVM.init()
 
   init(quadruples : [Quadruple], globalMemory : Memory, constantMemory : Memory, localMemory : Memory) {
@@ -229,6 +229,20 @@ class VirtualMachine {
         if !(leftOpValue as! Bool) {
           quadPointer = currentQuad.result - 1
         }
+        break
+      case "GOSUB":
+        subPointerStk.insert(quadPointer, at: 0)
+        quadPointer = currentQuad.result - 1
+        break
+      case "print":
+        let resultMemScope = getMemoryScope(address: currentQuad.result)
+        guard let resultValue = resultMemScope.getValueFromMemory(address: currentQuad.result) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+        print(resultValue)
+        break
       default:
         break
       }

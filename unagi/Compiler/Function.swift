@@ -10,38 +10,51 @@ import Foundation
 
 class Function {
   private let id: Int
+  private let quadStart: Int
   private let type: Type
   private var address: Int
   private var variables: [String: Var]
   private var params: [Var]
   private var size: Int
-  
   private var numStart = 0
   private var decimalStart = 2000
   private var boolStart = 4000
   private var charStart = 6000
   private var phraseStart = 8000
 
-  init(type: Type, params: [String: Var], id: Int) {
+  init(type: Type, params: [String: Var], id: Int, quadStart: Int) {
     self.type = type
     // TODO: Change default adress
     self.address = -1
     self.variables = params
     self.params = Array(params.values)
-    self.size = -1
+    self.size = 0
     self.id = id
+    self.quadStart = quadStart
   }
 
   func getVariable(name: String) -> Var? {
     return variables[name]
   }
-  
+
   func getId() -> Int {
     return id
   }
-  
+
+  func getQuadStart() -> Int {
+    return quadStart
+  }
+
   func getParams() -> [Var] {
     return params
+  }
+
+  func getVarCount() -> Int {
+    return self.variables.count
+  }
+
+  func getSize() -> Int {
+    return self.size
   }
 
   func setSize(size: Int) {
@@ -52,7 +65,7 @@ class Function {
   // TODO: Create new instances of params so it's passed by value.
     return [:]
   }
-    
+
   func addVariable(name: String, type: Type, address: Int) {
     if variables[name] == nil {
         // TODO: Throw error for existing variable.

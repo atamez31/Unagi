@@ -13,7 +13,7 @@ class VarTable {
 
   init() {
     // TODO: Set function size
-    dictFunc["global"] = Function(type: Type.empty, params: [:], id: dictFunc.count-1)
+    dictFunc["global"] = Function(type: Type.empty, params: [:], id: dictFunc.count-1, quadStart: 0)
   }
 
   func getDictFunc(name: String) -> Function? {
