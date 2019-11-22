@@ -57,6 +57,10 @@ class Function {
     return self.size
   }
 
+  func getType() -> Type {
+    return self.type
+  }
+
   func setSize(size: Int) {
     self.size = size
   }

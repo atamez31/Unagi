@@ -14,10 +14,14 @@ class VirtualMachine {
   var globalMemory : Memory
   var constantMemory : Memory
   var localMemory : Memory
+  var tempMemory: Memory = Memory.init(realMemorySpace: 10000)
+
   var results = [String]()
   var semanticCube = SemanticCube.init()
   let memoryDistance = 10000
   var subPointerStk = [Int]()
+  var returnAddressStk = [Int]()
+  var localMemStk = [Memory]()
   let operationsVM = OperationsVM.init()
 
   init(quadruples : [Quadruple], globalMemory : Memory, constantMemory : Memory, localMemory : Memory) {
@@ -131,7 +135,7 @@ class VirtualMachine {
   func assignValue(tempValue: Any , result: Int) {
     let resultMemScope = getMemoryScope(address: result)    
     let resultType = resultMemScope.getAddressType(address: result)
-    
+
     switch resultType {
     case Type.num:
       resultMemScope.writeNum(num: tempValue as! Int, address: result)
@@ -150,6 +154,52 @@ class VirtualMachine {
       break
     default:
       // TODO: Error
+      break
+    }
+  }
+
+  func paramDefinition(paramAddress: Int, paramMemScope: Memory, resultType: Type) {
+    switch resultType {
+    case Type.num:
+      tempMemory.writeNum(num: paramMemScope.getValueFromMemory(address: paramAddress) as! Int)
+      break
+    case Type.decimal:
+      tempMemory.writeDecimal(decimal: paramMemScope.getValueFromMemory(address: paramAddress) as! Double)
+      break
+    case Type.phrase:
+      tempMemory.writePhrase(phrase: paramMemScope.getValueFromMemory(address: paramAddress) as! String)
+      break
+    case Type.char:
+      tempMemory.writeChar(char: paramMemScope.getValueFromMemory(address: paramAddress) as! Character)
+      break
+    case Type.bool:
+      tempMemory.writeBool(bool: paramMemScope.getValueFromMemory(address: paramAddress) as! Bool)
+      break
+    default:
+      // TODO error
+      break
+    }
+  }
+
+  func returnValue(tempReturnAddress: Int, paramMemScope: Memory, returnType: Type, resultAddress: Int) {
+    switch returnType {
+    case Type.num:
+      globalMemory.writeNum(num: paramMemScope.getValueFromMemory(address: resultAddress) as! Int, address: tempReturnAddress)
+      break
+    case Type.decimal:
+      globalMemory.writeDecimal(decimal: paramMemScope.getValueFromMemory(address: resultAddress) as! Double, address: tempReturnAddress)
+      break
+    case Type.phrase:
+      globalMemory.writePhrase(phrase: paramMemScope.getValueFromMemory(address: resultAddress) as! String, address: tempReturnAddress)
+      break
+    case Type.char:
+      globalMemory.writeChar(char: paramMemScope.getValueFromMemory(address: resultAddress) as! Character, address: tempReturnAddress)
+      break
+    case Type.bool:
+      globalMemory.writeBool(bool: paramMemScope.getValueFromMemory(address: resultAddress) as! Bool, address: tempReturnAddress)
+      break
+    default:
+      // TODO error
       break
     }
   }
@@ -231,8 +281,38 @@ class VirtualMachine {
         }
         break
       case "GOSUB":
-        subPointerStk.insert(quadPointer, at: 0)
+        subPointerStk.append(quadPointer)
         quadPointer = currentQuad.result - 1
+        localMemory = tempMemory
+        break
+      case "ERA":
+        localMemStk.append(localMemory)
+        tempMemory = Memory.init(realMemorySpace: 10000)
+        break
+      case "PARAM":
+        // validar? y en switch?
+        let paramAddress = currentQuad.leftVal
+        let paramMemScope = getMemoryScope(address: paramAddress)
+        let resultType = paramMemScope.getAddressType(address: paramAddress)
+        
+        paramDefinition(paramAddress: paramAddress, paramMemScope: paramMemScope, resultType: resultType)
+        break
+      case "RETURN":
+        let tempReturnAddress = returnAddressStk.popLast()!
+        let paramMemScope = getMemoryScope(address: currentQuad.result)
+        let returnType = globalMemory.getAddressType(address: tempReturnAddress)
+        
+        returnValue(tempReturnAddress: tempReturnAddress, paramMemScope: paramMemScope, returnType: returnType, resultAddress: currentQuad.result)
+
+        quadPointer = subPointerStk.popLast()!
+        localMemory = localMemStk.popLast()!
+        break
+      case "RETURNF":
+        returnAddressStk.append(currentQuad.result)
+        break
+      case "ENDPROC":
+        quadPointer = subPointerStk.popLast()!
+        localMemory = localMemStk.popLast()!
         break
       case "print":
         let resultMemScope = getMemoryScope(address: currentQuad.result)

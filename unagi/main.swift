@@ -12,19 +12,27 @@ import Antlr4
 let test = """
 program test12 :
 
-  var num x,y;
+var num x;
 
-  func num uno() {
-    x = 10 + 3;
-    return x;
+  func num fibs(num n) {
+    if (n <= 1) {
+      return n;
+    }
+    return fibs(n - 1) + fibs(n - 2);
+  }
+
+  func num fact(num n) {
+    if (n == 1) {
+      return 1;
+    }
+    return fact(n - 1) * n;
   }
 
   start {
-  var num n;
-  y = 10 + 1;
-  x = y;
-  n = 0 + 1;
+  x = fact(10);
+  print("-----x-----");
   print(x);
+  print("end2");
   }
 """
 
