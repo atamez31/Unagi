@@ -40,61 +40,83 @@ class Memory {
     self.charStart += realMemorySpace
     self.phraseStart += realMemorySpace
   }
-
+  
   // **************** Variable Getters ****************
-
-  func getNum(address: Int) -> Int {
-    // Return MAXINT if address doesn't exist
-    return numMap[address] ?? Int.max
-  }
-    
-  func getDecimal(address: Int) -> Double {
-    return decimalMap[address] ?? -1
-  }
-    
-  func getBool(address: Int) -> Bool {
-    return boolMap[address] ?? false
-  }
-    
-  func getChar(address: Int) -> Character {
-    return charMap[address] ?? "?"
-  }
-    
-  func getPhrase(address: Int) -> String {
-        return phraseMap[address] ?? "?"
+  
+  func getAddressType(address: Int) -> Type {
+    if address < self.decimalStart {
+      return Type.num
     }
+    if address < self.boolStart {
+      return Type.decimal
+    }
+    if address < self.charStart {
+      return Type.bool
+    }
+    if address < self.phraseStart {
+      return Type.char
+    }
+    return Type.phrase
+  }
+  
+  func getValueFromMemory(address: Int) -> Any? {
+    if address < self.decimalStart {
+      return numMap[address] ?? nil
+    }
+    if address < self.boolStart {
+      return decimalMap[address] ?? nil
+    }
+    if address < self.charStart {
+      return boolMap[address] ?? nil
+    }
+    if address < self.phraseStart {
+      return charMap[address] ?? nil
+    }
+    return phraseMap[address] ?? nil
+  }
+  
+//  func getNum(address: Int) -> Int {
+//    // Return MAXINT if address doesn't exist
+//    return numMap[address] ?? Int.max
+//  }
+//
+//  func getDecimal(address: Int) -> Double {
+//    return decimalMap[address] ?? -1
+//  }
+//
+//  func getBool(address: Int) -> Bool {
+//    return boolMap[address] ?? false
+//  }
+//
+//  func getChar(address: Int) -> Character {
+//    return charMap[address] ?? "?"
+//  }
+//
+//  func getPhrase(address: Int) -> String {
+//        return phraseMap[address] ?? "?"
+//    }
 
   // **************** Variable Writters ****************
 
-  func writeNum(num: Int) -> Int {
-    let address = numStart + numMap.count
-    numMap[address] = num
-    return address
+  func writeNum(num: Int, address: Int? = nil) {
+    numMap[address == nil ? numStart + numMap.count : address!] = num
   }
     
-  func writeDecimal(decimal: Double) -> Int {
-    let address = decimalStart + decimalMap.count
-    decimalMap[address] = decimal
-    return address
+  func writeDecimal(decimal: Double, address: Int? = nil) {
+    decimalMap[address == nil ? decimalStart + decimalMap.count : address!] = decimal
   }
     
-  func writeBool(bool: Bool) -> Int {
-    let address = boolStart + boolMap.count
-    boolMap[address] = bool
-    return address
-    }
+  func writeBool(bool: Bool, address: Int? = nil) {
+    boolMap[address == nil ? boolStart + boolMap.count : address!] = bool
+  }
     
-  func writeChar(char: Character) -> Int {
-    let address = charStart + charMap.count
-    charMap[address] = char
-    return address
-    }
+  func writeChar(char: Character, address: Int? = nil) {
+    charMap[address == nil ? charStart + charMap.count : address!] = char
+  }
     
-  func writePhrase(phrase: String) -> Int {
-    let address = phraseStart + phraseMap.count
-    phraseMap[address] = phrase
-    return address
-    }
+  func writePhrase(phrase: String, address: Int? = nil) {
+    phraseMap[address == nil ? phraseStart + phraseMap.count : address!] = phrase
+  }
 
   // **************** Get next memory address available ****************
 

@@ -16,7 +16,7 @@ open class unagiBaseListener: unagiListener {
 
   var varTable = VarTable()
   var constTable: [String: Var] = [:]
-
+  var funcSize = 0
   var POper = [String]()
   var PSaltos = [Int]()
   // Pila con direcciones de los operandos en memoria
@@ -49,6 +49,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitProgram(_ ctx: unagiParser.ProgramContext) {
+    print("size: " + String(varTable.getDictFunc(name: "start")!.getSize()))
     quads.append(Quadruple.init(op: "END", leftVal: -1, rightVal: -1, result: -1))
     var i = 0
     for quad in quads {
@@ -56,6 +57,10 @@ open class unagiBaseListener: unagiListener {
       i += 1
       quad.printQuadruple()
     }
+    print("---------------VM--------------")
+    let virtualMachine = VirtualMachine.init(quadruples: quads, globalMemory: globalMemory, constantMemory: constantMemory, localMemory: localMemory)
+
+    virtualMachine.executeVirtualMachine()
   }
 
   /**
@@ -89,16 +94,20 @@ open class unagiBaseListener: unagiListener {
     let firstQuad = quads[PSaltos.popLast()!]
     firstQuad.updateResult(result: quads.count)
     localMemory.reset()
-    let function = Function.init(type: Type.empty, params: [:], id: varTable.dictFunc.count)
+    let function = Function.init(type: Type.empty, params: [:], id: varTable.dictFunc.count, quadStart: quads.count)
     varTable.addFunc(name: "start", function: function)
     scope = "start"
+    funcSize = 0
   }
   /**
    * {@inheritDoc}
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitMain(_ ctx: unagiParser.MainContext) { }
+  open func exitMain(_ ctx: unagiParser.MainContext) {
+    let function = varTable.getDictFunc(name: scope)!
+    function.setSize(size: funcSize + function.getVarCount())
+  }
 
   /**
    * {@inheritDoc}
@@ -137,6 +146,7 @@ open class unagiBaseListener: unagiListener {
         } else {
           let address = constantMemory.getNextAddress(type: Type.num)
           let variable = Var.init(name: "1", type: Type.num, memory_address: address)
+          constantMemory.writeNum(num: 1, address: address)
           constTable["1"] = variable
           constant = address
         }
@@ -193,7 +203,7 @@ open class unagiBaseListener: unagiListener {
       var argsMap: [String: Var] = [:]
       let argFunc = ctx.argfunc()
       // Count will be used to iterate over the types and ids of each argument.
-      if let count = argFunc?.ID().count {
+      if let count = argFunc?.ID().count, count > 0 {
         for i in 0...count-1 {
           let argType = Type.init(type: (argFunc?.type()[i].getText())!)
           let argName = (argFunc?.ID()[i].getText())!
@@ -201,10 +211,11 @@ open class unagiBaseListener: unagiListener {
         }
       }
       let funcReturnType = Type.init(type: (ctx.functype()?.getText())!)
-      let function = Function.init(type: funcReturnType, params: argsMap, id: varTable.dictFunc.count)
+      let function = Function.init(type: funcReturnType, params: argsMap, id: varTable.dictFunc.count, quadStart: quads.count)
       varTable.addFunc(name: functionName, function: function)
       scope = functionName
     }
+    funcSize = 0
   }
   /**
    * {@inheritDoc}
@@ -212,6 +223,8 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitFunctions(_ ctx: unagiParser.FunctionsContext) {
+    let function = varTable.getDictFunc(name: scope)!
+    function.setSize(size: funcSize + function.getVarCount())
     quads.append(Quadruple.init(op: "ENDPROC", leftVal: -1, rightVal: -1, result: -1))
   }
 
@@ -290,21 +303,38 @@ open class unagiBaseListener: unagiListener {
     if let parent = ctx.parent as? unagiParser.FactorContext {
       if parent.RIGHTP() != nil && parent.ID() == nil {
         while POper.last != "(" {
-              let op = POper.popLast()!
-              let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
-              if  resultType == Type.none {
-                  // TODO: Throw an error for incorrect operation.
-              }
-              let opRight = PilaO.popLast()!
-              let opLeft = PilaO.popLast()!
-              let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
-              let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
-              quads.append(quad)
-              PTypes.append(resultType)
-              PilaO.append(tempAddress)
+          let op = POper.popLast()!
+          let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
+          if  resultType == Type.none {
+              // TODO: Throw an error for incorrect operation.
+          }
+          let opRight = PilaO.popLast()!
+          let opLeft = PilaO.popLast()!
+          let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
+          let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+          funcSize += 1
+          quads.append(quad)
+          PTypes.append(resultType)
+          PilaO.append(tempAddress)
         }
         POper.removeLast()
       } else if parent.ID() != nil && parent.LEFTP() != nil {
+        while POper.last != "(" {
+          let op = POper.popLast()!
+          let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
+          if  resultType == Type.none {
+            // TODO: Throw an error for incorrect operation.
+          }
+          let opRight = PilaO.popLast()!
+          let opLeft = PilaO.popLast()!
+          let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
+          let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+          funcSize += 1
+          quads.append(quad)
+          PTypes.append(resultType)
+          PilaO.append(tempAddress)
+        }
+        POper.removeLast()
         // End of a function parameter.
         if let function = varTable.getDictFunc(name: parent.ID()!.getText()) {
           if function.getParams()[paramCount-1].type == PTypes.popLast() {
@@ -328,6 +358,7 @@ open class unagiBaseListener: unagiListener {
             let tempAddress = localMemory.getNextTemporalAddress(type: type)
             PilaO.append(tempAddress)
             quads.append(Quadruple.init(op: "=", leftVal: temp, rightVal: -1, result: tempAddress))
+            funcSize += 1
             PFor.append(tempAddress)
           }
         } else {
@@ -340,11 +371,16 @@ open class unagiBaseListener: unagiListener {
           let opLeft = PilaO.popLast()!
           let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
           let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+          funcSize += 1
           quads.append(quad)
 
           quads.append(Quadruple.init(op: "GOTOF", leftVal: tempAddress, rightVal: -1, result: -1))
           PSaltos.append(quads.count-1)
         }
+      } else {
+        let result = PilaO.popLast()!
+        quads.append(Quadruple.init(op: "GOTOF", leftVal: result, rightVal: -1, result: -1))
+        PSaltos.append(quads.count-1)
       }
     } else if ((ctx.parent as? unagiParser.ConditionContext) != nil) {
         if PTypes.last != Type.bool {
@@ -387,6 +423,7 @@ open class unagiBaseListener: unagiListener {
       let opLeft = PilaO.popLast()!
       let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+      funcSize += 1
       quads.append(quad)
       PTypes.append(resultType)
       PilaO.append(tempAddress)
@@ -424,6 +461,7 @@ open class unagiBaseListener: unagiListener {
       let opLeft = PilaO.popLast()!
       let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+      funcSize += 1
       quads.append(quad)
       PTypes.append(resultType)
       PilaO.append(tempAddress)
@@ -468,6 +506,7 @@ open class unagiBaseListener: unagiListener {
       let opLeft = PilaO.popLast()!
       let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
       let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+      funcSize += 1
       quads.append(quad)
       PTypes.append(resultType)
       PilaO.append(tempAddress)
@@ -494,6 +533,7 @@ open class unagiBaseListener: unagiListener {
       } else {
         // TODO: Throw error for function not found
       }
+      POper.append(ctx.LEFTP()!.getText())
     }
   }
 
@@ -505,13 +545,28 @@ open class unagiBaseListener: unagiListener {
   open func exitFactor(_ ctx: unagiParser.FactorContext) {
     if ctx.ID() != nil && ctx.LEFTP() != nil {
       if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
-        quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getId()))
+        if function.getType() == Type.empty {
+          // TODO error void not return
+          print("error void")
+        }
+        // Set global address to store return from every function call.
+        let tempGlobalAddress = globalMemory.getNextAddress(type: function.getType())
+        // Get next address from global in order to store the result from the return of the func.
+        quads.append(Quadruple.init(op: "RETURNF", leftVal: -1, rightVal: -1, result: tempGlobalAddress))
+
+        quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getQuadStart()))
+        // Temporal address to store the return value of function call locally to avoid overwritting global value.
+        let tempAddress = localMemory.getNextTemporalAddress(type: function.getType())
+        quads.append(Quadruple.init(op: "=", leftVal: tempGlobalAddress, rightVal: -1, result: tempAddress))
+        PilaO.append(tempAddress)
+        PTypes.append(function.getType())
         paramCount = 1
       } else {
         // TODO: Throw error for function not found
       }
     }
     else {
+      // It´s a variable not a function
       if let id = ctx.ID()?.getText() {
         if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: id) {
           PTypes.append(variable.type)
@@ -520,29 +575,31 @@ open class unagiBaseListener: unagiListener {
           PTypes.append(variable.type)
           PilaO.append(variable.memory_address)
         }
+        // TODO check if error when not found.
       }
+    }
 
-      if POper.last == "*" || POper.last == "/" {
-        let op = POper.popLast()!
-        let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
-        if  resultType == Type.none {
-          // TODO: Throw an error for incorrect operation.
-        }
-        let opRight = PilaO.popLast()!
-        let opLeft = PilaO.popLast()!
-        let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
-        let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
-        quads.append(quad)
-        PTypes.append(resultType)
-        PilaO.append(tempAddress)
+    if POper.last == "*" || POper.last == "/" {
+      let op = POper.popLast()!
+      let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
+      if  resultType == Type.none {
+        // TODO: Throw an error for incorrect operation.
       }
+      let opRight = PilaO.popLast()!
+      let opLeft = PilaO.popLast()!
+      let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
+      let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+      funcSize += 1
+      quads.append(quad)
+      PTypes.append(resultType)
+      PilaO.append(tempAddress)
+    }
 
-      if let parent = ctx.parent as? unagiParser.TermContext {
-        if let mult = parent.MULT()?.getText() {
-          POper.append(mult)
-        }else if let div = parent.DIV()?.getText() {
-          POper.append(div)
-        }
+    if let parent = ctx.parent as? unagiParser.TermContext {
+      if let mult = parent.MULT()?.getText() {
+        POper.append(mult)
+      } else if let div = parent.DIV()?.getText() {
+        POper.append(div)
       }
     }
   }
@@ -569,6 +626,7 @@ open class unagiBaseListener: unagiListener {
         constTable[constant] = variable
         PilaO.append(address)
         PTypes.append(Type.num)
+        constantMemory.writeNum(num: Int(constant)!)
       }
     } else if let constant = ctx.CTE_D()?.getText() {
         if let constVar = constTable[constant] {
@@ -580,6 +638,7 @@ open class unagiBaseListener: unagiListener {
           constTable[constant] = variable
           PilaO.append(address)
           PTypes.append(Type.decimal)
+          constantMemory.writeDecimal(decimal: Double(constant)!)
         }
     } else if let constant = ctx.CTE_C()?.getText() {
         if let constVar = constTable[constant] {
@@ -591,6 +650,8 @@ open class unagiBaseListener: unagiListener {
           constTable[constant] = variable
           PilaO.append(address)
           PTypes.append(Type.char)
+          // TODO.
+          constantMemory.writeChar(char: constant.dropFirst().first!)
         }
     } else if let constant = ctx.CTE_P()?.getText() {
         if let constVar = constTable[constant] {
@@ -602,6 +663,8 @@ open class unagiBaseListener: unagiListener {
           constTable[constant] = variable
           PilaO.append(address)
           PTypes.append(Type.phrase)
+          // TODO.
+          constantMemory.writePhrase(phrase: String(constant.dropFirst().dropLast()))
         }
     } else {
       if ctx.getText() == "true" {
@@ -609,22 +672,24 @@ open class unagiBaseListener: unagiListener {
           PilaO.append(constVar.memory_address)
           PTypes.append(constVar.type)
         } else {
-          let address = constantMemory.getNextAddress(type: Type.num)
+          let address = constantMemory.getNextAddress(type: Type.bool)
           let variable = Var.init(name: "true", type: Type.num, memory_address: address)
           constTable["true"] = variable
           PilaO.append(address)
           PTypes.append(Type.num)
+          constantMemory.writeBool(bool: true)
         }
       } else {
           if let constVar = constTable["false"] {
             PilaO.append(constVar.memory_address)
             PTypes.append(constVar.type)
           } else {
-            let address = constantMemory.getNextAddress(type: Type.num)
+            let address = constantMemory.getNextAddress(type: Type.bool)
             let variable = Var.init(name: "false", type: Type.num, memory_address: address)
             constTable["false"] = variable
             PilaO.append(address)
             PTypes.append(Type.num)
+            constantMemory.writeBool(bool: false)
           }
       }
     }
@@ -724,7 +789,7 @@ open class unagiBaseListener: unagiListener {
    */
   open func exitEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) {
     if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
-      quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getId()))
+      quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getQuadStart()))
       paramCount = 1
     } else {
       // TODO: Throw error for function not found
