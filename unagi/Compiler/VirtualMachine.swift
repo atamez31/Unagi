@@ -227,19 +227,19 @@ class VirtualMachine {
   func writeElementToMemory(element: Any, address: Int, type: Type) {
     switch type {
     case Type.num:
-      tempMemory.writeNum(num: element as! Int)
+      localMemory.writeNum(num: element as! Int)
       break
     case Type.decimal:
-      tempMemory.writeDecimal(decimal: element as! Double)
+      localMemory.writeDecimal(decimal: element as! Double)
       break
     case Type.phrase:
-      tempMemory.writePhrase(phrase: element as! String)
+      localMemory.writePhrase(phrase: element as! String)
       break
     case Type.char:
-      tempMemory.writeChar(char: element as! Character)
+      localMemory.writeChar(char: element as! Character)
       break
     case Type.bool:
-      tempMemory.writeBool(bool: element as! Bool)
+      localMemory.writeBool(bool: element as! Bool)
       break
     default:
       // TODO error
@@ -372,14 +372,25 @@ class VirtualMachine {
           print("Error address doesn't have a value" + String(quadPointer))
           return
         }
-        guard let sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+        var sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp)
+        if sizePointer == nil {
+          rightOpMemScope.writeNum(num: 0, address: rightOp)
+          sizePointer = 0
+        }
+        addList(element: element, sizePointer: sizePointer as! Int, listAddress: currentQuad.result)
+        break
+      case "POP":
+        guard let sizePointer = leftOpMemScope.getValueFromMemory(address: leftOp) else {
           // TODO Error
           print("Error address doesn't have a value" + String(quadPointer))
           return
         }
-        addList(element: element, sizePointer: sizePointer as! Int, listAddress: currentQuad.result)
-        break
-      case "REMOVE":
+        if (sizePointer as! Int) < 0 {
+          // TODO: Throw exception. No more elements in list to pop.
+          print("No more elements in list to pop.")
+        }
+        let resultScope = getMemoryScope(address: currentQuad.result)
+        resultScope.clearMemorySpace(address: currentQuad.result + (sizePointer as! Int) - 1)
         break
       case "GET":
         let resultAddress = currentQuad.result
@@ -411,6 +422,14 @@ class VirtualMachine {
         }
         let elementType = leftOpMemScope.getAddressType(address: leftOp)
         writeElementToMemory(element: element, address: leftOp + (sizePointer as! Int), type: elementType)
+        break
+      case "COUNT":
+        guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+        assignValue(tempValue: leftOpValue, result: currentQuad.result)
         break
       default:
         break

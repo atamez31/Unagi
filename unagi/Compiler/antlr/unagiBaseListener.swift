@@ -55,7 +55,9 @@ open class unagiBaseListener: unagiListener {
           return -1
         }
       }
-    } else if ctx.CTE_N() != nil || ctx.exp() != nil {
+    } else if ctx.CTE_N() != nil {
+      return Int(ctx.CTE_N()!.getText())!
+    } else if ctx.exp() != nil {
       return PilaO.popLast()!
     } else {
       // TODO error
@@ -610,7 +612,7 @@ open class unagiBaseListener: unagiListener {
       } else {
         // TODO: Throw error for function not found
       }
-    } else {
+    } else if ctx.listfunc() == nil {
       // It´s a variable not a function
       if let id = ctx.ID()?.getText() {
         if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: id) {
@@ -854,10 +856,7 @@ open class unagiBaseListener: unagiListener {
         }
         // Increment amount of elements in list.
         quads.append(Quadruple.init(op: "+", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
-      }
-      
-      // Return Functions
-      if ctx.GET() != nil {
+      } else if ctx.GET() != nil { // Return Functions
         let index = getListFuncIndex(ctx: ctx)
         let resultAddress = variableList.memory_address + index
         quads.append(Quadruple.init(op: "GET", leftVal: -1, rightVal: -1, result: resultAddress))
@@ -891,6 +890,12 @@ open class unagiBaseListener: unagiListener {
         let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)
         quads.append(Quadruple.init(op: "LAST", leftVal: variableList.memory_address, rightVal: variableList.listPointerAddress, result: tempVar))
         PTypes.append(variableList.type)
+        PilaO.append(tempVar)
+      } else if ctx.COUNT() != nil {
+        // Creates copy of first element and returns that value.
+        let tempVar = localMemory.getNextTemporalAddress(type: Type.num)
+        quads.append(Quadruple.init(op: "COUNT", leftVal: variableList.listPointerAddress, rightVal: -1, result: tempVar))
+        PTypes.append(Type.num)
         PilaO.append(tempVar)
       } else {
         // TODO error
