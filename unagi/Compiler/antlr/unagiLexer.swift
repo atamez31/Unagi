@@ -23,8 +23,8 @@ open class unagiLexer: Lexer {
             RIGHTBRACE=34, NUM=35, DECIMAL=36, BOOL=37, CHAR=38, PHRASE=39, 
             IF=40, ELIF=41, ELSE=42, WHILE=43, FOR=44, EMPTY=45, VAR=46, 
             PRINT=47, RETURN=48, FUNC=49, AND=50, OR=51, LIST=52, GET=53, 
-            ADD=54, REMOVE=55, FIRST=56, LAST=57, WHITESPACE=58, NEWLINE=59, 
-            ID=60, CTE_N=61, CTE_D=62, CTE_C=63, CTE_P=64
+            ADD=54, POP=55, COUNT=56, FIRST=57, LAST=58, WHITESPACE=59, 
+            NEWLINE=60, ID=61, CTE_N=62, CTE_D=63, CTE_C=64, CTE_P=65
 
 	public
 	static let channelNames: [String] = [
@@ -44,8 +44,8 @@ open class unagiLexer: Lexer {
 		"EQUAL", "NOTEQUAL", "SUM", "SUB", "MULT", "DIV", "LEFTP", "RIGHTP", "LEFTBRACE", 
 		"RIGHTBRACE", "NUM", "DECIMAL", "BOOL", "CHAR", "PHRASE", "IF", "ELIF", 
 		"ELSE", "WHILE", "FOR", "EMPTY", "VAR", "PRINT", "RETURN", "FUNC", "AND", 
-		"OR", "LIST", "GET", "ADD", "REMOVE", "FIRST", "LAST", "WHITESPACE", "NEWLINE", 
-		"ID", "CTE_N", "CTE_D", "CTE_C", "CTE_P"
+		"OR", "LIST", "GET", "ADD", "POP", "COUNT", "FIRST", "LAST", "WHITESPACE", 
+		"NEWLINE", "ID", "CTE_N", "CTE_D", "CTE_C", "CTE_P"
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
@@ -56,7 +56,7 @@ open class unagiLexer: Lexer {
 		"'('", "')'", "'{'", "'}'", "'num'", "'decimal'", "'bool'", "'char'", 
 		"'phrase'", "'if'", "'elif'", "'else'", "'while'", "'for'", "'empty'", 
 		"'var'", "'print'", "'return'", "'func'", "'and'", "'or'", "'list'", "'get'", 
-		"'add'", "'remove'", "'first'", "'last'"
+		"'add'", "'pop'", "'count'", "'first'", "'last'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
 		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 
@@ -64,7 +64,7 @@ open class unagiLexer: Lexer {
 		"MOREOREQUAL", "EQUAL", "NOTEQUAL", "SUM", "SUB", "MULT", "DIV", "LEFTP", 
 		"RIGHTP", "LEFTBRACE", "RIGHTBRACE", "NUM", "DECIMAL", "BOOL", "CHAR", 
 		"PHRASE", "IF", "ELIF", "ELSE", "WHILE", "FOR", "EMPTY", "VAR", "PRINT", 
-		"RETURN", "FUNC", "AND", "OR", "LIST", "GET", "ADD", "REMOVE", "FIRST", 
+		"RETURN", "FUNC", "AND", "OR", "LIST", "GET", "ADD", "POP", "COUNT", "FIRST", 
 		"LAST", "WHITESPACE", "NEWLINE", "ID", "CTE_N", "CTE_D", "CTE_C", "CTE_P"
 	]
 	public

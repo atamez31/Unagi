@@ -856,10 +856,10 @@ open class unagiBaseListener: unagiListener {
         quads.append(Quadruple.init(op: "GET", leftVal: -1, rightVal: -1, result: resultAddress))
         PTypes.append(memScope.getAddressType(address: resultAddress))
         PilaO.append(resultAddress)
-      } else if ctx.REMOVE() != nil {
+      } else if ctx.POP() != nil {
         // leftVal will contain the address tha stores the amount of elements in the list.
         // VM will add the content of this address to the memory_address to get the index.
-        quads.append(Quadruple.init(op: "REMOVE", leftVal: variableList.listPointerAddress, rightVal: -1, result: variableList.memory_address))
+        quads.append(Quadruple.init(op: "POP", leftVal: variableList.listPointerAddress, rightVal: -1, result: variableList.memory_address))
 
         var constant = 0
         if let constVar = constTable["1"] {
