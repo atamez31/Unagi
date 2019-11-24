@@ -76,11 +76,23 @@ open class unagiBaseListener: unagiListener {
    */
   open func exitDeclaration(_ ctx: unagiParser.DeclarationContext) {
     for vars in ctx.ID() {
-      let varType = Type.init(type: ctx.type()!.getText())
-      if scope == "global" {
-        varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: varType, address: globalMemory.getNextAddress(type: varType))
+      // If var is a list.
+      if ctx.type()!.getText().contains("<") {
+        // Size is last constant found.
+        let listSize = PilaO.popLast()!
+        let listType = Type.init(type: ctx.type()!.list()!.type()!.getText())
+        if scope == "global" {
+          varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: Type.list, address: globalMemory.getNextAddress(type: listType, size: listSize))
+        } else {
+          varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: Type.list, address: localMemory.getNextAddress(type: listType, size: listSize))
+        }
       } else {
-        varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: varType, address: localMemory.getNextAddress(type: varType))
+        let varType = Type.init(type: ctx.type()!.getText())
+        if scope == "global" {
+          varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: varType, address: globalMemory.getNextAddress(type: varType))
+        } else {
+          varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: varType, address: localMemory.getNextAddress(type: varType))
+        }
       }
     }
   }
@@ -768,7 +780,9 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitListfunc(_ ctx: unagiParser.ListfuncContext) { }
+  open func exitListfunc(_ ctx: unagiParser.ListfuncContext) {
+    
+  }
   
   /**
    * {@inheritDoc}

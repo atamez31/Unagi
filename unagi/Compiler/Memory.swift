@@ -120,26 +120,23 @@ class Memory {
 
   // **************** Get next memory address available ****************
 
-  func getNextAddress(type: Type) -> Int {
+  func getNextAddress(type: Type, size: Int = 1) -> Int {
     switch type {
       case Type.num:
-        numTemporalCount += 1
-        return numStart + numTemporalCount - 1
+        numTemporalCount += size
+        return numStart + numTemporalCount - size
       case Type.decimal:
-        decimalTemporalCount += 1
-        return decimalStart + decimalTemporalCount - 1
+        decimalTemporalCount += size
+        return decimalStart + decimalTemporalCount - size
       case Type.bool:
-        boolTemporalCount += 1
-        return boolStart + boolTemporalCount - 1
+        boolTemporalCount += size
+        return boolStart + boolTemporalCount - size
       case Type.char:
-        charTemporalCount += 1
-        return charStart + charTemporalCount - 1
+        charTemporalCount += size
+        return charStart + charTemporalCount - size
       case Type.phrase:
-        phraseTemporalCount += 1
-        return phraseStart + phraseTemporalCount - 1
-      case Type.list:
-        // TODO: Case for list
-        return 0
+        phraseTemporalCount += size
+        return phraseStart + phraseTemporalCount - size
         default:
         // TODO: Throw error
         return 0
