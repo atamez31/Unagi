@@ -43,13 +43,13 @@ open class unagiBaseListener: unagiListener {
             // TODO throw error index is not a num
             return -1
           }
-          return variable.memory_address
+          return PilaO.popLast()!
         } else if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: varName) {
           if variable.type != Type.num {
             // TODO throw error index is not a num
             return -1
           }
-          return variable.memory_address
+          return PilaO.popLast()!
         } else {
           // TODO throw error not found.
           return -1
@@ -110,13 +110,15 @@ open class unagiBaseListener: unagiListener {
       // If var is a list.
       if ctx.type()!.getText().contains("<") {
         // Size is last constant found.
-        let listSize = PilaO.popLast()!
+        let listSize = Int(ctx.type()!.list()!.CTE_N()!.getText())!
         let listType = Type.init(type: ctx.type()!.list()!.type()!.getText())
         if scope == "global" {
-          varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: Type.list, address: globalMemory.getNextAddress(type: listType, size: listSize))
+          varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: listType, address: globalMemory.getNextAddress(type: listType, size: listSize), size: listSize)
         } else {
-          varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: Type.list, address: localMemory.getNextAddress(type: listType, size: listSize))
+          varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: listType, address: localMemory.getNextAddress(type: listType, size: listSize), size: listSize)
         }
+        // Reserve space to keep track of amount of elements in list.
+        varTable.getDictFunc(name: scope)!.getVariable(name: vars.getText())?.setListPointerAddress(listPointerAddress: localMemory.getNextAddress(type: Type.num))
       } else {
         let varType = Type.init(type: ctx.type()!.getText())
         if scope == "global" {
@@ -608,8 +610,7 @@ open class unagiBaseListener: unagiListener {
       } else {
         // TODO: Throw error for function not found
       }
-    }
-    else {
+    } else {
       // It´s a variable not a function
       if let id = ctx.ID()?.getText() {
         if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: id) {
@@ -814,35 +815,76 @@ open class unagiBaseListener: unagiListener {
    */
   open func exitListfunc(_ ctx: unagiParser.ListfuncContext) {
     var variableList: Var = Var.init(name: "", type: Type.none, memory_address: -1)
-//    var memScope: Memory = Memory.init(realMemorySpace: -1)
+    var memScope: Memory = Memory.init(realMemorySpace: -1)
     if let varName = ctx.ID()?.getText() {
       if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: varName) {
         variableList = variable
-//        memScope = globalMemory
+        memScope = globalMemory
       } else if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: varName) {
         variableList = variable
-//        memScope = localMemory
+        memScope = localMemory
       } else {
         // TODO throw error not found.
       }
       
-      if variableList.type != Type.list {
+      if variableList.size < 2 {
         // TODO
         print("variable is not a list")
       }
       
       if ctx.ADD() != nil {
+        // rightVal will contain the address tha stores the amount of elements in the list.
+        // VM will add the content of this address to the memory_address to get the index.
+        quads.append(Quadruple.init(op: "ADD", leftVal: PilaO.popLast()!, rightVal: variableList.listPointerAddress, result: variableList.memory_address))
+
+        var constant = 0
+        if let constVar = constTable["1"] {
+          constant = constVar.memory_address
+        } else {
+          let address = constantMemory.getNextAddress(type: Type.num)
+          let variable = Var.init(name: "1", type: Type.num, memory_address: address)
+          constantMemory.writeNum(num: 1, address: address)
+          constTable["1"] = variable
+          constant = address
+        }
+        // Increment amount of elements in list.
+        quads.append(Quadruple.init(op: "+", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
         
       } else if ctx.GET() != nil {
         let index = getListFuncIndex(ctx: ctx)
-        quads.append(Quadruple.init(op: "GET", leftVal: -1, rightVal: -1, result: variableList.memory_address + index))
+        let resultAddress = variableList.memory_address + index
+        quads.append(Quadruple.init(op: "GET", leftVal: -1, rightVal: -1, result: resultAddress))
+        PTypes.append(memScope.getAddressType(address: resultAddress))
+        PilaO.append(resultAddress)
       } else if ctx.REMOVE() != nil {
-        let index = getListFuncIndex(ctx: ctx)
-        quads.append(Quadruple.init(op: "REMOVE", leftVal: -1, rightVal: -1, result: variableList.memory_address + index))
+        // leftVal will contain the address tha stores the amount of elements in the list.
+        // VM will add the content of this address to the memory_address to get the index.
+        quads.append(Quadruple.init(op: "REMOVE", leftVal: variableList.listPointerAddress, rightVal: -1, result: variableList.memory_address))
+
+        var constant = 0
+        if let constVar = constTable["1"] {
+          constant = constVar.memory_address
+        } else {
+          let address = constantMemory.getNextAddress(type: Type.num)
+          let variable = Var.init(name: "1", type: Type.num, memory_address: address)
+          constantMemory.writeNum(num: 1, address: address)
+          constTable["1"] = variable
+          constant = address
+        }
+        // Reduce amount of elements in list.
+        quads.append(Quadruple.init(op: "-", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
       } else if ctx.FIRST() != nil {
-        quads.append(Quadruple.init(op: "FIRST", leftVal: -1, rightVal: -1, result: variableList.memory_address))
+        // Creates copy of first element and returns that value.
+        let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)
+        quads.append(Quadruple.init(op: "FIRST", leftVal: variableList.memory_address, rightVal: -1, result: tempVar))
+        PTypes.append(variableList.type)
+        PilaO.append(tempVar)
       } else if ctx.LAST() != nil {
-        quads.append(Quadruple.init(op: "LAST", leftVal: -1, rightVal: -1, result: -variableList.memory_address))
+        // Creates copy of last element and returns that value.
+        let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)
+        quads.append(Quadruple.init(op: "LAST", leftVal: variableList.memory_address, rightVal: variableList.listPointerAddress, result: tempVar))
+        PTypes.append(variableList.type)
+        PilaO.append(tempVar)
       } else {
         // TODO error
         print("func doesnt exist.")
