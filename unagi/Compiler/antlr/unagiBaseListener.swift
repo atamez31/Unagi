@@ -816,7 +816,11 @@ open class unagiBaseListener: unagiListener {
   open func exitListfunc(_ ctx: unagiParser.ListfuncContext) {
     var variableList: Var = Var.init(name: "", type: Type.none, memory_address: -1)
     var memScope: Memory = Memory.init(realMemorySpace: -1)
-    if let varName = ctx.ID()?.getText() {
+    
+    // :(
+    let variable  = ctx.parent is unagiParser.FactorContext ? (ctx.parent as! unagiParser.FactorContext).ID() : (ctx.parent as! unagiParser.EmptyfunccallContext).ID()
+    
+    if let varName = variable?.getText() {
       if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: varName) {
         variableList = variable
         memScope = globalMemory
@@ -832,6 +836,7 @@ open class unagiBaseListener: unagiListener {
         print("variable is not a list")
       }
       
+      // Void Functions
       if ctx.ADD() != nil {
         // rightVal will contain the address tha stores the amount of elements in the list.
         // VM will add the content of this address to the memory_address to get the index.
@@ -849,8 +854,10 @@ open class unagiBaseListener: unagiListener {
         }
         // Increment amount of elements in list.
         quads.append(Quadruple.init(op: "+", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
-        
-      } else if ctx.GET() != nil {
+      }
+      
+      // Return Functions
+      if ctx.GET() != nil {
         let index = getListFuncIndex(ctx: ctx)
         let resultAddress = variableList.memory_address + index
         quads.append(Quadruple.init(op: "GET", leftVal: -1, rightVal: -1, result: resultAddress))
@@ -860,7 +867,7 @@ open class unagiBaseListener: unagiListener {
         // leftVal will contain the address tha stores the amount of elements in the list.
         // VM will add the content of this address to the memory_address to get the index.
         quads.append(Quadruple.init(op: "POP", leftVal: variableList.listPointerAddress, rightVal: -1, result: variableList.memory_address))
-
+        
         var constant = 0
         if let constVar = constTable["1"] {
           constant = constVar.memory_address
