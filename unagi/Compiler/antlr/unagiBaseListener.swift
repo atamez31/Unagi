@@ -34,6 +34,37 @@ open class unagiBaseListener: unagiListener {
   var constantMemory = Memory.init(realMemorySpace: 20000)
 
   public init() { }
+  
+  func getListFuncIndex(ctx: unagiParser.ListfuncContext) -> Int {
+    if ctx.ID() != nil {
+      if let varName = ctx.ID()?.getText() {
+        if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: varName) {
+          if variable.type != Type.num {
+            // TODO throw error index is not a num
+            return -1
+          }
+          return variable.memory_address
+        } else if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: varName) {
+          if variable.type != Type.num {
+            // TODO throw error index is not a num
+            return -1
+          }
+          return variable.memory_address
+        } else {
+          // TODO throw error not found.
+          return -1
+        }
+      }
+    } else if ctx.CTE_N() != nil || ctx.exp() != nil {
+      return PilaO.popLast()!
+    } else {
+      // TODO error
+      print("index is not a num")
+      return -1
+    }
+    return -1
+  }
+  
   /**
    * {@inheritDoc}
    *
@@ -192,6 +223,7 @@ open class unagiBaseListener: unagiListener {
         varAddress = variable.memory_address
         variableType = variable.type
       } else {
+        // TODO throw error not found.
         varAddress = -1
         variableType = Type.none
       }
@@ -781,7 +813,41 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitListfunc(_ ctx: unagiParser.ListfuncContext) {
-    
+    var variableList: Var = Var.init(name: "", type: Type.none, memory_address: -1)
+//    var memScope: Memory = Memory.init(realMemorySpace: -1)
+    if let varName = ctx.ID()?.getText() {
+      if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: varName) {
+        variableList = variable
+//        memScope = globalMemory
+      } else if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: varName) {
+        variableList = variable
+//        memScope = localMemory
+      } else {
+        // TODO throw error not found.
+      }
+      
+      if variableList.type != Type.list {
+        // TODO
+        print("variable is not a list")
+      }
+      
+      if ctx.ADD() != nil {
+        
+      } else if ctx.GET() != nil {
+        let index = getListFuncIndex(ctx: ctx)
+        quads.append(Quadruple.init(op: "GET", leftVal: -1, rightVal: -1, result: variableList.memory_address + index))
+      } else if ctx.REMOVE() != nil {
+        let index = getListFuncIndex(ctx: ctx)
+        quads.append(Quadruple.init(op: "REMOVE", leftVal: -1, rightVal: -1, result: variableList.memory_address + index))
+      } else if ctx.FIRST() != nil {
+        quads.append(Quadruple.init(op: "FIRST", leftVal: -1, rightVal: -1, result: variableList.memory_address))
+      } else if ctx.LAST() != nil {
+        quads.append(Quadruple.init(op: "LAST", leftVal: -1, rightVal: -1, result: -variableList.memory_address))
+      } else {
+        // TODO error
+        print("func doesnt exist.")
+      }
+    }
   }
   
   /**
@@ -939,3 +1005,4 @@ open class unagiBaseListener: unagiListener {
    */
   open func visitErrorNode(_ node: ErrorNode) { }
 }
+
