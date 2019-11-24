@@ -29,7 +29,7 @@ var num x;
   }
 
   start {
-  x = fact(10);
+  x = fibs(10);
   print("-----x-----");
   print(x);
   print("end2");
