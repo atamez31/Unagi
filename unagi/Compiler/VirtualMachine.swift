@@ -227,19 +227,19 @@ class VirtualMachine {
   func writeElementToMemory(element: Any, address: Int, type: Type) {
     switch type {
     case Type.num:
-      localMemory.writeNum(num: element as! Int)
+      localMemory.writeNum(num: element as! Int, address: address)
       break
     case Type.decimal:
-      localMemory.writeDecimal(decimal: element as! Double)
+      localMemory.writeDecimal(decimal: element as! Double, address: address)
       break
     case Type.phrase:
-      localMemory.writePhrase(phrase: element as! String)
+      localMemory.writePhrase(phrase: element as! String, address: address)
       break
     case Type.char:
-      localMemory.writeChar(char: element as! Character)
+      localMemory.writeChar(char: element as! Character, address: address)
       break
     case Type.bool:
-      localMemory.writeBool(bool: element as! Bool)
+      localMemory.writeBool(bool: element as! Bool, address: address)
       break
     default:
       // TODO error
@@ -382,10 +382,10 @@ class VirtualMachine {
       case "POP":
         guard let sizePointer = leftOpMemScope.getValueFromMemory(address: leftOp) else {
           // TODO Error
-          print("Error address doesn't have a value" + String(quadPointer))
+          print("Error nothing has been added to the list." + String(quadPointer))
           return
         }
-        if (sizePointer as! Int) < 0 {
+        if (sizePointer as! Int) <= 0 {
           // TODO: Throw exception. No more elements in list to pop.
           print("No more elements in list to pop.")
         }
@@ -403,25 +403,25 @@ class VirtualMachine {
       case "FIRST":
         guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {
           // TODO Error
-          print("Error address doesn't have a value" + String(quadPointer))
+          print("Error list is empty" + String(quadPointer))
           return
         }
         let elementType = leftOpMemScope.getAddressType(address: leftOp)
-        writeElementToMemory(element: element, address: leftOp, type: elementType)
+        writeElementToMemory(element: element, address: currentQuad.result, type: elementType)
         break
       case "LAST":
-        guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+        guard let sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp) else {
           // TODO Error
-          print("Error address doesn't have a value" + String(quadPointer))
+          print("Error list is empty" + String(quadPointer))
           return
         }
-        guard let sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+        guard let element = leftOpMemScope.getValueFromMemory(address: leftOp + (sizePointer as! Int) - 1) else {
           // TODO Error
           print("Error address doesn't have a value" + String(quadPointer))
           return
         }
         let elementType = leftOpMemScope.getAddressType(address: leftOp)
-        writeElementToMemory(element: element, address: leftOp + (sizePointer as! Int), type: elementType)
+        writeElementToMemory(element: element, address: currentQuad.result, type: elementType)
         break
       case "COUNT":
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {

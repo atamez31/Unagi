@@ -32,9 +32,7 @@ var list<num>(10) arr;
   start {
   arr.add(11);
   arr.add(12);
-  arr.add(13);
-  arr.pop();
-  x = arr.count();
+  x = arr.first();
   print("-----x-----");
   print(x);
   print("end2");
