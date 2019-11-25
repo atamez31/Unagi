@@ -74,27 +74,6 @@ class Memory {
     }
     return phraseMap[address] ?? nil
   }
-  
-//  func getNum(address: Int) -> Int {
-//    // Return MAXINT if address doesn't exist
-//    return numMap[address] ?? Int.max
-//  }
-//
-//  func getDecimal(address: Int) -> Double {
-//    return decimalMap[address] ?? -1
-//  }
-//
-//  func getBool(address: Int) -> Bool {
-//    return boolMap[address] ?? false
-//  }
-//
-//  func getChar(address: Int) -> Character {
-//    return charMap[address] ?? "?"
-//  }
-//
-//  func getPhrase(address: Int) -> String {
-//        return phraseMap[address] ?? "?"
-//    }
 
   // **************** Variable Writters ****************
 
@@ -116,6 +95,22 @@ class Memory {
     
   func writePhrase(phrase: String, address: Int? = nil) {
     phraseMap[address == nil ? phraseStart + phraseMap.count : address!] = phrase
+  }
+
+  // **************** Memory Cleaner ****************
+
+  func clearMemorySpace(address: Int) {
+    if address < self.decimalStart {
+      numMap.removeValue(forKey: address)
+    }else if address < self.boolStart {
+      decimalMap.removeValue(forKey: address)
+    }else if address < self.charStart {
+      boolMap.removeValue(forKey: address)
+    } else if address < self.phraseStart {
+      charMap.removeValue(forKey: address)
+    } else {
+      phraseMap.removeValue(forKey: address)
+    }
   }
 
   // **************** Get next memory address available ****************
