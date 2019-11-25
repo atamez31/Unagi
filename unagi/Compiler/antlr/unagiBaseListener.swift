@@ -9,6 +9,8 @@ import Antlr4
  * of the available methods.
  */
 open class unagiBaseListener: unagiListener {
+  var error = false
+  var errorMessage = ""
   var scope = "global"
   var paramCount = 1
 
@@ -82,6 +84,10 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitProgram(_ ctx: unagiParser.ProgramContext) {
+    if error {
+      print(errorMessage)
+      return
+    }
     print("size: " + String(varTable.getDictFunc(name: "start")!.getSize()))
     quads.append(Quadruple.init(op: "END", leftVal: -1, rightVal: -1, result: -1))
     var i = 0
@@ -93,7 +99,19 @@ open class unagiBaseListener: unagiListener {
     print("---------------VM--------------")
     let virtualMachine = VirtualMachine.init(quadruples: quads, globalMemory: globalMemory, constantMemory: constantMemory, localMemory: localMemory)
 
-    virtualMachine.executeVirtualMachine()
+    do {
+      try virtualMachine.executeVirtualMachine()
+    } catch ErrorHandler.semanticError(let message) {
+      print("Semantic error: \(message)")
+    } catch ErrorHandler.lexicError(let message) {
+      print("Lexical error: \(message)")
+    } catch ErrorHandler.memory(let message) {
+      print("Memory error: \(message)")
+    } catch ErrorHandler.indexOutOfBounds(let message) {
+      print("Index out of bounds error: \(message)")
+    } catch {
+      print("Unexpected error.")
+    }
   }
 
   /**
@@ -108,6 +126,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitDeclaration(_ ctx: unagiParser.DeclarationContext) {
+    if error { return }
     for vars in ctx.ID() {
       // If var is a list.
       if ctx.type()!.getText().contains("<") {
@@ -138,6 +157,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func enterMain(_ ctx: unagiParser.MainContext) {
+    if error { return }
     let firstQuad = quads[PSaltos.popLast()!]
     firstQuad.updateResult(result: quads.count)
     localMemory.reset()
@@ -152,6 +172,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitMain(_ ctx: unagiParser.MainContext) {
+    if error { return }
     let function = varTable.getDictFunc(name: scope)!
     function.setSize(size: funcSize + function.getVarCount())
   }
@@ -168,6 +189,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitStatement(_ ctx: unagiParser.StatementContext) {
+    if error { return }
     if ctx.RETURN() != nil {
       quads.append(Quadruple.init(op: "RETURN", leftVal: -1, rightVal: -1, result: PilaO.popLast()!))
     }
@@ -185,6 +207,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitLoop(_ ctx: unagiParser.LoopContext) {
+    if error { return }
       if ctx.FOR() != nil {
         let iterator = PFor.last!
         let constant: Int
@@ -216,6 +239,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitAssigment(_ ctx: unagiParser.AssigmentContext) {
+    if error { return }
     let varAddress: Int
     let variableType: Type
     if let varName = ctx.ID()?.getText() {
@@ -227,13 +251,15 @@ open class unagiBaseListener: unagiListener {
         varAddress = variable.memory_address
         variableType = variable.type
       } else {
-        // TODO throw error not found.
+        error = true
+        errorMessage = "Variable not found: \(varName)"
         varAddress = -1
         variableType = Type.none
       }
       let resultType = semanticCube.validateOperation(op: "=", leftOp: variableType, rightOp: PTypes.popLast()!)
       if resultType == Type.none {
-        // TODO: throw an error. Incompatible types for operator.
+        error = true
+        errorMessage = "Incompatible types for operator: '='"
       } else {
         quads.append(Quadruple.init(op: "=", leftVal: leftVal!, rightVal: -1, result: varAddress))
       }
@@ -246,6 +272,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func enterFunctions(_ ctx: unagiParser.FunctionsContext) {
+    if error { return }
     if let functionName = ctx.ID()?.getText() {
       localMemory.reset()
       var argsMap: [String: Var] = [:]
@@ -253,9 +280,19 @@ open class unagiBaseListener: unagiListener {
       // Count will be used to iterate over the types and ids of each argument.
       if let count = argFunc?.ID().count, count > 0 {
         for i in 0...count-1 {
-          let argType = Type.init(type: (argFunc?.type()[i].getText())!)
           let argName = (argFunc?.ID()[i].getText())!
-          argsMap[argName] = Var.init(name: argName, type: argType, memory_address: localMemory.getNextAddress(type: argType))
+          let variable: Var
+          if let list = argFunc!.type()[i].list() {
+            let listSize = Int(list.CTE_N()!.getText())!
+            let listType = Type.init(type: list.type()!.getText())
+            variable = Var.init(name: argName, type: listType, memory_address: localMemory.getNextAddress(type: listType, size: listSize), size: listSize)
+            // Reserve space to keep track of amount of elements in list.
+            variable.setListPointerAddress(listPointerAddress: localMemory.getNextAddress(type: Type.num))
+          } else {
+            let argType = Type.init(type: (argFunc?.type()[i].getText())!)
+            variable = Var.init(name: argName, type: argType, memory_address: localMemory.getNextAddress(type: argType))
+          }
+          argsMap[argName] = variable
         }
       }
       let funcReturnType = Type.init(type: (ctx.functype()?.getText())!)
@@ -271,6 +308,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitFunctions(_ ctx: unagiParser.FunctionsContext) {
+    if error { return }
     let function = varTable.getDictFunc(name: scope)!
     function.setSize(size: funcSize + function.getVarCount())
     quads.append(Quadruple.init(op: "ENDPROC", leftVal: -1, rightVal: -1, result: -1))
@@ -334,6 +372,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func enterSuperexp(_ ctx: unagiParser.SuperexpContext) {
+    if error { return }
     if let parent = ctx.parent as? unagiParser.FactorContext {
         if parent.LEFTP() != nil && parent.ID() == nil {
             POper.append(parent.LEFTP()!.getText())
@@ -348,13 +387,15 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitSuperexp(_ ctx: unagiParser.SuperexpContext) {
+    if error { return }
     if let parent = ctx.parent as? unagiParser.FactorContext {
       if parent.RIGHTP() != nil && parent.ID() == nil {
         while POper.last != "(" {
           let op = POper.popLast()!
           let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
           if  resultType == Type.none {
-              // TODO: Throw an error for incorrect operation.
+            error = true
+            errorMessage = "Incorrect operation."
           }
           let opRight = PilaO.popLast()!
           let opLeft = PilaO.popLast()!
@@ -371,7 +412,8 @@ open class unagiBaseListener: unagiListener {
           let op = POper.popLast()!
           let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
           if  resultType == Type.none {
-            // TODO: Throw an error for incorrect operation.
+            error = true
+            errorMessage = "Incorrect operation."
           }
           let opRight = PilaO.popLast()!
           let opLeft = PilaO.popLast()!
@@ -389,13 +431,15 @@ open class unagiBaseListener: unagiListener {
             quads.append(Quadruple.init(op: "PARAM", leftVal: PilaO.popLast()!, rightVal: -1, result: paramCount))
             paramCount += 1
           } else {
-            // TODO: Throw error. Incorrect parameter type for function.
+            error = true
+            errorMessage = "Incorrect parameter type for function."
           }
         }
       }
     } else if let parent = ctx.parent as? unagiParser.LoopContext {
       if PTypes.last != Type.bool {
-        // TODO: Throw an error for incorrect operation.
+        error = true
+        errorMessage = "Incorrect operation."
       }
       if parent.FOR() != nil {
         if (parent.children![2] as! unagiParser.SuperexpContext) == ctx {
@@ -413,7 +457,8 @@ open class unagiBaseListener: unagiListener {
           let op = "<"
           let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
           if  resultType == Type.none {
-            // TODO: Throw an error for incorrect operation.
+            error = true
+            errorMessage = "Incorrect operation."
           }
           let opRight = PilaO.popLast()!
           let opLeft = PilaO.popLast()!
@@ -432,7 +477,8 @@ open class unagiBaseListener: unagiListener {
       }
     } else if ((ctx.parent as? unagiParser.ConditionContext) != nil) {
         if PTypes.last != Type.bool {
-            // TODO : Throw and error for incorrect opeation.
+          error = true
+          errorMessage = "Incorrect operation."
         }
         quads.append(Quadruple.init(op: "GOTOF", leftVal: PilaO.popLast()!, rightVal: -1, result: -1))
         PSaltos.append(quads.count - 1)
@@ -443,7 +489,8 @@ open class unagiBaseListener: unagiListener {
           quads.append(Quadruple.init(op: "PARAM", leftVal: PilaO.popLast()!, rightVal: -1, result: paramCount))
           paramCount += 1
         } else {
-          // TODO: Throw error. Incorrect parameter type for function.
+          error = true
+          errorMessage = "Incorrect parameter type for function."
         }
       }
     }
@@ -461,11 +508,14 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitExpression(_ ctx: unagiParser.ExpressionContext) {
+    if error { return }
     if POper.last == "and" || POper.last == "or" {
       let op = POper.popLast()!
       let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
       if  resultType == Type.none {
         // TODO: Throw an error for incorrect operation.
+        error = true
+        errorMessage = "Incorrect operation."
       }
       let opRight = PilaO.popLast()!
       let opLeft = PilaO.popLast()!
@@ -498,12 +548,14 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitExp(_ ctx: unagiParser.ExpContext) {
+    if error { return }
     if POper.last == ">" || POper.last == ">=" || POper.last == "<" ||
        POper.last == "<=" || POper.last == "==" || POper.last == "<>" {
       let op = POper.popLast()!
       let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
       if  resultType == Type.none {
-        // TODO: Throw an error for incorrect operation.
+        error = true
+        errorMessage = "Incorrect operation."
       }
       let opRight = PilaO.popLast()!
       let opLeft = PilaO.popLast()!
@@ -544,11 +596,13 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitTerm(_ ctx: unagiParser.TermContext) {
+    if error { return }
     if POper.last == "+" || POper.last == "-" {
       let op = POper.popLast()!
       let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
       if  resultType == Type.none {
-        // TODO: Throw an error for incorrect operation.
+        error = true
+        errorMessage = "Incorrect operation."
       }
       let opRight = PilaO.popLast()!
       let opLeft = PilaO.popLast()!
@@ -563,7 +617,7 @@ open class unagiBaseListener: unagiListener {
     if let parent = ctx.parent as? unagiParser.ExpContext {
       if let sum = parent.SUM()?.getText() {
         POper.append(sum)
-      }else if let sub = parent.SUB()?.getText() {
+      } else if let sub = parent.SUB()?.getText() {
         POper.append(sub)
       }
     }
@@ -575,11 +629,13 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func enterFactor(_ ctx: unagiParser.FactorContext) {
+    if error { return }
     if ctx.ID() != nil && ctx.LEFTP() != nil {
       if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
         quads.append(Quadruple.init(op: "ERA", leftVal: -1, rightVal: -1, result: function.getId()))
       } else {
-        // TODO: Throw error for function not found
+        error = true
+        errorMessage = "Incorrect operation."
       }
       POper.append(ctx.LEFTP()!.getText())
     }
@@ -591,11 +647,12 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitFactor(_ ctx: unagiParser.FactorContext) {
+    if error { return }
     if ctx.ID() != nil && ctx.LEFTP() != nil {
       if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
         if function.getType() == Type.empty {
-          // TODO error void not return
-          print("error void")
+          error = true
+          errorMessage = "Void does not return."
         }
         // Set global address to store return from every function call.
         let tempGlobalAddress = globalMemory.getNextAddress(type: function.getType())
@@ -611,6 +668,8 @@ open class unagiBaseListener: unagiListener {
         paramCount = 1
       } else {
         // TODO: Throw error for function not found
+        error = true
+        errorMessage = "Function not found."
       }
     } else if ctx.listfunc() == nil {
       // It´s a variable not a function
@@ -621,8 +680,12 @@ open class unagiBaseListener: unagiListener {
         } else if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: id) {
           PTypes.append(variable.type)
           PilaO.append(variable.memory_address)
+        } else {
+          // TODO check if error when not found.
+          error = true
+          errorMessage = "Variable not found."
+          return
         }
-        // TODO check if error when not found.
       }
     }
 
@@ -630,7 +693,8 @@ open class unagiBaseListener: unagiListener {
       let op = POper.popLast()!
       let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
       if  resultType == Type.none {
-        // TODO: Throw an error for incorrect operation.
+        error = true
+        errorMessage = "Incorrect operation."
       }
       let opRight = PilaO.popLast()!
       let opLeft = PilaO.popLast()!
@@ -663,6 +727,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitConstant(_ ctx: unagiParser.ConstantContext) {
+    if error { return }
     if var constant = ctx.CTE_N()?.getText() {
       if let parent = ctx.parent as? unagiParser.FactorContext {
         // It's a negative
@@ -759,8 +824,7 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterBody(_ ctx: unagiParser.BodyContext) {
-  }
+  open func enterBody(_ ctx: unagiParser.BodyContext) { }
 
   /**
    * {@inheritDoc}
@@ -768,6 +832,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitBody(_ ctx: unagiParser.BodyContext) {
+    if error { return }
     if let parent = ctx.parent as? unagiParser.ConditionContext {
       if parent.children?.last as! unagiParser.BodyContext == ctx {
         while !PSaltos.isEmpty && PSaltos.last != -1 {
@@ -789,6 +854,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func enterCondition(_ ctx: unagiParser.ConditionContext) {
+    if error { return }
     // Agregar fondo de if padre.
     PSaltos.append(-1)
   }
@@ -798,6 +864,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitCondition(_ ctx: unagiParser.ConditionContext) {
+    if error { return }
     PSaltos.removeLast()
   }
 
@@ -813,6 +880,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitPrinting(_ ctx: unagiParser.PrintingContext) {
+    if error { return }
     quads.append(Quadruple.init(op: "print", leftVal: -1, rightVal: -1, result: PilaO.popLast()!))
   }
 
@@ -828,6 +896,7 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitListfunc(_ ctx: unagiParser.ListfuncContext) {
+    if error { return }
     var variableList: Var = Var.init(name: "", type: Type.none, memory_address: -1)
     var memScope: Memory = Memory.init(realMemorySpace: -1)
 
@@ -841,12 +910,13 @@ open class unagiBaseListener: unagiListener {
         variableList = variable
         memScope = localMemory
       } else {
-        // TODO throw error not found.
+        error = true
+        errorMessage = "Function not found."
       }
 
       if variableList.size < 2 {
-        // TODO
-        print("variable is not a list")
+        error = true
+        errorMessage = "Variable is not a list."
       }
       
       if ctx.parent is unagiParser.EmptyfunccallContext {
@@ -887,8 +957,8 @@ open class unagiBaseListener: unagiListener {
           // Reduce amount of elements in list.
           quads.append(Quadruple.init(op: "-", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
         } else {
-          // TODO error
-          print("function returns a value.")
+          error = true
+          errorMessage = "Function returns a value."
         }
       } else {
         // Return functions with factor as parent.
@@ -917,8 +987,8 @@ open class unagiBaseListener: unagiListener {
           PTypes.append(Type.num)
           PilaO.append(tempVar)
         } else {
-          // TODO error
-          print("func does not return a value.")
+          error = true
+          errorMessage = "Function does not return a value."
         }
       }
     }
@@ -930,10 +1000,12 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func enterEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) {
+    if error { return }
     if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
       quads.append(Quadruple.init(op: "ERA", leftVal: -1, rightVal: -1, result: function.getId()))
-    } else {
-      // TODO: Throw error for function not found
+    } else if ctx.listfunc() == nil {
+      error = true
+      errorMessage = "Function not found."
     }
   }
 
@@ -943,11 +1015,13 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitEmptyfunccall(_ ctx: unagiParser.EmptyfunccallContext) {
+    if error { return }
     if let function = varTable.getDictFunc(name: ctx.ID()!.getText()) {
       quads.append(Quadruple.init(op: "GOSUB", leftVal: -1, rightVal: -1, result: function.getQuadStart()))
       paramCount = 1
-    } else {
-      // TODO: Throw error for function not found
+    } else if ctx.listfunc() == nil {
+      error = true
+      errorMessage = "Function not found."
     }
   }
 

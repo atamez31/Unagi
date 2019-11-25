@@ -22,6 +22,7 @@
 		C2487A392360C35100CED702 /* SemanticCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A342360C35100CED702 /* SemanticCube.swift */; };
 		C2487A3A2360C35100CED702 /* VarTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A352360C35100CED702 /* VarTable.swift */; };
 		C2487A3B2360C35100CED702 /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2487A362360C35100CED702 /* Function.swift */; };
+		C2817165238C613D009EAE0A /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2817164238C613D009EAE0A /* ErrorHandler.swift */; };
 		C2CF2EC62370A813005A88A8 /* Quadruple.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CF2EC52370A813005A88A8 /* Quadruple.swift */; };
 		C2CF2ECF2370B578005A88A8 /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2CF2ECE2370B578005A88A8 /* Memory.swift */; };
 /* End PBXBuildFile section */
@@ -84,6 +85,7 @@
 		C2487A342360C35100CED702 /* SemanticCube.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SemanticCube.swift; sourceTree = "<group>"; };
 		C2487A352360C35100CED702 /* VarTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VarTable.swift; sourceTree = "<group>"; };
 		C2487A362360C35100CED702 /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
+		C2817164238C613D009EAE0A /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		C2CF2EC52370A813005A88A8 /* Quadruple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quadruple.swift; sourceTree = "<group>"; };
 		C2CF2ECE2370B578005A88A8 /* Memory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Memory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -157,6 +159,7 @@
 				C2487A352360C35100CED702 /* VarTable.swift */,
 				6DC92CBE2384D01A0019B772 /* VirtualMachine.swift */,
 				6DC92CC32384E2FE0019B772 /* OperationsVM.swift */,
+				C2817164238C613D009EAE0A /* ErrorHandler.swift */,
 			);
 			path = Compiler;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 				C2487A3B2360C35100CED702 /* Function.swift in Sources */,
 				C2CF2EC62370A813005A88A8 /* Quadruple.swift in Sources */,
 				6DC92CC42384E2FE0019B772 /* OperationsVM.swift in Sources */,
+				C2817165238C613D009EAE0A /* ErrorHandler.swift in Sources */,
 				C2487A392360C35100CED702 /* SemanticCube.swift in Sources */,
 				C2487A382360C35100CED702 /* Var.swift in Sources */,
 				6D3B9107238AFC8A00E63232 /* unagiLexerATN.swift in Sources */,
