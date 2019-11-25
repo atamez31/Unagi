@@ -74,27 +74,6 @@ class Memory {
     }
     return phraseMap[address] ?? nil
   }
-  
-//  func getNum(address: Int) -> Int {
-//    // Return MAXINT if address doesn't exist
-//    return numMap[address] ?? Int.max
-//  }
-//
-//  func getDecimal(address: Int) -> Double {
-//    return decimalMap[address] ?? -1
-//  }
-//
-//  func getBool(address: Int) -> Bool {
-//    return boolMap[address] ?? false
-//  }
-//
-//  func getChar(address: Int) -> Character {
-//    return charMap[address] ?? "?"
-//  }
-//
-//  func getPhrase(address: Int) -> String {
-//        return phraseMap[address] ?? "?"
-//    }
 
   // **************** Variable Writters ****************
 
@@ -118,28 +97,41 @@ class Memory {
     phraseMap[address == nil ? phraseStart + phraseMap.count : address!] = phrase
   }
 
+  // **************** Memory Cleaner ****************
+
+  func clearMemorySpace(address: Int) {
+    if address < self.decimalStart {
+      numMap.removeValue(forKey: address)
+    }else if address < self.boolStart {
+      decimalMap.removeValue(forKey: address)
+    }else if address < self.charStart {
+      boolMap.removeValue(forKey: address)
+    } else if address < self.phraseStart {
+      charMap.removeValue(forKey: address)
+    } else {
+      phraseMap.removeValue(forKey: address)
+    }
+  }
+
   // **************** Get next memory address available ****************
 
-  func getNextAddress(type: Type) -> Int {
+  func getNextAddress(type: Type, size: Int = 1) -> Int {
     switch type {
       case Type.num:
-        numTemporalCount += 1
-        return numStart + numTemporalCount - 1
+        numTemporalCount += size
+        return numStart + numTemporalCount - size
       case Type.decimal:
-        decimalTemporalCount += 1
-        return decimalStart + decimalTemporalCount - 1
+        decimalTemporalCount += size
+        return decimalStart + decimalTemporalCount - size
       case Type.bool:
-        boolTemporalCount += 1
-        return boolStart + boolTemporalCount - 1
+        boolTemporalCount += size
+        return boolStart + boolTemporalCount - size
       case Type.char:
-        charTemporalCount += 1
-        return charStart + charTemporalCount - 1
+        charTemporalCount += size
+        return charStart + charTemporalCount - size
       case Type.phrase:
-        phraseTemporalCount += 1
-        return phraseStart + phraseTemporalCount - 1
-      case Type.list:
-        // TODO: Case for list
-        return 0
+        phraseTemporalCount += size
+        return phraseStart + phraseTemporalCount - size
         default:
         // TODO: Throw error
         return 0

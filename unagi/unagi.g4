@@ -27,9 +27,9 @@ FUNC functype ID LEFTP argfunc RIGHTP LEFTBRACE declaration* statement* RIGHTBRA
 
 functype: EMPTY | type;
 
-type: NUM | DECIMAL | BOOL | CHAR | PHRASE | LIST;
+type: NUM | DECIMAL | BOOL | CHAR | PHRASE | list;
 
-list: LIST LESS type MORETHAN;
+list: LIST LESS type MORETHAN LEFTP CTE_N RIGHTP;
 
 argfunc: ((type ID) (',' type ID)*)?;
 
@@ -57,6 +57,7 @@ LEFTP superexp RIGHTP
 | ID (
 LEFTP (superexp (',' superexp)*)? RIGHTP | '.' listfunc)?;
 
+
 constant: CTE_N | CTE_D | 'true' | 'false' | CTE_C | CTE_P;
 
 body: LEFTBRACE statement* RIGHTBRACE;
@@ -69,13 +70,13 @@ ELIF LEFTP superexp RIGHTP body
 printing:
 PRINT LEFTP (superexp | CTE_P) (',' (superexp | CTE_P))* RIGHTP ';';
 
-listfunc: ('get' | 'remove') LEFTP (CTE_N | ID | factor) RIGHTP
-| 'add' LEFTP (constant | ID | factor) RIGHTP
-| ('first' | 'last') LEFTP RIGHTP;
+listfunc: GET  LEFTP (CTE_N | ID | exp) RIGHTP
+| ADD LEFTP (constant | ID | superexp) RIGHTP
+| (FIRST | LAST | POP | COUNT) LEFTP RIGHTP;
 
 emptyfunccall:
 ID (
-LEFTP (superexp (',' superexp)*)? RIGHTP) ';';
+LEFTP (superexp (',' superexp)*)? RIGHTP | '.' listfunc)? ';';
 
 special: (
 drawsquare
@@ -143,6 +144,12 @@ FUNC: 'func';
 AND: 'and';
 OR: 'or';
 LIST: 'list';
+GET: 'get';
+ADD: 'add';
+POP: 'pop';
+COUNT: 'count';
+FIRST: 'first';
+LAST: 'last';
 WHITESPACE: ([ \t]+ | ' ') -> skip;
 NEWLINE: ( '\r' '\n'? | '\n') -> skip;
 ID: [A-z][A-z0-9]*;

@@ -13,6 +13,7 @@ let test = """
 program test12 :
 
 var num x;
+var list<num>(4) arr;
 
   func num fibs(num n) {
     if (n <= 1) {
@@ -29,7 +30,9 @@ var num x;
   }
 
   start {
-  x = fact(10);
+  arr.add(11);
+  arr.add(12);
+  x = arr.get(2.5);
   print("-----x-----");
   print(x);
   print("end2");

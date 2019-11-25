@@ -204,6 +204,49 @@ class VirtualMachine {
     }
   }
 
+  func addList(element: Any, sizePointer: Int, listAddress: Int) {
+    let resultScope = getMemoryScope(address: listAddress)
+    let listType = resultScope.getAddressType(address: listAddress)
+    switch listType {
+    case Type.num:
+      resultScope.writeNum(num: element as! Int, address: listAddress + sizePointer)
+    case Type.decimal:
+    resultScope.writeDecimal(decimal: element as! Double, address: listAddress + sizePointer)
+    case Type.char:
+    resultScope.writeChar(char: element as! Character, address: listAddress + sizePointer)
+    case Type.phrase:
+    resultScope.writePhrase(phrase: element as! String, address: listAddress + sizePointer)
+    case Type.bool:
+    resultScope.writeBool(bool: element as! Bool, address: listAddress + sizePointer)
+    default:
+      // TODO error
+      break
+    }
+  }
+
+  func writeElementToMemory(element: Any, address: Int, type: Type) {
+    switch type {
+    case Type.num:
+      localMemory.writeNum(num: element as! Int, address: address)
+      break
+    case Type.decimal:
+      localMemory.writeDecimal(decimal: element as! Double, address: address)
+      break
+    case Type.phrase:
+      localMemory.writePhrase(phrase: element as! String, address: address)
+      break
+    case Type.char:
+      localMemory.writeChar(char: element as! Character, address: address)
+      break
+    case Type.bool:
+      localMemory.writeBool(bool: element as! Bool, address: address)
+      break
+    default:
+      // TODO error
+      break
+    }
+  }
+
   func executeVirtualMachine() {
     var quadPointer = 0;
     while quadPointer < self.listQuad.count {
@@ -322,6 +365,84 @@ class VirtualMachine {
           return
         }
         print(resultValue)
+        break
+      case "ADD":
+        guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+        guard let sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          // TODO Error
+          print("Error list is empty" + String(quadPointer))
+          return
+        }
+        addList(element: element, sizePointer: sizePointer as! Int, listAddress: currentQuad.result)
+        break
+      case "POP":
+        guard let sizePointer = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error nothing has been added to the list." + String(quadPointer))
+          return
+        }
+        if (sizePointer as! Int) <= 0 {
+          // TODO: Throw exception. No more elements in list to pop.
+          print("No more elements in list to pop.")
+        }
+        let resultScope = getMemoryScope(address: currentQuad.result)
+        resultScope.clearMemorySpace(address: currentQuad.result + (sizePointer as! Int) - 1)
+        break
+      case "GET":
+        let resultAddress = currentQuad.result
+        if getMemoryScope(address: resultAddress).getValueFromMemory(address: resultAddress) == nil {
+          // TODO Error
+          print("Index out of bounds" + String(quadPointer))
+          return
+        }
+        break
+      case "FIRST":
+        guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error list is empty" + String(quadPointer))
+          return
+        }
+        let elementType = leftOpMemScope.getAddressType(address: leftOp)
+        writeElementToMemory(element: element, address: currentQuad.result, type: elementType)
+        break
+      case "LAST":
+        guard let sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          // TODO Error
+          print("Error list is empty" + String(quadPointer))
+          return
+        }
+        guard let element = leftOpMemScope.getValueFromMemory(address: leftOp + (sizePointer as! Int) - 1) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+        let elementType = leftOpMemScope.getAddressType(address: leftOp)
+        writeElementToMemory(element: element, address: currentQuad.result, type: elementType)
+        break
+      case "COUNT":
+        guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          // TODO Error
+          print("Error address doesn't have a value" + String(quadPointer))
+          return
+        }
+        assignValue(tempValue: leftOpValue, result: currentQuad.result)
+        break
+      case "VER":
+        let resultScope = getMemoryScope(address: currentQuad.result)
+        var sizePointer = resultScope.getValueFromMemory(address: currentQuad.result)
+        if sizePointer == nil {
+          resultScope.writeNum(num: 0, address: currentQuad.result)
+          sizePointer = 0
+        }
+        if (sizePointer as! Int) >= leftOp {
+          // TODO Error
+          print("Error list is full." + String(quadPointer))
+          return
+        }
         break
       default:
         break

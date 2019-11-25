@@ -70,10 +70,10 @@ class Function {
     return [:]
   }
 
-  func addVariable(name: String, type: Type, address: Int) {
+  func addVariable(name: String, type: Type, address: Int, size: Int = 1) {
     if variables[name] == nil {
         // TODO: Throw error for existing variable.
     }
-    self.variables[name] = Var.init(name: name, type: type, memory_address: address)
+    self.variables[name] = Var.init(name: name, type: type, memory_address: address, size: size)
   }
 }

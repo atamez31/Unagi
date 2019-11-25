@@ -17,14 +17,14 @@ open class unagiLexer: Lexer {
 	public
 	static let T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, 
             T__8=9, T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, 
-            T__15=16, T__16=17, T__17=18, T__18=19, T__19=20, T__20=21, 
-            T__21=22, T__22=23, ARROW=24, ASG=25, LESS=26, MORETHAN=27, 
-            LESSOREQUAL=28, MOREOREQUAL=29, EQUAL=30, NOTEQUAL=31, SUM=32, 
-            SUB=33, MULT=34, DIV=35, LEFTP=36, RIGHTP=37, LEFTBRACE=38, 
-            RIGHTBRACE=39, NUM=40, DECIMAL=41, BOOL=42, CHAR=43, PHRASE=44, 
-            IF=45, ELIF=46, ELSE=47, WHILE=48, FOR=49, EMPTY=50, VAR=51, 
-            PRINT=52, RETURN=53, FUNC=54, AND=55, OR=56, LIST=57, WHITESPACE=58, 
-            NEWLINE=59, ID=60, CTE_N=61, CTE_D=62, CTE_C=63, CTE_P=64
+            T__15=16, T__16=17, T__17=18, ARROW=19, ASG=20, LESS=21, MORETHAN=22, 
+            LESSOREQUAL=23, MOREOREQUAL=24, EQUAL=25, NOTEQUAL=26, SUM=27, 
+            SUB=28, MULT=29, DIV=30, LEFTP=31, RIGHTP=32, LEFTBRACE=33, 
+            RIGHTBRACE=34, NUM=35, DECIMAL=36, BOOL=37, CHAR=38, PHRASE=39, 
+            IF=40, ELIF=41, ELSE=42, WHILE=43, FOR=44, EMPTY=45, VAR=46, 
+            PRINT=47, RETURN=48, FUNC=49, AND=50, OR=51, LIST=52, GET=53, 
+            ADD=54, POP=55, COUNT=56, FIRST=57, LAST=58, WHITESPACE=59, 
+            NEWLINE=60, ID=61, CTE_N=62, CTE_D=63, CTE_C=64, CTE_P=65
 
 	public
 	static let channelNames: [String] = [
@@ -40,32 +40,32 @@ open class unagiLexer: Lexer {
 	static let ruleNames: [String] = [
 		"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8", 
 		"T__9", "T__10", "T__11", "T__12", "T__13", "T__14", "T__15", "T__16", 
-		"T__17", "T__18", "T__19", "T__20", "T__21", "T__22", "ARROW", "ASG", 
-		"LESS", "MORETHAN", "LESSOREQUAL", "MOREOREQUAL", "EQUAL", "NOTEQUAL", 
-		"SUM", "SUB", "MULT", "DIV", "LEFTP", "RIGHTP", "LEFTBRACE", "RIGHTBRACE", 
-		"NUM", "DECIMAL", "BOOL", "CHAR", "PHRASE", "IF", "ELIF", "ELSE", "WHILE", 
-		"FOR", "EMPTY", "VAR", "PRINT", "RETURN", "FUNC", "AND", "OR", "LIST", 
-		"WHITESPACE", "NEWLINE", "ID", "CTE_N", "CTE_D", "CTE_C", "CTE_P"
+		"T__17", "ARROW", "ASG", "LESS", "MORETHAN", "LESSOREQUAL", "MOREOREQUAL", 
+		"EQUAL", "NOTEQUAL", "SUM", "SUB", "MULT", "DIV", "LEFTP", "RIGHTP", "LEFTBRACE", 
+		"RIGHTBRACE", "NUM", "DECIMAL", "BOOL", "CHAR", "PHRASE", "IF", "ELIF", 
+		"ELSE", "WHILE", "FOR", "EMPTY", "VAR", "PRINT", "RETURN", "FUNC", "AND", 
+		"OR", "LIST", "GET", "ADD", "POP", "COUNT", "FIRST", "LAST", "WHITESPACE", 
+		"NEWLINE", "ID", "CTE_N", "CTE_D", "CTE_C", "CTE_P"
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
 		nil, "'program'", "':'", "','", "';'", "'start'", "'.'", "'true'", "'false'", 
-		"'get'", "'remove'", "'add'", "'first'", "'last'", "'root'", "'perimeter'", 
-		"'drawSquare'", "'drawTriangle'", "'drawRectangle'", "'drawCircle'", "'red'", 
-		"'blue'", "'green'", "'yellow'", "'->'", "'='", "'<'", "'>'", "'<='", 
-		"'>='", "'=='", "'<>'", "'+'", "'-'", "'*'", "'/'", "'('", "')'", "'{'", 
-		"'}'", "'num'", "'decimal'", "'bool'", "'char'", "'phrase'", "'if'", "'elif'", 
-		"'else'", "'while'", "'for'", "'empty'", "'var'", "'print'", "'return'", 
-		"'func'", "'and'", "'or'", "'list'"
+		"'root'", "'perimeter'", "'drawSquare'", "'drawTriangle'", "'drawRectangle'", 
+		"'drawCircle'", "'red'", "'blue'", "'green'", "'yellow'", "'->'", "'='", 
+		"'<'", "'>'", "'<='", "'>='", "'=='", "'<>'", "'+'", "'-'", "'*'", "'/'", 
+		"'('", "')'", "'{'", "'}'", "'num'", "'decimal'", "'bool'", "'char'", 
+		"'phrase'", "'if'", "'elif'", "'else'", "'while'", "'for'", "'empty'", 
+		"'var'", "'print'", "'return'", "'func'", "'and'", "'or'", "'list'", "'get'", 
+		"'add'", "'pop'", "'count'", "'first'", "'last'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
 		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 
-		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, "ARROW", "ASG", "LESS", 
-		"MORETHAN", "LESSOREQUAL", "MOREOREQUAL", "EQUAL", "NOTEQUAL", "SUM", 
-		"SUB", "MULT", "DIV", "LEFTP", "RIGHTP", "LEFTBRACE", "RIGHTBRACE", "NUM", 
-		"DECIMAL", "BOOL", "CHAR", "PHRASE", "IF", "ELIF", "ELSE", "WHILE", "FOR", 
-		"EMPTY", "VAR", "PRINT", "RETURN", "FUNC", "AND", "OR", "LIST", "WHITESPACE", 
-		"NEWLINE", "ID", "CTE_N", "CTE_D", "CTE_C", "CTE_P"
+		nil, nil, nil, nil, nil, "ARROW", "ASG", "LESS", "MORETHAN", "LESSOREQUAL", 
+		"MOREOREQUAL", "EQUAL", "NOTEQUAL", "SUM", "SUB", "MULT", "DIV", "LEFTP", 
+		"RIGHTP", "LEFTBRACE", "RIGHTBRACE", "NUM", "DECIMAL", "BOOL", "CHAR", 
+		"PHRASE", "IF", "ELIF", "ELSE", "WHILE", "FOR", "EMPTY", "VAR", "PRINT", 
+		"RETURN", "FUNC", "AND", "OR", "LIST", "GET", "ADD", "POP", "COUNT", "FIRST", 
+		"LAST", "WHITESPACE", "NEWLINE", "ID", "CTE_N", "CTE_D", "CTE_C", "CTE_P"
 	]
 	public
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
