@@ -818,8 +818,7 @@ open class unagiBaseListener: unagiListener {
   open func exitListfunc(_ ctx: unagiParser.ListfuncContext) {
     var variableList: Var = Var.init(name: "", type: Type.none, memory_address: -1)
     var memScope: Memory = Memory.init(realMemorySpace: -1)
-    
-    // :(
+
     let variable  = ctx.parent is unagiParser.FactorContext ? (ctx.parent as! unagiParser.FactorContext).ID() : (ctx.parent as! unagiParser.EmptyfunccallContext).ID()
     
     if let varName = variable?.getText() {
@@ -832,78 +831,87 @@ open class unagiBaseListener: unagiListener {
       } else {
         // TODO throw error not found.
       }
-      
+
       if variableList.size < 2 {
         // TODO
         print("variable is not a list")
       }
       
-      // Void Functions
-      if ctx.ADD() != nil {
-        // rightVal will contain the address tha stores the amount of elements in the list.
-        // VM will add the content of this address to the memory_address to get the index.
-        quads.append(Quadruple.init(op: "ADD", leftVal: PilaO.popLast()!, rightVal: variableList.listPointerAddress, result: variableList.memory_address))
+      if ctx.parent is unagiParser.EmptyfunccallContext {
+        // Empty functions with emtpyFuncCall as parent.
+        if ctx.ADD() != nil {
+          quads.append(Quadruple.init(op: "VER", leftVal: variableList.size, rightVal: -1, result: variableList.listPointerAddress))
+          // rightVal will contain the address tha stores the amount of elements in the list.
+          // VM will add the content of this address to the memory_address to get the index.
+          quads.append(Quadruple.init(op: "ADD", leftVal: PilaO.popLast()!, rightVal: variableList.listPointerAddress, result: variableList.memory_address))
 
-        var constant = 0
-        if let constVar = constTable["1"] {
-          constant = constVar.memory_address
+          var constant = 0
+          if let constVar = constTable["1"] {
+            constant = constVar.memory_address
+          } else {
+            let address = constantMemory.getNextAddress(type: Type.num)
+            let variable = Var.init(name: "1", type: Type.num, memory_address: address)
+            constantMemory.writeNum(num: 1, address: address)
+            constTable["1"] = variable
+            constant = address
+          }
+          // Increment amount of elements in list.
+          quads.append(Quadruple.init(op: "+", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
+        } else if ctx.POP() != nil {
+          // leftVal will contain the address tha stores the amount of elements in the list.
+          // VM will add the content of this address to the memory_address to get the index.
+          quads.append(Quadruple.init(op: "POP", leftVal: variableList.listPointerAddress, rightVal: -1, result: variableList.memory_address))
+
+          var constant = 0
+          if let constVar = constTable["1"] {
+            constant = constVar.memory_address
+          } else {
+            let address = constantMemory.getNextAddress(type: Type.num)
+            let variable = Var.init(name: "1", type: Type.num, memory_address: address)
+            constantMemory.writeNum(num: 1, address: address)
+            constTable["1"] = variable
+            constant = address
+          }
+          // Reduce amount of elements in list.
+          quads.append(Quadruple.init(op: "-", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
         } else {
-          let address = constantMemory.getNextAddress(type: Type.num)
-          let variable = Var.init(name: "1", type: Type.num, memory_address: address)
-          constantMemory.writeNum(num: 1, address: address)
-          constTable["1"] = variable
-          constant = address
+          // TODO error
+          print("function returns a value.")
         }
-        // Increment amount of elements in list.
-        quads.append(Quadruple.init(op: "+", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
-      } else if ctx.GET() != nil { // Return Functions
-        let index = getListFuncIndex(ctx: ctx)
-        let resultAddress = variableList.memory_address + index
-        quads.append(Quadruple.init(op: "GET", leftVal: -1, rightVal: -1, result: resultAddress))
-        PTypes.append(memScope.getAddressType(address: resultAddress))
-        PilaO.append(resultAddress)
-      } else if ctx.POP() != nil {
-        // leftVal will contain the address tha stores the amount of elements in the list.
-        // VM will add the content of this address to the memory_address to get the index.
-        quads.append(Quadruple.init(op: "POP", leftVal: variableList.listPointerAddress, rightVal: -1, result: variableList.memory_address))
-        
-        var constant = 0
-        if let constVar = constTable["1"] {
-          constant = constVar.memory_address
-        } else {
-          let address = constantMemory.getNextAddress(type: Type.num)
-          let variable = Var.init(name: "1", type: Type.num, memory_address: address)
-          constantMemory.writeNum(num: 1, address: address)
-          constTable["1"] = variable
-          constant = address
-        }
-        // Reduce amount of elements in list.
-        quads.append(Quadruple.init(op: "-", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
-      } else if ctx.FIRST() != nil {
-        // Creates copy of first element and returns that value.
-        let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)
-        quads.append(Quadruple.init(op: "FIRST", leftVal: variableList.memory_address, rightVal: -1, result: tempVar))
-        PTypes.append(variableList.type)
-        PilaO.append(tempVar)
-      } else if ctx.LAST() != nil {
-        // Creates copy of last element and returns that value.
-        let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)
-        quads.append(Quadruple.init(op: "LAST", leftVal: variableList.memory_address, rightVal: variableList.listPointerAddress, result: tempVar))
-        PTypes.append(variableList.type)
-        PilaO.append(tempVar)
-      } else if ctx.COUNT() != nil {
-        // Creates copy of first element and returns that value.
-        let tempVar = localMemory.getNextTemporalAddress(type: Type.num)
-        quads.append(Quadruple.init(op: "COUNT", leftVal: variableList.listPointerAddress, rightVal: -1, result: tempVar))
-        PTypes.append(Type.num)
-        PilaO.append(tempVar)
       } else {
-        // TODO error
-        print("func doesnt exist.")
+        // Return functions with factor as parent.
+        if ctx.GET() != nil {
+          let index = getListFuncIndex(ctx: ctx)
+          let resultAddress = variableList.memory_address + index
+          quads.append(Quadruple.init(op: "GET", leftVal: -1, rightVal: -1, result: resultAddress))
+          PTypes.append(memScope.getAddressType(address: resultAddress))
+          PilaO.append(resultAddress)
+        } else if ctx.FIRST() != nil {
+          // Creates copy of first element and returns that value.
+          let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)
+          quads.append(Quadruple.init(op: "FIRST", leftVal: variableList.memory_address, rightVal: -1, result: tempVar))
+          PTypes.append(variableList.type)
+          PilaO.append(tempVar)
+        } else if ctx.LAST() != nil {
+          // Creates copy of last element and returns that value.
+          let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)
+          quads.append(Quadruple.init(op: "LAST", leftVal: variableList.memory_address, rightVal: variableList.listPointerAddress, result: tempVar))
+          PTypes.append(variableList.type)
+          PilaO.append(tempVar)
+        } else if ctx.COUNT() != nil {
+          // Creates copy of first element and returns that value.
+          let tempVar = localMemory.getNextTemporalAddress(type: Type.num)
+          quads.append(Quadruple.init(op: "COUNT", leftVal: variableList.listPointerAddress, rightVal: -1, result: tempVar))
+          PTypes.append(Type.num)
+          PilaO.append(tempVar)
+        } else {
+          // TODO error
+          print("func does not return a value.")
+        }
       }
     }
   }
-  
+
   /**
    * {@inheritDoc}
    *
@@ -916,6 +924,7 @@ open class unagiBaseListener: unagiListener {
       // TODO: Throw error for function not found
     }
   }
+
   /**
    * {@inheritDoc}
    *

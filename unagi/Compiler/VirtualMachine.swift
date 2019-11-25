@@ -372,10 +372,10 @@ class VirtualMachine {
           print("Error address doesn't have a value" + String(quadPointer))
           return
         }
-        var sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp)
-        if sizePointer == nil {
-          rightOpMemScope.writeNum(num: 0, address: rightOp)
-          sizePointer = 0
+        guard let sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          // TODO Error
+          print("Error list is empty" + String(quadPointer))
+          return
         }
         addList(element: element, sizePointer: sizePointer as! Int, listAddress: currentQuad.result)
         break
@@ -430,6 +430,19 @@ class VirtualMachine {
           return
         }
         assignValue(tempValue: leftOpValue, result: currentQuad.result)
+        break
+      case "VER":
+        let resultScope = getMemoryScope(address: currentQuad.result)
+        var sizePointer = resultScope.getValueFromMemory(address: currentQuad.result)
+        if sizePointer == nil {
+          resultScope.writeNum(num: 0, address: currentQuad.result)
+          sizePointer = 0
+        }
+        if (sizePointer as! Int) >= leftOp {
+          // TODO Error
+          print("Error list is full." + String(quadPointer))
+          return
+        }
         break
       default:
         break
