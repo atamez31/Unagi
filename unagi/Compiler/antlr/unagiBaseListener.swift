@@ -663,7 +663,13 @@ open class unagiBaseListener: unagiListener {
    * <p>The default implementation does nothing.</p>
    */
   open func exitConstant(_ ctx: unagiParser.ConstantContext) {
-    if let constant = ctx.CTE_N()?.getText() {
+    if var constant = ctx.CTE_N()?.getText() {
+      if let parent = ctx.parent as? unagiParser.FactorContext {
+        // It's a negative
+        if parent.SUB() != nil {
+          constant = "-" + constant
+        }
+      }
       if let constVar = constTable[constant] {
         PilaO.append(constVar.memory_address)
         PTypes.append(constVar.type)
@@ -675,7 +681,13 @@ open class unagiBaseListener: unagiListener {
         PTypes.append(Type.num)
         constantMemory.writeNum(num: Int(constant)!)
       }
-    } else if let constant = ctx.CTE_D()?.getText() {
+    } else if var constant = ctx.CTE_D()?.getText() {
+        if let parent = ctx.parent as? unagiParser.FactorContext {
+          // It's a negative
+          if parent.SUB() != nil {
+            constant = "-" + constant
+          }
+        }
         if let constVar = constTable[constant] {
           PilaO.append(constVar.memory_address)
           PTypes.append(constVar.type)
