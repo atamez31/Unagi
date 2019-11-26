@@ -15,15 +15,129 @@ program test12 :
 var num x;
 var list<num>(4) arr;
 
+
+func num fibs(num n) {
+  if (n <= 1) {
+    return n;
+  }
+  return fibs(n - 1) + fibs(n - 2);
+}
+
+func num fact(num n) {
+  if (n == 1) {
+    return 1;
+  }
+  return fact(n - 1) * n;
+}
+
+func empty arrPam(list<num>(4) a) {
+  var num i;
+  i = 0;
+print("---------");
+print(a.count());
+  for(0 -> a.count()) {
+    print("valor");
+    print(a.get(i));
+    i = i + 1;
+  }
+}
+
+func bool find(list<num>(4) a, num n) {
+  var num i;
+  i = 0;
+  for(0 -> a.count()) {
+    if (a.get(i) == n) {
+      return true;
+    }
+    i = i + 1;
+  }
+  return false;
+}
+
   start {
-  arr.add(11);
-  arr.add(12);
-  x = 0;
-  arr.set(-1+1, 2*2-4);
-  x = arr.get(x);
-  print("-----x-----");
-  print(x);
-  print("end2");
+  var num contador, contFor;
+  var phrase strFor, strWhile;
+  contador = 0;
+  contFor = 0;
+  strFor = "forloop";
+  strWhile = "while";
+  print("contador:");
+  print(contador);
+  arr.add(100);
+  arr.add(200);
+  arr.add(300);
+  arr.add(400);
+  print(arr.get(0));
+  print("----for----");
+  for(0 -> arr.count()) {
+    print(strFor);
+  }
+
+  print("----while----");
+  print("contador:");
+  print(contador);
+  print("arr.count:");
+  print(arr.count());
+  while(contador < arr.count()) {
+    print(contador);
+    contador = contador + 1;
+  }
+
+  print("----if's----");
+  if(strFor == "forloop") {
+    print("if correcto");
+  } else {
+    print("if incorrecto");
+  }
+
+  if(strFor <> "forloop") {
+    print("else incorrecto");
+  } else {
+    print("else correcto");
+  }
+
+  if(strFor <> "forloop") {
+    print("elif incorrecto");
+  } elif (strFor <> strWhile) {
+    print("elif correcto");
+  } else {
+    print("elif incorrecto");
+  }
+
+  print("----factorial----");
+  print(fact(10));
+  if(fact(10) == 3628800) {
+    print("factorial correcto");
+  } else {
+    print("factorial incorrecto");
+}
+
+  print("----fibonacci----");
+  print(fibs(10));
+  if(fibs(10) == 55) {
+    print("fibonacci correcto");
+  } else {
+    print("fibonacci incorrecto");
+  }
+
+  print("----for anidado----");
+  for(0 -> 2) {
+    for(0 -> 3) {
+      contFor = contFor + 1;
+    }
+  }
+  if(contFor == 6) {
+    print("for anidado correcto");
+  } else {
+    print("for anidado incorrecto");
+  }
+
+  print("----find----");
+  if (find(arr, 200) == true) {
+    print("find correcto");
+  } else {
+    print("find incorrecto");
+  }
   }
 """
 

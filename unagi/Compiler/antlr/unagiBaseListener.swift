@@ -140,11 +140,13 @@ open class unagiBaseListener: unagiListener {
         let listType = Type.init(type: ctx.type()!.list()!.type()!.getText())
         if scope == "global" {
           varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: listType, address: globalMemory.getNextAddress(type: listType, size: listSize), size: listSize)
+          // Reserve space to keep track of amount of elements in list.
+          varTable.getDictFunc(name: scope)!.getVariable(name: vars.getText())?.setListPointerAddress(listPointerAddress: globalMemory.getNextAddress(type: Type.num))
         } else {
           varTable.getDictFunc(name: scope)?.addVariable(name: vars.getText(), type: listType, address: localMemory.getNextAddress(type: listType, size: listSize), size: listSize)
+          // Reserve space to keep track of amount of elements in list.
+          varTable.getDictFunc(name: scope)!.getVariable(name: vars.getText())?.setListPointerAddress(listPointerAddress: localMemory.getNextAddress(type: Type.num))
         }
-        // Reserve space to keep track of amount of elements in list.
-        varTable.getDictFunc(name: scope)!.getVariable(name: vars.getText())?.setListPointerAddress(listPointerAddress: localMemory.getNextAddress(type: Type.num))
       } else {
         let varType = Type.init(type: ctx.type()!.getText())
         if scope == "global" {
@@ -205,7 +207,11 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterLoop(_ ctx: unagiParser.LoopContext) { }
+  open func enterLoop(_ ctx: unagiParser.LoopContext) {
+    if ctx.WHILE() != nil {
+      PSaltos.append(quads.count)
+    }
+  }
   /**
    * {@inheritDoc}
    *
@@ -226,6 +232,8 @@ open class unagiBaseListener: unagiListener {
           constant = address
         }
         quads.append(Quadruple.init(op: "+", leftVal: iterator, rightVal: constant, result: iterator))
+        PFor.removeLast()
+
       }
       let end = PSaltos.popLast()!
       quads.append(Quadruple.init(op: "GOTO", leftVal: -1, rightVal: -1, result: PSaltos.popLast()!))
@@ -382,9 +390,10 @@ open class unagiBaseListener: unagiListener {
         if parent.LEFTP() != nil && parent.ID() == nil {
             POper.append(parent.LEFTP()!.getText())
         }
-    } else if (ctx.parent as? unagiParser.LoopContext) != nil {
-      PSaltos.append(quads.count)
     }
+//    else if (ctx.parent as? unagiParser.LoopContext) != nil {
+//      PSaltos.append(quads.count)
+//    }
   }
   /**
    * {@inheritDoc}
@@ -433,7 +442,17 @@ open class unagiBaseListener: unagiListener {
         // End of a function parameter.
         if let function = varTable.getDictFunc(name: parent.ID()!.getText()) {
           if function.getParams()[paramCount-1].type == PTypes.popLast() {
-            quads.append(Quadruple.init(op: "PARAM", leftVal: PilaO.popLast()!, rightVal: -1, result: paramCount))
+            if (function.getParams()[paramCount-1].size > 1) {
+              if let list = varTable.getDictFunc(name: "global")?.getVariable(name: ctx.getText()) {
+                quads.append(Quadruple.init(op: "PARAMLIST", leftVal: PilaO.popLast()!, rightVal: -1, result: list.listPointerAddress))
+                quads.append(Quadruple.init(op: "PARAM", leftVal: list.listPointerAddress, rightVal: function.getParams()[paramCount-1].listPointerAddress, result: -1))
+              } else if let list = varTable.getDictFunc(name: scope)?.getVariable(name: ctx.getText()) {
+                quads.append(Quadruple.init(op: "PARAMLIST", leftVal: PilaO.popLast()!, rightVal: -1, result: list.listPointerAddress))
+                quads.append(Quadruple.init(op: "PARAM", leftVal: list.listPointerAddress, rightVal: function.getParams()[paramCount-1].listPointerAddress, result: -1))
+              }
+            } else {
+              quads.append(Quadruple.init(op: "PARAM", leftVal: PilaO.popLast()!, rightVal: -1, result: paramCount))
+            }
             paramCount += 1
           } else {
             error = true
@@ -442,10 +461,6 @@ open class unagiBaseListener: unagiListener {
         }
       }
     } else if let parent = ctx.parent as? unagiParser.LoopContext {
-      if PTypes.last != Type.bool {
-        error = true
-        errorMessage = "Incorrect operation."
-      }
       if parent.FOR() != nil {
         if (parent.children![2] as! unagiParser.SuperexpContext) == ctx {
           // Create new temporal variable for the for loop iterator.
@@ -459,6 +474,7 @@ open class unagiBaseListener: unagiListener {
             PFor.append(tempAddress)
           }
         } else {
+          PSaltos.append(quads.count)
           let op = "<"
           let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
           if  resultType == Type.none {
@@ -476,6 +492,10 @@ open class unagiBaseListener: unagiListener {
           PSaltos.append(quads.count-1)
         }
       } else {
+        if PTypes.last != Type.bool {
+          error = true
+          errorMessage = "Incorrect operation."
+        }
         let result = PilaO.popLast()!
         quads.append(Quadruple.init(op: "GOTOF", leftVal: result, rightVal: -1, result: -1))
         PSaltos.append(quads.count-1)
@@ -491,7 +511,17 @@ open class unagiBaseListener: unagiListener {
       // End of a empty function parameter.
       if let function = varTable.getDictFunc(name: parent.ID()!.getText()) {
         if function.getParams()[paramCount-1].type == PTypes.popLast() {
-          quads.append(Quadruple.init(op: "PARAM", leftVal: PilaO.popLast()!, rightVal: -1, result: paramCount))
+          if (function.getParams()[paramCount-1].size > 1) {
+            if let list = varTable.getDictFunc(name: "global")?.getVariable(name: ctx.getText()) {
+              quads.append(Quadruple.init(op: "PARAMLIST", leftVal: PilaO.popLast()!, rightVal: -1, result: list.listPointerAddress))
+              quads.append(Quadruple.init(op: "PARAM", leftVal: list.listPointerAddress, rightVal: function.getParams()[paramCount-1].listPointerAddress, result: -1))
+            } else if let list = varTable.getDictFunc(name: scope)?.getVariable(name: ctx.getText()) {
+              quads.append(Quadruple.init(op: "PARAMLIST", leftVal: PilaO.popLast()!, rightVal: -1, result: list.listPointerAddress))
+              quads.append(Quadruple.init(op: "PARAM", leftVal: list.listPointerAddress, rightVal: function.getParams()[paramCount-1].listPointerAddress, result: -1))
+            } else {
+              quads.append(Quadruple.init(op: "PARAM", leftVal: PilaO.popLast()!, rightVal: -1, result: paramCount))
+            }
+          }
           paramCount += 1
         } else {
           error = true
@@ -930,7 +960,15 @@ open class unagiBaseListener: unagiListener {
           quads.append(Quadruple.init(op: "VER", leftVal: variableList.size, rightVal: -1, result: variableList.listPointerAddress))
           // rightVal will contain the address tha stores the amount of elements in the list.
           // VM will add the content of this address to the memory_address to get the index.
-          quads.append(Quadruple.init(op: "ADD", leftVal: PilaO.popLast()!, rightVal: variableList.listPointerAddress, result: variableList.memory_address))
+          if let id = ctx.ID(0)?.getText() {
+            if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: id) {
+              quads.append(Quadruple.init(op: "ADD", leftVal: variable.memory_address, rightVal: variableList.listPointerAddress, result: variableList.memory_address))
+            } else if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: id) {
+              quads.append(Quadruple.init(op: "ADD", leftVal: variable.memory_address, rightVal: variableList.listPointerAddress, result: variableList.memory_address))
+            }
+          } else {
+            quads.append(Quadruple.init(op: "ADD", leftVal: PilaO.popLast()!, rightVal: variableList.listPointerAddress, result: variableList.memory_address))
+          }
 
           var constant = 0
           if let constVar = constTable["1"] {
@@ -994,7 +1032,6 @@ open class unagiBaseListener: unagiListener {
             return
           }
           let resultAddress = variableList.memory_address
-          quads.append(Quadruple.init(op: "VER", leftVal: variableList.size, rightVal: -1, result: index))
           let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)
           quads.append(Quadruple.init(op: "GET", leftVal: index, rightVal: resultAddress, result: tempVar))
           PTypes.append(variableList.type)

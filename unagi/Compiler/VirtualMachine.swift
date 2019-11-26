@@ -43,12 +43,12 @@ class VirtualMachine {
   }
 
   func sumOperands(leftValue: Any, rightValue: Any, result: Int) {
-    let resultType = localMemory.getAddressType(address: result)
+    let resultMemScope = getMemoryScope(address: result)
+    let resultType = resultMemScope.getAddressType(address: result)
   
     if resultType == Type.num {
       let resultFromSum = (leftValue as! Int) + (rightValue as! Int)
-      print(resultFromSum)
-      localMemory.writeNum(num: resultFromSum, address: result)
+      resultMemScope.writeNum(num: resultFromSum, address: result)
     } else if resultType == Type.decimal {
       let resultFromSum: Double
       if let left = leftValue as? Int {
@@ -58,8 +58,7 @@ class VirtualMachine {
       } else {
         resultFromSum = (leftValue as! Double) + (rightValue as! Double)
       }
-      localMemory.writeDecimal(decimal: resultFromSum, address: result)
-      print(resultFromSum)
+      resultMemScope.writeDecimal(decimal: resultFromSum, address: result)
     } else if resultType == Type.phrase {
       let resultFromSum: String
       if let left = leftValue as? Character, let right = rightValue as? Character {
@@ -71,7 +70,7 @@ class VirtualMachine {
       } else {
         resultFromSum = (leftValue as! String) + (rightValue as! String)
       }
-      localMemory.writePhrase(phrase: resultFromSum, address: result)
+      resultMemScope.writePhrase(phrase: resultFromSum, address: result)
     } else {
       print("ERROR ON SUM OF TYPES")
     }
@@ -82,7 +81,6 @@ class VirtualMachine {
   
     if resultType == Type.num {
       let resultFromOp = operationsVM.solveArithmeticOpNum(n1: (leftValue as! Int), n2: (rightValue as! Int), sign: operationsVM.opConvertorNum[op]!)
-      print(resultFromOp)
       localMemory.writeNum(num: resultFromOp, address: result)
     } else if resultType == Type.decimal {
       var resultFromOp: Double = 0.0
@@ -94,7 +92,6 @@ class VirtualMachine {
         resultFromOp = operationsVM.solveArithmeticOpDecimal(n1: (leftValue as! Double), n2: (rightValue as! Double), sign: operationsVM.opConvertorDecimal[op]!)
       }
       localMemory.writeDecimal(decimal: resultFromOp, address: result)
-      print(resultFromOp)
     } else {
       print("ERROR ON arithmetic OF TYPES")
     }
@@ -129,7 +126,6 @@ class VirtualMachine {
       resultFromOp = false
     }
     localMemory.writeBool(bool: resultFromOp, address: result)
-    print(resultFromOp)
   }
 
   func assignValue(tempValue: Any , result: Int) {
@@ -263,7 +259,6 @@ class VirtualMachine {
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
           throw ErrorHandler.semanticError(message: "Value to be assigned doesn't exist." + String(quadPointer))
         }
-
         assignValue(tempValue: leftOpValue, result: currentQuad.result)
         break
       case "+":
@@ -317,12 +312,33 @@ class VirtualMachine {
         tempMemory = Memory.init(realMemorySpace: 10000)
         break
       case "PARAM":
-        // validar? y en switch?
         let paramAddress = currentQuad.leftVal
         let paramMemScope = getMemoryScope(address: paramAddress)
         let resultType = paramMemScope.getAddressType(address: paramAddress)
+        if currentQuad.result == -1 {
+          var sizePointer = paramMemScope.getValueFromMemory(address: paramAddress)
+          if sizePointer == nil {
+            sizePointer = 0
+          }
+          tempMemory.writeNum(num: sizePointer as! Int, address: currentQuad.rightVal)
+        } else {
+          paramDefinition(paramAddress: paramAddress, paramMemScope: paramMemScope, resultType: resultType)
+        }
+        break
+      case "PARAMLIST":
+        let paramAddress = currentQuad.leftVal
+        let paramMemScope = getMemoryScope(address: paramAddress)
+        let resultType = paramMemScope.getAddressType(address: paramAddress)
+        let resultScope = getMemoryScope(address: currentQuad.result)
+        var sizePointer = resultScope.getValueFromMemory(address: currentQuad.result)
+        if sizePointer == nil {
+          resultScope.writeNum(num: 0, address: currentQuad.result)
+          sizePointer = 0
+        }
         
-        paramDefinition(paramAddress: paramAddress, paramMemScope: paramMemScope, resultType: resultType)
+        for i in 0...((sizePointer as! Int)-1) {
+          paramDefinition(paramAddress: paramAddress + i, paramMemScope: paramMemScope, resultType: resultType)
+        }
         break
       case "RETURN":
         let tempReturnAddress = returnAddressStk.popLast()!
@@ -369,7 +385,7 @@ class VirtualMachine {
         break
       case "GET":
         guard let index = leftOpMemScope.getValueFromMemory(address: leftOp) else {
-          throw ErrorHandler.semanticError(message: "Index could not be initialized." + String(quadPointer))
+          throw ErrorHandler.semanticError(message: "Index has not been initialized." + String(quadPointer))
         }
         let resultAddress = rightOp + (index as! Int)
         let resultMemScope = getMemoryScope(address: currentQuad.result)
