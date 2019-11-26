@@ -121,6 +121,8 @@ class VirtualMachine {
       resultFromOp = operationsVM.solveRelationalOpChar(n1: left, n2: (rightValue as! Character), sign: operationsVM.opRelConvertorChar[op]!)
     } else if let left = leftValue as? String {
       resultFromOp = operationsVM.solveRelationalOpPhrase(n1: left, n2: (rightValue as! String), sign: operationsVM.opRelConvertorPhrase[op]!)
+    } else if let left = leftValue as? Bool {
+      resultFromOp = operationsVM.solveRelationalOpBool(n1: left, n2: (rightValue as! Bool), sign: operationsVM.opRelConvertorBool[op]!)
     } else {
       // TODO: Throw error
       resultFromOp = false

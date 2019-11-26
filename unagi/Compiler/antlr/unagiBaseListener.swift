@@ -389,7 +389,10 @@ open class unagiBaseListener: unagiListener {
     if let parent = ctx.parent as? unagiParser.FactorContext {
         if parent.LEFTP() != nil && parent.ID() == nil {
             POper.append(parent.LEFTP()!.getText())
-        }
+        } else if parent.LEFTP() != nil && parent.ID() != nil {
+          // Start of function argument
+          POper.append(parent.LEFTP()!.getText())
+      }
     }
 //    else if (ctx.parent as? unagiParser.LoopContext) != nil {
 //      PSaltos.append(quads.count)
@@ -518,9 +521,9 @@ open class unagiBaseListener: unagiListener {
             } else if let list = varTable.getDictFunc(name: scope)?.getVariable(name: ctx.getText()) {
               quads.append(Quadruple.init(op: "PARAMLIST", leftVal: PilaO.popLast()!, rightVal: -1, result: list.listPointerAddress))
               quads.append(Quadruple.init(op: "PARAM", leftVal: list.listPointerAddress, rightVal: function.getParams()[paramCount-1].listPointerAddress, result: -1))
-            } else {
-              quads.append(Quadruple.init(op: "PARAM", leftVal: PilaO.popLast()!, rightVal: -1, result: paramCount))
             }
+          } else {
+            quads.append(Quadruple.init(op: "PARAM", leftVal: PilaO.popLast()!, rightVal: -1, result: paramCount))
           }
           paramCount += 1
         } else {
@@ -672,7 +675,6 @@ open class unagiBaseListener: unagiListener {
         error = true
         errorMessage = "Incorrect operation."
       }
-      POper.append(ctx.LEFTP()!.getText())
     }
   }
 

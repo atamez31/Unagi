@@ -45,6 +45,9 @@ class OperationsVM {
 
   let opRelConvertorPhrase: [String: (String, String) -> Bool] = ["==": (==),
                                                                   "<>": (!=)]
+  
+  let opRelConvertorBool: [String: (Bool, Bool) -> Bool] = ["==": (==),
+                                                            "<>": (!=)]
 
 
   // **************** Operation Solvers ****************
@@ -70,6 +73,10 @@ class OperationsVM {
   }
 
   func solveRelationalOpPhrase(n1: String, n2: String, sign: (String, String) -> Bool) -> Bool {
+    return sign(n1, n2)
+  }
+  
+  func solveRelationalOpBool(n1: Bool, n2: Bool, sign: (Bool, Bool) -> Bool) -> Bool {
     return sign(n1, n2)
   }
 }

@@ -33,8 +33,11 @@ func num fact(num n) {
 func empty arrPam(list<num>(4) a) {
   var num i;
   i = 0;
-print("---------");
+print("---------count A");
 print(a.count());
+print("---------param n");
+print(a.count());
+
   for(0 -> a.count()) {
     print("valor");
     print(a.get(i));
@@ -42,23 +45,31 @@ print(a.count());
   }
 }
 
-func bool find(list<num>(4) a, num n) {
+func num find(list<num>(4) a, num n) {
   var num i;
   i = 0;
+print("-----Find-----");
   for(0 -> a.count()) {
     if (a.get(i) == n) {
-      return true;
+      return i;
     }
     i = i + 1;
   }
-  return false;
+  return -1;
 }
 
+func empty printP2(num str1, num str2) {
+  print(str1 + str2);
+}
   start {
   var num contador, contFor;
   var phrase strFor, strWhile;
+var bool checkFind;
   contador = 0;
   contFor = 0;
+  print("----params----");
+  printP2(1+2, 3*10+1);
+
   strFor = "forloop";
   strWhile = "while";
   print("contador:");
@@ -112,33 +123,12 @@ func bool find(list<num>(4) a, num n) {
     print("factorial incorrecto");
 }
 
-  print("----fibonacci----");
-  print(fibs(10));
-  if(fibs(10) == 55) {
-    print("fibonacci correcto");
-  } else {
-    print("fibonacci incorrecto");
-  }
-
-  print("----for anidado----");
-  for(0 -> 2) {
-    for(0 -> 3) {
-      contFor = contFor + 1;
-    }
-  }
-  if(contFor == 6) {
-    print("for anidado correcto");
-  } else {
-    print("for anidado incorrecto");
-  }
-
-  print("----find----");
-  if (find(arr, 200) == true) {
-    print("find correcto");
-  } else {
-    print("find incorrecto");
-  }
-  }
+if(find(arr, 200) >= 0) {
+print("find correcto");
+} else {
+print("find incorrecto");
+}
+}
 """
 
 func getValueFromMemory<T>(valType: Type) -> T.Type {

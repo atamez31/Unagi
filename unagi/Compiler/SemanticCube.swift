@@ -36,7 +36,7 @@ class SemanticCube {
             // num          decimal        bool        char          phrase
             [ Type.bool,    Type.bool,     Type.none,  Type.none,    Type.none   ],
             [ Type.bool,    Type.bool,     Type.none,  Type.none,    Type.none   ],
-            [ Type.none,    Type.none,     Type.none,  Type.none,    Type.none   ],
+            [ Type.none,    Type.none,     Type.bool,  Type.none,    Type.none   ],
             [ Type.none,    Type.none,     Type.none,  Type.bool,    Type.none   ],
             [ Type.none,    Type.none,     Type.none,  Type.none,    Type.bool   ]
         ]
