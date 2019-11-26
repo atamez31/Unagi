@@ -290,8 +290,25 @@ class VirtualMachine {
         guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
           throw ErrorHandler.semanticError(message: "Right value doesn't exist." + String(quadPointer))
         }
-
         relationalOperands(leftValue: leftOpValue, rightValue: rightOpValue, result: currentQuad.result, op: currentQuad.op)
+        break
+      case "and":
+        guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          throw ErrorHandler.semanticError(message: "Left value doesn't exist." + String(quadPointer))
+        }
+        guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          throw ErrorHandler.semanticError(message: "Right value doesn't exist." + String(quadPointer))
+        }
+        localMemory.writeBool(bool: (leftOpValue as! Bool) && (rightOpValue as! Bool), address: currentQuad.result)
+        break
+      case "or":
+        guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          throw ErrorHandler.semanticError(message: "Left value doesn't exist." + String(quadPointer))
+        }
+        guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          throw ErrorHandler.semanticError(message: "Right value doesn't exist." + String(quadPointer))
+        }
+        localMemory.writeBool(bool: (leftOpValue as! Bool) || (rightOpValue as! Bool), address: currentQuad.result)
         break
       case "GOTO":
         quadPointer = currentQuad.result - 1
