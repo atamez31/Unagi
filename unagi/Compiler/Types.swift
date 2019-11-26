@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum Type:Int {
+enum Type: Int {
     case none = -1
     case num = 1
     case decimal = 2

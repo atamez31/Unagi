@@ -29,13 +29,20 @@ var list<num>(4) arr;
     return fact(n - 1) * n;
   }
 
+func empty test(list<num>(4) a) {
+  a.add(10);
+  print("Hola");
+  print(a.first() + 5);
+}
+
   start {
   arr.add(11);
   arr.add(12);
-  x = arr.get(2.5);
+  x = arr.get(1);
   print("-----x-----");
   print(x);
   print("end2");
+test(arr);
   }
 """
 
@@ -43,8 +50,8 @@ func getValueFromMemory<T>(valType: Type) -> T.Type {
   return Int.self as! T.Type;
 }
 
-do {
-  
+
+do {  
   let lexer = unagiLexer(ANTLRInputStream(test))
   let tokens = CommonTokenStream(lexer)
   let parser = try unagiParser(tokens)
@@ -52,6 +59,17 @@ do {
   let walker = ParseTreeWalker()
   let basicLearn = unagiBaseListener.init()
   try walker.walk(basicLearn, tree)
+} catch ErrorHandler.semanticError(let message) {
+  print("Semantic error: \(message)")
+} catch ErrorHandler.lexicError(let message) {
+  print("Lexical error: \(message)")
+} catch ErrorHandler.memory(let message) {
+  print("Memory error: \(message)")
+} catch ErrorHandler.indexOutOfBounds(let message) {
+  print("Index out of bounds error: \(message)")
 } catch {
-  print("Parse error: \(error.localizedDescription)")
+  print("Unexpected error.")
 }
+//catch {
+//  print("Parse error: \(error.localizedDescription)")
+//}
