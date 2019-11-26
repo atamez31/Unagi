@@ -15,34 +15,15 @@ program test12 :
 var num x;
 var list<num>(4) arr;
 
-  func num fibs(num n) {
-    if (n <= 1) {
-      return n;
-    }
-    return fibs(n - 1) + fibs(n - 2);
-  }
-
-  func num fact(num n) {
-    if (n == 1) {
-      return 1;
-    }
-    return fact(n - 1) * n;
-  }
-
-func empty test(list<num>(4) a) {
-  a.add(10);
-  print("Hola");
-  print(a.first() + 5);
-}
-
   start {
   arr.add(11);
   arr.add(12);
-  x = arr.get(1);
+  x = 0;
+  arr.set(-1+1, 2*2-4);
+  x = arr.get(x);
   print("-----x-----");
   print(x);
   print("end2");
-test(arr);
   }
 """
 

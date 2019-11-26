@@ -37,33 +37,38 @@ open class unagiBaseListener: unagiListener {
 
   public init() { }
   
-  func getListFuncIndex(ctx: unagiParser.ListfuncContext) -> Int {
-    if ctx.ID() != nil {
-      if let varName = ctx.ID()?.getText() {
+  func getListFuncIndex(ctx: unagiParser.ListfuncContext, index: Int) -> Int {
+    if ctx.ID(index) != nil {
+      if let varName = ctx.ID(index)?.getText() {
         if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: varName) {
           if variable.type != Type.num {
             // TODO throw error index is not a num
             return -1
           }
-          return PilaO.popLast()!
+          return variable.memory_address
         } else if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: varName) {
           if variable.type != Type.num {
-            // TODO throw error index is not a num
             return -1
           }
-          return PilaO.popLast()!
+          return variable.memory_address
         } else {
-          // TODO throw error not found.
           return -1
         }
       }
     } else if ctx.CTE_N() != nil {
-      return Int(ctx.CTE_N()!.getText())!
+      let constant = ctx.CTE_N()!.getText()
+      if let constVar = constTable[constant] {
+        return constVar.memory_address
+      } else {
+        let address = constantMemory.getNextAddress(type: Type.num)
+        let variable = Var.init(name: constant, type: Type.num, memory_address: address)
+        constantMemory.writeNum(num: Int(constant)!, address: address)
+        constTable[constant] = variable
+        return address
+      }
     } else if ctx.exp() != nil {
-      return PilaO.popLast()!
+      return PTypes.popLast()! != Type.num ? -1 : PilaO.popLast()!
     } else {
-      // TODO error
-      print("index is not a num")
       return -1
     }
     return -1
@@ -797,10 +802,10 @@ open class unagiBaseListener: unagiListener {
           PTypes.append(constVar.type)
         } else {
           let address = constantMemory.getNextAddress(type: Type.bool)
-          let variable = Var.init(name: "true", type: Type.num, memory_address: address)
+          let variable = Var.init(name: "true", type: Type.bool, memory_address: address)
           constTable["true"] = variable
           PilaO.append(address)
-          PTypes.append(Type.num)
+          PTypes.append(Type.bool)
           constantMemory.writeBool(bool: true)
         }
       } else {
@@ -809,10 +814,10 @@ open class unagiBaseListener: unagiListener {
             PTypes.append(constVar.type)
           } else {
             let address = constantMemory.getNextAddress(type: Type.bool)
-            let variable = Var.init(name: "false", type: Type.num, memory_address: address)
+            let variable = Var.init(name: "false", type: Type.bool, memory_address: address)
             constTable["false"] = variable
             PilaO.append(address)
-            PTypes.append(Type.num)
+            PTypes.append(Type.bool)
             constantMemory.writeBool(bool: false)
           }
       }
@@ -956,6 +961,25 @@ open class unagiBaseListener: unagiListener {
           }
           // Reduce amount of elements in list.
           quads.append(Quadruple.init(op: "-", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
+        } else if ctx.SET() != nil {
+          let addedValue = PilaO.popLast()!
+          
+          // Check if type of added value is equal to the array.
+          let typeAddedValue = PTypes.popLast()!
+          if typeAddedValue != variableList.type {
+            error = true
+            errorMessage = "Error incompatible value of array."
+            return
+          }
+          
+          let index = getListFuncIndex(ctx: ctx, index: 0)
+          if index == -1 {
+            error = true
+            errorMessage = "Index of array is not a number."
+            return
+          }
+          let resultAddress = variableList.memory_address
+          quads.append(Quadruple.init(op: "SET", leftVal: addedValue, rightVal: index, result: resultAddress))
         } else {
           error = true
           errorMessage = "Function returns a value."
@@ -963,11 +987,18 @@ open class unagiBaseListener: unagiListener {
       } else {
         // Return functions with factor as parent.
         if ctx.GET() != nil {
-          let index = getListFuncIndex(ctx: ctx)
-          let resultAddress = variableList.memory_address + index
-          quads.append(Quadruple.init(op: "GET", leftVal: -1, rightVal: -1, result: resultAddress))
-          PTypes.append(memScope.getAddressType(address: resultAddress))
-          PilaO.append(resultAddress)
+          let index = getListFuncIndex(ctx: ctx, index: 0)
+          if index == -1 {
+            error = true
+            errorMessage = "Index of array is not a number."
+            return
+          }
+          let resultAddress = variableList.memory_address
+          quads.append(Quadruple.init(op: "VER", leftVal: variableList.size, rightVal: -1, result: index))
+          let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)
+          quads.append(Quadruple.init(op: "GET", leftVal: index, rightVal: resultAddress, result: tempVar))
+          PTypes.append(variableList.type)
+          PilaO.append(tempVar)
         } else if ctx.FIRST() != nil {
           // Creates copy of first element and returns that value.
           let tempVar = localMemory.getNextTemporalAddress(type: variableList.type)

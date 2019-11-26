@@ -368,10 +368,31 @@ class VirtualMachine {
         resultScope.clearMemorySpace(address: currentQuad.result + (sizePointer as! Int) - 1)
         break
       case "GET":
-        let resultAddress = currentQuad.result
+        guard let index = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          throw ErrorHandler.semanticError(message: "Index could not be initialized." + String(quadPointer))
+        }
+        let resultAddress = rightOp + (index as! Int)
+        let resultMemScope = getMemoryScope(address: currentQuad.result)
+        let elementType = resultMemScope.getAddressType(address: currentQuad.result)
+        guard let result = getMemoryScope(address: resultAddress).getValueFromMemory(address: resultAddress) else {
+          throw ErrorHandler.semanticError(message: "Index out of bounds." + String(quadPointer))
+        }
+        writeElementToMemory(element: result, address: currentQuad.result, type: elementType)
+        break
+      case "SET":
+        guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          throw ErrorHandler.semanticError(message: "Element to add doesn't exist." + String(quadPointer))
+        }
+        guard let index = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          throw ErrorHandler.semanticError(message: "Index could not be initialized." + String(quadPointer))
+        }
+        
+        let resultAddress = currentQuad.result + (index as! Int)
         if getMemoryScope(address: resultAddress).getValueFromMemory(address: resultAddress) == nil {
           throw ErrorHandler.semanticError(message: "Index out of bounds." + String(quadPointer))
         }
+
+        addList(element: element, sizePointer: 0, listAddress: resultAddress)
         break
       case "FIRST":
         guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {

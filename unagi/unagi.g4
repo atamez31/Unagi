@@ -55,8 +55,9 @@ factor:
 LEFTP superexp RIGHTP
 | (SUM | SUB)? constant
 | ID (
-LEFTP (superexp (',' superexp)*)? RIGHTP | '.' listfunc)?;
-
+LEFTP (superexp (',' superexp)*)? RIGHTP
+| '.' listfunc
+)?;
 
 constant: CTE_N | CTE_D | 'true' | 'false' | CTE_C | CTE_P;
 
@@ -70,13 +71,14 @@ ELIF LEFTP superexp RIGHTP body
 printing:
 PRINT LEFTP (superexp | CTE_P) (',' (superexp | CTE_P))* RIGHTP ';';
 
-listfunc: GET  LEFTP (CTE_N | ID | exp) RIGHTP
+listfunc:
+GET LEFTP (CTE_N | ID | exp) RIGHTP
 | ADD LEFTP (constant | ID | superexp) RIGHTP
+| SET LEFTP (CTE_N | ID | exp) ',' (constant | ID | superexp) RIGHTP
 | (FIRST | LAST | POP | COUNT) LEFTP RIGHTP;
 
 emptyfunccall:
-ID (
-LEFTP (superexp (',' superexp)*)? RIGHTP | '.' listfunc)? ';';
+ID (LEFTP (superexp (',' superexp)*)? RIGHTP | '.' listfunc)? ';';
 
 special: (
 drawsquare
@@ -150,6 +152,7 @@ POP: 'pop';
 COUNT: 'count';
 FIRST: 'first';
 LAST: 'last';
+SET: 'set';
 WHITESPACE: ([ \t]+ | ' ') -> skip;
 NEWLINE: ( '\r' '\n'? | '\n') -> skip;
 ID: [A-z][A-z0-9]*;
