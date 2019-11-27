@@ -10,6 +10,8 @@ import Antlr4
  */
 open class unagiBaseListener: unagiListener {
   var prints = [String]()
+  var shape = Shape.none
+  var color = ""
   
   var error = false
   var errorMessage = ""
@@ -1187,7 +1189,10 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitDrawsquare(_ ctx: unagiParser.DrawsquareContext) { }
+  open func exitDrawsquare(_ ctx: unagiParser.DrawsquareContext) {
+    shape = Shape.square
+    color = ctx.color()?.getText() ?? ""
+  }
 
   /**
    * {@inheritDoc}
@@ -1200,7 +1205,10 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitDrawtriangle(_ ctx: unagiParser.DrawtriangleContext) { }
+  open func exitDrawtriangle(_ ctx: unagiParser.DrawtriangleContext) {
+    shape = Shape.triangle
+    color = ctx.color()?.getText() ?? ""
+  }
 
   /**
    * {@inheritDoc}
@@ -1213,7 +1221,10 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitDrawrectangle(_ ctx: unagiParser.DrawrectangleContext) { }
+  open func exitDrawrectangle(_ ctx: unagiParser.DrawrectangleContext) {
+    shape = Shape.rectangle
+    color = ctx.color()?.getText() ?? ""
+  }
 
   /**
    * {@inheritDoc}
@@ -1226,7 +1237,10 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func exitDrawcircle(_ ctx: unagiParser.DrawcircleContext) { }
+  open func exitDrawcircle(_ ctx: unagiParser.DrawcircleContext) {
+    shape = Shape.circle
+    color = ctx.color()?.getText() ?? ""
+  }
 
   /**
    * {@inheritDoc}

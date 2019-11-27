@@ -20,14 +20,15 @@ class ShapeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.view.backgroundColor =
+        GradientColor(UIGradientStyle.topToBottom, frame: self.view.frame, colors: [FlatPowderBlue(), FlatWhite()])
 
       switch shape {
       case Shape.circle:
         drawCircle()
         break
       case Shape.square:
-        drawRectangle()
+        drawSquare()
         break
       case Shape.rectangle:
         drawRectangle()
@@ -41,14 +42,14 @@ class ShapeViewController: UIViewController {
     }
     
     func drawCircle() {
-      let renderer = UIGraphicsImageRenderer(size: CGSize(width: 280, height: 250))
+      let renderer = UIGraphicsImageRenderer(size: CGSize(width: 300, height: 300))
 
       let image = renderer.image { ctx in
-          let rect = CGRect(x: 5, y: 5, width: 270, height: 240)
+          let rect = CGRect(x: 0, y: 0, width: 270, height: 270)
 
           ctx.cgContext.setFillColor(color)
           ctx.cgContext.setStrokeColor(UIColor.black.cgColor)
-          ctx.cgContext.setLineWidth(5)
+          ctx.cgContext.setLineWidth(1)
 
           ctx.cgContext.addEllipse(in: rect)
           ctx.cgContext.drawPath(using: .fillStroke)
@@ -58,16 +59,33 @@ class ShapeViewController: UIViewController {
     }
 
     func drawRectangle() {
-      let renderer = UIGraphicsImageRenderer(size: CGSize(width: 280, height: 250))
+      let renderer = UIGraphicsImageRenderer(size: CGSize(width: 510, height: 260))
 
       let image = renderer.image { ctx in
-        let rectangle = CGRect(x: 0, y: 0, width: 280, height: 250)
+        let rectangle = CGRect(x: 0, y: 0, width: 500, height: 250)
 
         ctx.cgContext.setFillColor(color)
         ctx.cgContext.setStrokeColor(UIColor.gray.cgColor)
-        ctx.cgContext.setLineWidth(5)
+        ctx.cgContext.setLineWidth(1)
 
         ctx.cgContext.addRect(rectangle)
+        ctx.cgContext.drawPath(using: .fillStroke)
+      }
+
+      img.image = image
+    }
+  
+    func drawSquare() {
+      let renderer = UIGraphicsImageRenderer(size: CGSize(width: 250, height: 250))
+
+      let image = renderer.image { ctx in
+        let square = CGRect(x: 0, y: 0, width: 250, height: 250)
+
+        ctx.cgContext.setFillColor(color)
+        ctx.cgContext.setStrokeColor(UIColor.gray.cgColor)
+        ctx.cgContext.setLineWidth(1)
+
+        ctx.cgContext.addRect(square)
         ctx.cgContext.drawPath(using: .fillStroke)
       }
 

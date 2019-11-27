@@ -22,6 +22,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     """
   
   var prints = [String]()
+  var shape = Shape.none
+  var color = FlatBlack().cgColor
+  
   let unagiFunctions = UnagiFunctions.init()
   var functionsList = [String]()
   
@@ -66,19 +69,39 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
       let unagi = unagiBaseListener.init()
       try walker.walk(unagi, tree)
       prints = unagi.prints
+      shape = unagi.shape
+      switch unagi.color {
+      case "red":
+        color = FlatRed().cgColor
+        break
+      case "blue":
+        color = FlatBlue().cgColor
+        break
+      case "green":
+        color = FlatGreen().cgColor
+        break
+      case "yellow":
+        color = FlatYellow().cgColor
+        break
+      default:
+        color = FlatBlack().cgColor
+      }
     } catch {
       print("Parse error: \(error.localizedDescription)")
     }
     let vc = self.storyboard?.instantiateViewController(identifier: "shapeVC") as! ShapeViewController
-    vc.shape = Shape.triangle
-    vc.color = FlatMint().cgColor
+    vc.color = color
+    vc.shape = shape
     let printString = prints.joined(separator: "\n")
     let alert = UIAlertController(title: "Console", message: printString, preferredStyle: .alert)
     alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in
-      self.present(vc, animated: true, completion: nil)
+      if self.shape != Shape.none {
+        self.present(vc, animated: true, completion: nil)
+      }
     }))
-    
-    self.present(alert, animated: true)
+    if printString != "" {
+      self.present(alert, animated: true)
+    }
   }
 
   @IBAction func clearBtnClick(_ sender: UIButton) {

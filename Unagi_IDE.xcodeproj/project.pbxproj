@@ -17,16 +17,7 @@
 		C28171A9238CE47C009EAE0A /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171A8238CE47C009EAE0A /* TableViewController.swift */; };
 		C28171C5238DFA20009EAE0A /* OperationsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171B0238DFA1F009EAE0A /* OperationsVM.swift */; };
 		C28171C6238DFA20009EAE0A /* VarTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171B1238DFA1F009EAE0A /* VarTable.swift */; };
-		C28171C7238DFA20009EAE0A /* unagiLexer.tokens in Resources */ = {isa = PBXBuildFile; fileRef = C28171B3238DFA1F009EAE0A /* unagiLexer.tokens */; };
-		C28171C8238DFA20009EAE0A /* unagiLexerATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171B4238DFA1F009EAE0A /* unagiLexerATN.swift */; };
-		C28171C9238DFA20009EAE0A /* unagi.interp in Resources */ = {isa = PBXBuildFile; fileRef = C28171B5238DFA1F009EAE0A /* unagi.interp */; };
-		C28171CA238DFA20009EAE0A /* unagiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171B6238DFA1F009EAE0A /* unagiParser.swift */; };
-		C28171CB238DFA20009EAE0A /* unagiListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171B7238DFA1F009EAE0A /* unagiListener.swift */; };
 		C28171CC238DFA20009EAE0A /* unagiBaseListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171B8238DFA20009EAE0A /* unagiBaseListener.swift */; };
-		C28171CD238DFA20009EAE0A /* unagi.tokens in Resources */ = {isa = PBXBuildFile; fileRef = C28171B9238DFA20009EAE0A /* unagi.tokens */; };
-		C28171CE238DFA20009EAE0A /* unagiLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171BA238DFA20009EAE0A /* unagiLexer.swift */; };
-		C28171CF238DFA20009EAE0A /* unagiParserATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171BB238DFA20009EAE0A /* unagiParserATN.swift */; };
-		C28171D0238DFA20009EAE0A /* unagiLexer.interp in Resources */ = {isa = PBXBuildFile; fileRef = C28171BC238DFA20009EAE0A /* unagiLexer.interp */; };
 		C28171D1238DFA20009EAE0A /* Var.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171BD238DFA20009EAE0A /* Var.swift */; };
 		C28171D2238DFA20009EAE0A /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171BE238DFA20009EAE0A /* ErrorHandler.swift */; };
 		C28171D3238DFA20009EAE0A /* VirtualMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171BF238DFA20009EAE0A /* VirtualMachine.swift */; };
@@ -36,10 +27,19 @@
 		C28171D7238DFA20009EAE0A /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171C3238DFA20009EAE0A /* Function.swift */; };
 		C28171D8238DFA20009EAE0A /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171C4238DFA20009EAE0A /* Types.swift */; };
 		C28171EA238DFB2F009EAE0A /* Antlr4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C28171E5238DFB07009EAE0A /* Antlr4.framework */; };
-		C28171EC238DFB9B009EAE0A /* unagi.g4 in Resources */ = {isa = PBXBuildFile; fileRef = C28171EB238DFB9B009EAE0A /* unagi.g4 */; };
 		C28F89F2238E2D7F00672100 /* UnagiFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F89F1238E2D7F00672100 /* UnagiFunctions.swift */; };
 		C28F89F8238E4B3100672100 /* ShapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F89F7238E4B3100672100 /* ShapeViewController.swift */; };
 		C28F8A05238E632100672100 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A04238E632100672100 /* Shape.swift */; };
+		C28F8A07238EB9EC00672100 /* unagi.g4 in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A06238EB9EC00672100 /* unagi.g4 */; };
+		C28F8A11238EBA1400672100 /* unagiParserATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A08238EBA1300672100 /* unagiParserATN.swift */; };
+		C28F8A12238EBA1400672100 /* unagiLexer.interp in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A09238EBA1300672100 /* unagiLexer.interp */; };
+		C28F8A13238EBA1400672100 /* unagiLexer.tokens in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A0A238EBA1300672100 /* unagiLexer.tokens */; };
+		C28F8A14238EBA1400672100 /* unagiLexerATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A0B238EBA1300672100 /* unagiLexerATN.swift */; };
+		C28F8A15238EBA1400672100 /* unagi.tokens in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A0C238EBA1300672100 /* unagi.tokens */; };
+		C28F8A16238EBA1400672100 /* unagiListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A0D238EBA1300672100 /* unagiListener.swift */; };
+		C28F8A17238EBA1400672100 /* unagi.interp in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A0E238EBA1300672100 /* unagi.interp */; };
+		C28F8A18238EBA1400672100 /* unagiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A0F238EBA1400672100 /* unagiParser.swift */; };
+		C28F8A19238EBA1400672100 /* unagiLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A10238EBA1400672100 /* unagiLexer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,16 +81,7 @@
 		C28171A8238CE47C009EAE0A /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		C28171B0238DFA1F009EAE0A /* OperationsVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationsVM.swift; sourceTree = "<group>"; };
 		C28171B1238DFA1F009EAE0A /* VarTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VarTable.swift; sourceTree = "<group>"; };
-		C28171B3238DFA1F009EAE0A /* unagiLexer.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagiLexer.tokens; sourceTree = "<group>"; };
-		C28171B4238DFA1F009EAE0A /* unagiLexerATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiLexerATN.swift; sourceTree = "<group>"; };
-		C28171B5238DFA1F009EAE0A /* unagi.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagi.interp; sourceTree = "<group>"; };
-		C28171B6238DFA1F009EAE0A /* unagiParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiParser.swift; sourceTree = "<group>"; };
-		C28171B7238DFA1F009EAE0A /* unagiListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiListener.swift; sourceTree = "<group>"; };
 		C28171B8238DFA20009EAE0A /* unagiBaseListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiBaseListener.swift; sourceTree = "<group>"; };
-		C28171B9238DFA20009EAE0A /* unagi.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagi.tokens; sourceTree = "<group>"; };
-		C28171BA238DFA20009EAE0A /* unagiLexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiLexer.swift; sourceTree = "<group>"; };
-		C28171BB238DFA20009EAE0A /* unagiParserATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiParserATN.swift; sourceTree = "<group>"; };
-		C28171BC238DFA20009EAE0A /* unagiLexer.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unagiLexer.interp; sourceTree = "<group>"; };
 		C28171BD238DFA20009EAE0A /* Var.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Var.swift; sourceTree = "<group>"; };
 		C28171BE238DFA20009EAE0A /* ErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		C28171BF238DFA20009EAE0A /* VirtualMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualMachine.swift; sourceTree = "<group>"; };
@@ -100,10 +91,19 @@
 		C28171C3238DFA20009EAE0A /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
 		C28171C4238DFA20009EAE0A /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		C28171DD238DFB07009EAE0A /* Antlr4.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Antlr4.xcodeproj; path = ../../../../../../Downloads/Swift/Antlr4.xcodeproj; sourceTree = "<group>"; };
-		C28171EB238DFB9B009EAE0A /* unagi.g4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagi.g4; path = ../../../../../../Desktop/Unagi_IDE/unagi.g4; sourceTree = "<group>"; };
 		C28F89F1238E2D7F00672100 /* UnagiFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnagiFunctions.swift; sourceTree = "<group>"; };
 		C28F89F7238E4B3100672100 /* ShapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeViewController.swift; sourceTree = "<group>"; };
 		C28F8A04238E632100672100 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		C28F8A06238EB9EC00672100 /* unagi.g4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagi.g4; path = ../../../../../../Downloads/cambio/unagi.g4; sourceTree = "<group>"; };
+		C28F8A08238EBA1300672100 /* unagiParserATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiParserATN.swift; path = ../../../../../../../../Downloads/cambio/unagiParserATN.swift; sourceTree = "<group>"; };
+		C28F8A09238EBA1300672100 /* unagiLexer.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagiLexer.interp; path = ../../../../../../../../Downloads/cambio/unagiLexer.interp; sourceTree = "<group>"; };
+		C28F8A0A238EBA1300672100 /* unagiLexer.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagiLexer.tokens; path = ../../../../../../../../Downloads/cambio/unagiLexer.tokens; sourceTree = "<group>"; };
+		C28F8A0B238EBA1300672100 /* unagiLexerATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiLexerATN.swift; path = ../../../../../../../../Downloads/cambio/unagiLexerATN.swift; sourceTree = "<group>"; };
+		C28F8A0C238EBA1300672100 /* unagi.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagi.tokens; path = ../../../../../../../../Downloads/cambio/unagi.tokens; sourceTree = "<group>"; };
+		C28F8A0D238EBA1300672100 /* unagiListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiListener.swift; path = ../../../../../../../../Downloads/cambio/unagiListener.swift; sourceTree = "<group>"; };
+		C28F8A0E238EBA1300672100 /* unagi.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagi.interp; path = ../../../../../../../../Downloads/cambio/unagi.interp; sourceTree = "<group>"; };
+		C28F8A0F238EBA1400672100 /* unagiParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiParser.swift; path = ../../../../../../../../Downloads/cambio/unagiParser.swift; sourceTree = "<group>"; };
+		C28F8A10238EBA1400672100 /* unagiLexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiLexer.swift; path = ../../../../../../../../Downloads/cambio/unagiLexer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,8 +149,8 @@
 		C20F03A12389EC8100B4978D /* Unagi_IDE */ = {
 			isa = PBXGroup;
 			children = (
-				C28171EB238DFB9B009EAE0A /* unagi.g4 */,
 				C28171DD238DFB07009EAE0A /* Antlr4.xcodeproj */,
+				C28F8A06238EB9EC00672100 /* unagi.g4 */,
 				C28171AF238DFA1F009EAE0A /* Compiler */,
 				C20F03A22389EC8100B4978D /* AppDelegate.swift */,
 				C20F03A42389EC8100B4978D /* SceneDelegate.swift */,
@@ -196,16 +196,16 @@
 		C28171B2238DFA1F009EAE0A /* antlr */ = {
 			isa = PBXGroup;
 			children = (
-				C28171B3238DFA1F009EAE0A /* unagiLexer.tokens */,
-				C28171B4238DFA1F009EAE0A /* unagiLexerATN.swift */,
-				C28171B5238DFA1F009EAE0A /* unagi.interp */,
-				C28171B6238DFA1F009EAE0A /* unagiParser.swift */,
-				C28171B7238DFA1F009EAE0A /* unagiListener.swift */,
+				C28F8A0E238EBA1300672100 /* unagi.interp */,
+				C28F8A0C238EBA1300672100 /* unagi.tokens */,
+				C28F8A09238EBA1300672100 /* unagiLexer.interp */,
+				C28F8A10238EBA1400672100 /* unagiLexer.swift */,
+				C28F8A0A238EBA1300672100 /* unagiLexer.tokens */,
+				C28F8A0B238EBA1300672100 /* unagiLexerATN.swift */,
+				C28F8A0D238EBA1300672100 /* unagiListener.swift */,
+				C28F8A0F238EBA1400672100 /* unagiParser.swift */,
+				C28F8A08238EBA1300672100 /* unagiParserATN.swift */,
 				C28171B8238DFA20009EAE0A /* unagiBaseListener.swift */,
-				C28171B9238DFA20009EAE0A /* unagi.tokens */,
-				C28171BA238DFA20009EAE0A /* unagiLexer.swift */,
-				C28171BB238DFA20009EAE0A /* unagiParserATN.swift */,
-				C28171BC238DFA20009EAE0A /* unagiLexer.interp */,
 			);
 			path = antlr;
 			sourceTree = "<group>";
@@ -303,14 +303,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C28171CD238DFA20009EAE0A /* unagi.tokens in Resources */,
+				C28F8A17238EBA1400672100 /* unagi.interp in Resources */,
+				C28F8A15238EBA1400672100 /* unagi.tokens in Resources */,
 				C20F03AF2389EC8200B4978D /* LaunchScreen.storyboard in Resources */,
 				C20F03AC2389EC8200B4978D /* Assets.xcassets in Resources */,
-				C28171D0238DFA20009EAE0A /* unagiLexer.interp in Resources */,
-				C28171C9238DFA20009EAE0A /* unagi.interp in Resources */,
-				C28171EC238DFB9B009EAE0A /* unagi.g4 in Resources */,
+				C28F8A07238EB9EC00672100 /* unagi.g4 in Resources */,
+				C28F8A13238EBA1400672100 /* unagiLexer.tokens in Resources */,
+				C28F8A12238EBA1400672100 /* unagiLexer.interp in Resources */,
 				C20F03AA2389EC8100B4978D /* Main.storyboard in Resources */,
-				C28171C7238DFA20009EAE0A /* unagiLexer.tokens in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,19 +369,19 @@
 				C28F8A05238E632100672100 /* Shape.swift in Sources */,
 				C20F03A72389EC8100B4978D /* ViewController.swift in Sources */,
 				C28171C5238DFA20009EAE0A /* OperationsVM.swift in Sources */,
+				C28F8A18238EBA1400672100 /* unagiParser.swift in Sources */,
+				C28F8A16238EBA1400672100 /* unagiListener.swift in Sources */,
 				C28171CC238DFA20009EAE0A /* unagiBaseListener.swift in Sources */,
-				C28171CB238DFA20009EAE0A /* unagiListener.swift in Sources */,
 				C20F03A32389EC8100B4978D /* AppDelegate.swift in Sources */,
 				C28171D1238DFA20009EAE0A /* Var.swift in Sources */,
 				C28171C6238DFA20009EAE0A /* VarTable.swift in Sources */,
-				C28171CA238DFA20009EAE0A /* unagiParser.swift in Sources */,
-				C28171CE238DFA20009EAE0A /* unagiLexer.swift in Sources */,
-				C28171C8238DFA20009EAE0A /* unagiLexerATN.swift in Sources */,
+				C28F8A19238EBA1400672100 /* unagiLexer.swift in Sources */,
+				C28F8A14238EBA1400672100 /* unagiLexerATN.swift in Sources */,
+				C28F8A11238EBA1400672100 /* unagiParserATN.swift in Sources */,
 				C28F89F8238E4B3100672100 /* ShapeViewController.swift in Sources */,
 				C28171D6238DFA20009EAE0A /* SemanticCube.swift in Sources */,
 				C28171D5238DFA20009EAE0A /* Quadruple.swift in Sources */,
 				C20F03A52389EC8100B4978D /* SceneDelegate.swift in Sources */,
-				C28171CF238DFA20009EAE0A /* unagiParserATN.swift in Sources */,
 				C28171D7238DFA20009EAE0A /* Function.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

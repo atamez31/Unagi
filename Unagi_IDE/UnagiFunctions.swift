@@ -28,12 +28,32 @@ class UnagiFunctions {
                           }
                         """,
                    "while":
-                          """
-                          
-                            while(false) {
-                              print("Hello World!");
-                            }
-                          """
+                        """
+                        
+                          while(false) {
+                            print("Hello World!");
+                          }
+                        """,
+                   "drawSquare":
+                         """
+                         
+                           drawSquare(red);
+                         """,
+                   "drawRectangle":
+                         """
+                         
+                           drawRectangle(red);
+                         """,
+                   "drawCircle":
+                        """
+                        
+                          drawCircle(red);
+                        """,
+                   "drawTriangle":
+                       """
+                       
+                         drawTriangle(red);
+                       """,
   ]
 
   let methods = ["fibonacci":
