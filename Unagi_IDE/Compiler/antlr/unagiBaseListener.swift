@@ -92,6 +92,7 @@ open class unagiBaseListener: unagiListener {
    */
   open func exitProgram(_ ctx: unagiParser.ProgramContext) {
     if error {
+      prints.append(errorMessage)
       print(errorMessage)
       return
     }
@@ -109,14 +110,19 @@ open class unagiBaseListener: unagiListener {
     do {
       try virtualMachine.executeVirtualMachine()
     } catch ErrorHandler.semanticError(let message) {
+      prints = virtualMachine.prints
       print("Semantic error: \(message)")
     } catch ErrorHandler.lexicError(let message) {
+      prints = virtualMachine.prints
       print("Lexical error: \(message)")
     } catch ErrorHandler.memory(let message) {
+      prints = virtualMachine.prints
       print("Memory error: \(message)")
     } catch ErrorHandler.indexOutOfBounds(let message) {
+      prints = virtualMachine.prints
       print("Index out of bounds error: \(message)")
     } catch {
+      prints = virtualMachine.prints
       print("Unexpected error.")
     }
 

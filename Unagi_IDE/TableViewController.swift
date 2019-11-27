@@ -10,7 +10,8 @@ import UIKit
 
 class TableViewController: UITableViewController {
   
-  let sections = ["Fibonacci", "Factorial", "Sort"]
+  let unagiFunctions = UnagiFunctions.init()
+  var methodsList = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +21,7 @@ class TableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        methodsList = Array(unagiFunctions.methods.keys)
     }
 
     // MARK: - Table view data source
@@ -31,7 +33,7 @@ class TableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-      return sections.count
+      return methodsList.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -39,8 +41,18 @@ class TableViewController: UITableViewController {
 
         // Configure the cell...
         
-      cell.textLabel?.text = sections[indexPath.row]
+      cell.textLabel?.text = methodsList[indexPath.row]
         return cell
+    }
+  
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      let method = methodsList[indexPath.row]
+      let code = unagiFunctions.methods[method] ?? ""
+      
+      let vc = self.storyboard?.instantiateViewController(identifier: "playground") as! ViewController
+      vc.method = code
+      self.present(vc, animated: true, completion: nil)
+      self.tableView.deselectRow(at: indexPath, animated: true)
     }
 
     /*

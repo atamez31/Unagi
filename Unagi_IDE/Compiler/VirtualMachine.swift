@@ -280,15 +280,18 @@ class VirtualMachine {
       switch currentQuad.op {
       case "=":
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Value to be assigned doesn't exist." + String(quadPointer))
           throw ErrorHandler.semanticError(message: "Value to be assigned doesn't exist." + String(quadPointer))
         }
         assignValue(tempValue: leftOpValue, result: currentQuad.result)
         break
       case "+":
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Left value to be added doesn't exist." + String(quadPointer))
           throw ErrorHandler.semanticError(message: "Left value to be added doesn't exist." + String(quadPointer))
         }
         guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          prints.append("Right value to be added doesn't exist." + String(quadPointer))
           throw ErrorHandler.semanticError(message: "Right value to be added doesn't exist." + String(quadPointer))
         }
 
@@ -296,9 +299,11 @@ class VirtualMachine {
         break
       case "-", "*", "/":
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
-          throw ErrorHandler.semanticError(message: "Reft value doesn't exist." + String(quadPointer))
+          prints.append("Left value doesn't exist." + String(quadPointer))
+          throw ErrorHandler.semanticError(message: "Left value doesn't exist." + String(quadPointer))
         }
         guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          prints.append("Right value doesn't exist." + String(quadPointer))
           throw ErrorHandler.semanticError(message: "Right value doesn't exist." + String(quadPointer))
         }
 
@@ -306,27 +311,33 @@ class VirtualMachine {
         break
       case ">", ">=", "<", "<=", "<>", "==" :
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Left value doesn't exist." + String(quadPointer))
           throw ErrorHandler.semanticError(message: "Left value doesn't exist." + String(quadPointer))
         }
         guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          prints.append("Right value doesn't exist." + String(quadPointer))
           throw ErrorHandler.semanticError(message: "Right value doesn't exist." + String(quadPointer))
         }
         relationalOperands(leftValue: leftOpValue, rightValue: rightOpValue, result: currentQuad.result, op: currentQuad.op)
         break
       case "and":
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Left value doesn't exist." + String(quadPointer))
           throw ErrorHandler.semanticError(message: "Left value doesn't exist." + String(quadPointer))
         }
         guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          prints.append("Right value doesn't exist." + String(quadPointer))
           throw ErrorHandler.semanticError(message: "Right value doesn't exist." + String(quadPointer))
         }
         localMemory.writeBool(bool: (leftOpValue as! Bool) && (rightOpValue as! Bool), address: currentQuad.result)
         break
       case "or":
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Left value doesn't exist." + String(quadPointer))
           throw ErrorHandler.semanticError(message: "Left value doesn't exist." + String(quadPointer))
         }
         guard let rightOpValue = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          prints.append("Right value doesn't exist.")
           throw ErrorHandler.semanticError(message: "Right value doesn't exist." + String(quadPointer))
         }
         localMemory.writeBool(bool: (leftOpValue as! Bool) || (rightOpValue as! Bool), address: currentQuad.result)
@@ -336,6 +347,7 @@ class VirtualMachine {
         break
       case "GOTOF":
         guard let leftOpValue = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Left value doesn't exist.")
           throw ErrorHandler.semanticError(message: "Left value doesn't exist." + String(quadPointer))
         }
         if !(leftOpValue as! Bool) {
@@ -400,24 +412,29 @@ class VirtualMachine {
       case "print":
         let resultMemScope = getMemoryScope(address: currentQuad.result)
         guard let resultValue = resultMemScope.getValueFromMemory(address: currentQuad.result) else {
+          prints.append("Value to print doesn't exist.")
           throw ErrorHandler.semanticError(message: "Value to print doesn't exist." + String(quadPointer))
         }
         prints.append(convertAnyToString(anyValue: resultValue, address: currentQuad.result))
         break
       case "ADD":
         guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Element to add doesn't exist.")
           throw ErrorHandler.semanticError(message: "Element to add doesn't exist." + String(quadPointer))
         }
         guard let sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          prints.append("List is empty.")
           throw ErrorHandler.semanticError(message: "List is empty." + String(quadPointer))
         }
         addList(element: element, sizePointer: sizePointer as! Int, listAddress: currentQuad.result)
         break
       case "POP":
         guard let sizePointer = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Nothing has been added to the list.")
           throw ErrorHandler.semanticError(message: "Nothing has been added to the list." + String(quadPointer))
         }
         if (sizePointer as! Int) <= 0 {
+          prints.append("No more elements in list to pop.")
           throw ErrorHandler.semanticError(message: "No more elements in list to pop." + String(quadPointer))
         }
         let resultScope = getMemoryScope(address: currentQuad.result)
@@ -425,26 +442,31 @@ class VirtualMachine {
         break
       case "GET":
         guard let index = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Index has not been initialized.")
           throw ErrorHandler.semanticError(message: "Index has not been initialized." + String(quadPointer))
         }
         let resultAddress = rightOp + (index as! Int)
         let resultMemScope = getMemoryScope(address: currentQuad.result)
         let elementType = resultMemScope.getAddressType(address: currentQuad.result)
         guard let result = getMemoryScope(address: resultAddress).getValueFromMemory(address: resultAddress) else {
+          prints.append("Index out of bounds.")
           throw ErrorHandler.semanticError(message: "Index out of bounds." + String(quadPointer))
         }
         writeElementToMemory(element: result, address: currentQuad.result, type: elementType)
         break
       case "SET":
         guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Element to add doesn't exist.")
           throw ErrorHandler.semanticError(message: "Element to add doesn't exist." + String(quadPointer))
         }
         guard let index = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+           prints.append("Index could not be initialized.")
           throw ErrorHandler.semanticError(message: "Index could not be initialized." + String(quadPointer))
         }
         
         let resultAddress = currentQuad.result + (index as! Int)
         if getMemoryScope(address: resultAddress).getValueFromMemory(address: resultAddress) == nil {
+          prints.append("Index out of bounds.")
           throw ErrorHandler.semanticError(message: "Index out of bounds." + String(quadPointer))
         }
 
@@ -452,6 +474,7 @@ class VirtualMachine {
         break
       case "FIRST":
         guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {
+          prints.append("Error list is empty.")
           throw ErrorHandler.semanticError(message: "Error list is empty." + String(quadPointer))
         }
         let elementType = leftOpMemScope.getAddressType(address: leftOp)
@@ -459,9 +482,11 @@ class VirtualMachine {
         break
       case "LAST":
         guard let sizePointer = rightOpMemScope.getValueFromMemory(address: rightOp) else {
+          prints.append("Error list is empty.")
           throw ErrorHandler.semanticError(message: "Error list is empty." + String(quadPointer))
         }
         guard let element = leftOpMemScope.getValueFromMemory(address: leftOp + (sizePointer as! Int) - 1) else {
+          prints.append("Error list is empty.")
           throw ErrorHandler.semanticError(message: "Error list is empty." + String(quadPointer))
         }
         let elementType = leftOpMemScope.getAddressType(address: leftOp)
@@ -483,9 +508,8 @@ class VirtualMachine {
           sizePointer = 0
         }
         if (sizePointer as! Int) >= leftOp {
-          // TODO Error
-          print("Error list is full." + String(quadPointer))
-          return
+          prints.append("Error list is full.")
+          throw ErrorHandler.semanticError(message: "Error list is full." + String(quadPointer))
         }
         break
       default:

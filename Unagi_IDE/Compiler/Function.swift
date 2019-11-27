@@ -16,11 +16,6 @@ class Function {
   private var variables: [String: Var]
   private var params: [Var]
   private var size: Int
-  private var numStart = 0
-  private var decimalStart = 2000
-  private var boolStart = 4000
-  private var charStart = 6000
-  private var phraseStart = 8000
 
   init(type: Type, params: [String: Var], id: Int, quadStart: Int) {
     self.type = type

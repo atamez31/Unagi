@@ -12,8 +12,10 @@ import ChameleonFramework
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
   
+  var method = ""
+  
   let defaultText = """
-                    program unagi
+                    program unagi:
                       start {
                         print("Hello World!");
                       }
@@ -49,7 +51,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     textView.layer.cornerRadius = textView.frame.height/25
     
-    textView.text = defaultText
+    textView.text = method == "" ? defaultText : method
   }
 
   @IBAction func runCode(_ sender: UIButton) {
@@ -67,12 +69,18 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     } catch {
       print("Parse error: \(error.localizedDescription)")
     }
+    let vc = self.storyboard?.instantiateViewController(identifier: "shapeVC") as! ShapeViewController
+    vc.shape = Shape.triangle
+    vc.color = FlatMint().cgColor
     let printString = prints.joined(separator: "\n")
     let alert = UIAlertController(title: "Console", message: printString, preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {_ in
+      self.present(vc, animated: true, completion: nil)
+    }))
     
     self.present(alert, animated: true)
   }
+
   @IBAction func clearBtnClick(_ sender: UIButton) {
     textView.text = defaultText
   }
