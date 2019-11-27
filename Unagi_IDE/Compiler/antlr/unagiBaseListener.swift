@@ -926,7 +926,9 @@ open class unagiBaseListener: unagiListener {
    *
    * <p>The default implementation does nothing.</p>
    */
-  open func enterListfunc(_ ctx: unagiParser.ListfuncContext) { }
+  open func enterListfunc(_ ctx: unagiParser.ListfuncContext) {
+    POper.append("(")
+  }
   /**
    * {@inheritDoc}
    *
@@ -955,6 +957,24 @@ open class unagiBaseListener: unagiListener {
         error = true
         errorMessage = "Variable is not a list."
       }
+      
+      while POper.last != "(" {
+        let op = POper.popLast()!
+        let resultType = semanticCube.validateOperation(op: op, leftOp: PTypes.popLast()!, rightOp: PTypes.popLast()!)
+        if  resultType == Type.none {
+          error = true
+          errorMessage = "Incorrect operation."
+        }
+        let opRight = PilaO.popLast()!
+        let opLeft = PilaO.popLast()!
+        let tempAddress = localMemory.getNextTemporalAddress(type: resultType)
+        let quad = Quadruple.init(op: op, leftVal: opLeft, rightVal: opRight, result: tempAddress)
+        funcSize += 1
+        quads.append(quad)
+        PTypes.append(resultType)
+        PilaO.append(tempAddress)
+      }
+      POper.removeLast()
       
       if ctx.parent is unagiParser.EmptyfunccallContext {
         // Empty functions with emtpyFuncCall as parent.
@@ -1002,10 +1022,22 @@ open class unagiBaseListener: unagiListener {
           // Reduce amount of elements in list.
           quads.append(Quadruple.init(op: "-", leftVal: variableList.listPointerAddress, rightVal: constant, result: variableList.listPointerAddress))
         } else if ctx.SET() != nil {
-          let addedValue = PilaO.popLast()!
-          
+          var addedValue = -1
+          var typeAddedValue = Type.none
+          if let valueToSet = ctx.ID(1)?.getText() {
+            if let variable = varTable.getDictFunc(name: "global")?.getVariable(name: valueToSet) {
+              addedValue = variable.memory_address
+              typeAddedValue = variable.type
+            } else if let variable = varTable.getDictFunc(name: scope)?.getVariable(name: valueToSet) {
+              addedValue = variable.memory_address
+              typeAddedValue = variable.type
+            }
+          } else {
+            addedValue = PilaO.popLast()!
+            typeAddedValue = PTypes.popLast()!
+          }
+
           // Check if type of added value is equal to the array.
-          let typeAddedValue = PTypes.popLast()!
           if typeAddedValue != variableList.type {
             error = true
             errorMessage = "Error incompatible value of array."
