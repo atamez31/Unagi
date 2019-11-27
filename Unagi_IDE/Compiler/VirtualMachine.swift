@@ -9,7 +9,8 @@
 import Foundation
 
 class VirtualMachine {
-//  var listFunc = [Function]()
+  var prints = [String]()
+
   var listQuad = [Quadruple]()
   var globalMemory : Memory
   var constantMemory : Memory
@@ -39,6 +40,26 @@ class VirtualMachine {
       return self.localMemory
     default:
       return self.constantMemory
+    }
+  }
+  
+  func convertAnyToString(anyValue: Any , address: Int) -> String {
+    let resultMemScope = getMemoryScope(address: address)
+    let resultType = resultMemScope.getAddressType(address: address)
+
+    switch resultType {
+    case Type.num:
+      return String(anyValue as! Int)
+    case Type.decimal:
+      return String(anyValue as! Double)
+    case Type.phrase:
+      return anyValue as! String
+    case Type.char:
+      return String(anyValue as! Character)
+    case Type.bool:
+      return String(anyValue as! Bool)
+    default:
+      return ""
     }
   }
 
@@ -381,7 +402,7 @@ class VirtualMachine {
         guard let resultValue = resultMemScope.getValueFromMemory(address: currentQuad.result) else {
           throw ErrorHandler.semanticError(message: "Value to print doesn't exist." + String(quadPointer))
         }
-        print(resultValue)
+        prints.append(convertAnyToString(anyValue: resultValue, address: currentQuad.result))
         break
       case "ADD":
         guard let element = leftOpMemScope.getValueFromMemory(address: leftOp) else {

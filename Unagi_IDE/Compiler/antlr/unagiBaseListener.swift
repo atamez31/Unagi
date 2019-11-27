@@ -9,6 +9,8 @@ import Antlr4
  * of the available methods.
  */
 open class unagiBaseListener: unagiListener {
+  var prints = [String]()
+  
   var error = false
   var errorMessage = ""
   var scope = "global"
@@ -117,6 +119,8 @@ open class unagiBaseListener: unagiListener {
     } catch {
       print("Unexpected error.")
     }
+
+    prints = virtualMachine.prints
   }
 
   /**

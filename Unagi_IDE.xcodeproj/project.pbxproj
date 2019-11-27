@@ -37,6 +37,7 @@
 		C28171D8238DFA20009EAE0A /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171C4238DFA20009EAE0A /* Types.swift */; };
 		C28171EA238DFB2F009EAE0A /* Antlr4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C28171E5238DFB07009EAE0A /* Antlr4.framework */; };
 		C28171EC238DFB9B009EAE0A /* unagi.g4 in Resources */ = {isa = PBXBuildFile; fileRef = C28171EB238DFB9B009EAE0A /* unagi.g4 */; };
+		C28F89F2238E2D7F00672100 /* UnagiFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F89F1238E2D7F00672100 /* UnagiFunctions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,7 @@
 		C28171C4238DFA20009EAE0A /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		C28171DD238DFB07009EAE0A /* Antlr4.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Antlr4.xcodeproj; path = ../../../../../../Downloads/Swift/Antlr4.xcodeproj; sourceTree = "<group>"; };
 		C28171EB238DFB9B009EAE0A /* unagi.g4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagi.g4; path = ../../../../../../Desktop/Unagi_IDE/unagi.g4; sourceTree = "<group>"; };
+		C28F89F1238E2D7F00672100 /* UnagiFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnagiFunctions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 				C20F03AB2389EC8200B4978D /* Assets.xcassets */,
 				C20F03AD2389EC8200B4978D /* LaunchScreen.storyboard */,
 				C20F03B02389EC8200B4978D /* Info.plist */,
+				C28F89F1238E2D7F00672100 /* UnagiFunctions.swift */,
 			);
 			path = Unagi_IDE;
 			sourceTree = "<group>";
@@ -353,6 +356,7 @@
 			files = (
 				C28171D4238DFA20009EAE0A /* Memory.swift in Sources */,
 				C28171A9238CE47C009EAE0A /* TableViewController.swift in Sources */,
+				C28F89F2238E2D7F00672100 /* UnagiFunctions.swift in Sources */,
 				C28171D3238DFA20009EAE0A /* VirtualMachine.swift in Sources */,
 				C28171D8238DFA20009EAE0A /* Types.swift in Sources */,
 				C28171D2238DFA20009EAE0A /* ErrorHandler.swift in Sources */,
