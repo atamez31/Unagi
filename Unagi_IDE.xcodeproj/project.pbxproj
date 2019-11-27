@@ -1,0 +1,595 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9009E967256CB69B0A7B42AF /* Pods_Unagi_IDE.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB3962B11F8E71A72F242799 /* Pods_Unagi_IDE.framework */; };
+		C20F03A32389EC8100B4978D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20F03A22389EC8100B4978D /* AppDelegate.swift */; };
+		C20F03A52389EC8100B4978D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20F03A42389EC8100B4978D /* SceneDelegate.swift */; };
+		C20F03A72389EC8100B4978D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C20F03A62389EC8100B4978D /* ViewController.swift */; };
+		C20F03AA2389EC8100B4978D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C20F03A82389EC8100B4978D /* Main.storyboard */; };
+		C20F03AC2389EC8200B4978D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C20F03AB2389EC8200B4978D /* Assets.xcassets */; };
+		C20F03AF2389EC8200B4978D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C20F03AD2389EC8200B4978D /* LaunchScreen.storyboard */; };
+		C28171A9238CE47C009EAE0A /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171A8238CE47C009EAE0A /* TableViewController.swift */; };
+		C28171C5238DFA20009EAE0A /* OperationsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171B0238DFA1F009EAE0A /* OperationsVM.swift */; };
+		C28171C6238DFA20009EAE0A /* VarTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171B1238DFA1F009EAE0A /* VarTable.swift */; };
+		C28171CC238DFA20009EAE0A /* unagiBaseListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171B8238DFA20009EAE0A /* unagiBaseListener.swift */; };
+		C28171D1238DFA20009EAE0A /* Var.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171BD238DFA20009EAE0A /* Var.swift */; };
+		C28171D2238DFA20009EAE0A /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171BE238DFA20009EAE0A /* ErrorHandler.swift */; };
+		C28171D3238DFA20009EAE0A /* VirtualMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171BF238DFA20009EAE0A /* VirtualMachine.swift */; };
+		C28171D4238DFA20009EAE0A /* Memory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171C0238DFA20009EAE0A /* Memory.swift */; };
+		C28171D5238DFA20009EAE0A /* Quadruple.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171C1238DFA20009EAE0A /* Quadruple.swift */; };
+		C28171D6238DFA20009EAE0A /* SemanticCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171C2238DFA20009EAE0A /* SemanticCube.swift */; };
+		C28171D7238DFA20009EAE0A /* Function.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171C3238DFA20009EAE0A /* Function.swift */; };
+		C28171D8238DFA20009EAE0A /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28171C4238DFA20009EAE0A /* Types.swift */; };
+		C28171EA238DFB2F009EAE0A /* Antlr4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C28171E5238DFB07009EAE0A /* Antlr4.framework */; };
+		C28F89F2238E2D7F00672100 /* UnagiFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F89F1238E2D7F00672100 /* UnagiFunctions.swift */; };
+		C28F89F8238E4B3100672100 /* ShapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F89F7238E4B3100672100 /* ShapeViewController.swift */; };
+		C28F8A05238E632100672100 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A04238E632100672100 /* Shape.swift */; };
+		C28F8A07238EB9EC00672100 /* unagi.g4 in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A06238EB9EC00672100 /* unagi.g4 */; };
+		C28F8A11238EBA1400672100 /* unagiParserATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A08238EBA1300672100 /* unagiParserATN.swift */; };
+		C28F8A12238EBA1400672100 /* unagiLexer.interp in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A09238EBA1300672100 /* unagiLexer.interp */; };
+		C28F8A13238EBA1400672100 /* unagiLexer.tokens in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A0A238EBA1300672100 /* unagiLexer.tokens */; };
+		C28F8A14238EBA1400672100 /* unagiLexerATN.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A0B238EBA1300672100 /* unagiLexerATN.swift */; };
+		C28F8A15238EBA1400672100 /* unagi.tokens in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A0C238EBA1300672100 /* unagi.tokens */; };
+		C28F8A16238EBA1400672100 /* unagiListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A0D238EBA1300672100 /* unagiListener.swift */; };
+		C28F8A17238EBA1400672100 /* unagi.interp in Resources */ = {isa = PBXBuildFile; fileRef = C28F8A0E238EBA1300672100 /* unagi.interp */; };
+		C28F8A18238EBA1400672100 /* unagiParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A0F238EBA1400672100 /* unagiParser.swift */; };
+		C28F8A19238EBA1400672100 /* unagiLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28F8A10238EBA1400672100 /* unagiLexer.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C28171E4238DFB07009EAE0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C28171DD238DFB07009EAE0A /* Antlr4.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = "Antlr4::Antlr4::Product";
+			remoteInfo = Antlr4;
+		};
+		C28171E6238DFB07009EAE0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C28171DD238DFB07009EAE0A /* Antlr4.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = "Antlr4::Antlr4Tests::Product";
+			remoteInfo = Antlr4Tests;
+		};
+		C28171E8238DFB10009EAE0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C28171DD238DFB07009EAE0A /* Antlr4.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = "Antlr4::Antlr4";
+			remoteInfo = Antlr4;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		910D0DD160D517B7671EBE53 /* Pods-Unagi_IDE.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unagi_IDE.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Unagi_IDE/Pods-Unagi_IDE.debug.xcconfig"; sourceTree = "<group>"; };
+		94126662574AB43B6C7F9825 /* Pods-Unagi_IDE.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Unagi_IDE.release.xcconfig"; path = "Pods/Target Support Files/Pods-Unagi_IDE/Pods-Unagi_IDE.release.xcconfig"; sourceTree = "<group>"; };
+		BB3962B11F8E71A72F242799 /* Pods_Unagi_IDE.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Unagi_IDE.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C20F039F2389EC8100B4978D /* Unagi_IDE.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unagi_IDE.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C20F03A22389EC8100B4978D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C20F03A42389EC8100B4978D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		C20F03A62389EC8100B4978D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C20F03A92389EC8100B4978D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C20F03AB2389EC8200B4978D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C20F03AE2389EC8200B4978D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C20F03B02389EC8200B4978D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C28171A8238CE47C009EAE0A /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		C28171B0238DFA1F009EAE0A /* OperationsVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationsVM.swift; sourceTree = "<group>"; };
+		C28171B1238DFA1F009EAE0A /* VarTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VarTable.swift; sourceTree = "<group>"; };
+		C28171B8238DFA20009EAE0A /* unagiBaseListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = unagiBaseListener.swift; sourceTree = "<group>"; };
+		C28171BD238DFA20009EAE0A /* Var.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Var.swift; sourceTree = "<group>"; };
+		C28171BE238DFA20009EAE0A /* ErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		C28171BF238DFA20009EAE0A /* VirtualMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VirtualMachine.swift; sourceTree = "<group>"; };
+		C28171C0238DFA20009EAE0A /* Memory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Memory.swift; sourceTree = "<group>"; };
+		C28171C1238DFA20009EAE0A /* Quadruple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quadruple.swift; sourceTree = "<group>"; };
+		C28171C2238DFA20009EAE0A /* SemanticCube.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SemanticCube.swift; sourceTree = "<group>"; };
+		C28171C3238DFA20009EAE0A /* Function.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Function.swift; sourceTree = "<group>"; };
+		C28171C4238DFA20009EAE0A /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		C28171DD238DFB07009EAE0A /* Antlr4.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Antlr4.xcodeproj; path = ../../../../../../Downloads/Swift/Antlr4.xcodeproj; sourceTree = "<group>"; };
+		C28F89F1238E2D7F00672100 /* UnagiFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnagiFunctions.swift; sourceTree = "<group>"; };
+		C28F89F7238E4B3100672100 /* ShapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeViewController.swift; sourceTree = "<group>"; };
+		C28F8A04238E632100672100 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		C28F8A06238EB9EC00672100 /* unagi.g4 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagi.g4; path = ../../../../../../Downloads/cambio/unagi.g4; sourceTree = "<group>"; };
+		C28F8A08238EBA1300672100 /* unagiParserATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiParserATN.swift; path = ../../../../../../../../Downloads/cambio/unagiParserATN.swift; sourceTree = "<group>"; };
+		C28F8A09238EBA1300672100 /* unagiLexer.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagiLexer.interp; path = ../../../../../../../../Downloads/cambio/unagiLexer.interp; sourceTree = "<group>"; };
+		C28F8A0A238EBA1300672100 /* unagiLexer.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagiLexer.tokens; path = ../../../../../../../../Downloads/cambio/unagiLexer.tokens; sourceTree = "<group>"; };
+		C28F8A0B238EBA1300672100 /* unagiLexerATN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiLexerATN.swift; path = ../../../../../../../../Downloads/cambio/unagiLexerATN.swift; sourceTree = "<group>"; };
+		C28F8A0C238EBA1300672100 /* unagi.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagi.tokens; path = ../../../../../../../../Downloads/cambio/unagi.tokens; sourceTree = "<group>"; };
+		C28F8A0D238EBA1300672100 /* unagiListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiListener.swift; path = ../../../../../../../../Downloads/cambio/unagiListener.swift; sourceTree = "<group>"; };
+		C28F8A0E238EBA1300672100 /* unagi.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unagi.interp; path = ../../../../../../../../Downloads/cambio/unagi.interp; sourceTree = "<group>"; };
+		C28F8A0F238EBA1400672100 /* unagiParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiParser.swift; path = ../../../../../../../../Downloads/cambio/unagiParser.swift; sourceTree = "<group>"; };
+		C28F8A10238EBA1400672100 /* unagiLexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = unagiLexer.swift; path = ../../../../../../../../Downloads/cambio/unagiLexer.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C20F039C2389EC8100B4978D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C28171EA238DFB2F009EAE0A /* Antlr4.framework in Frameworks */,
+				9009E967256CB69B0A7B42AF /* Pods_Unagi_IDE.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ABD2E64AD95F202F841AB452 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				910D0DD160D517B7671EBE53 /* Pods-Unagi_IDE.debug.xcconfig */,
+				94126662574AB43B6C7F9825 /* Pods-Unagi_IDE.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		C20F03962389EC8100B4978D = {
+			isa = PBXGroup;
+			children = (
+				C20F03A12389EC8100B4978D /* Unagi_IDE */,
+				C20F03A02389EC8100B4978D /* Products */,
+				C20F03C52389F4FC00B4978D /* Frameworks */,
+				ABD2E64AD95F202F841AB452 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		C20F03A02389EC8100B4978D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C20F039F2389EC8100B4978D /* Unagi_IDE.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C20F03A12389EC8100B4978D /* Unagi_IDE */ = {
+			isa = PBXGroup;
+			children = (
+				C28171DD238DFB07009EAE0A /* Antlr4.xcodeproj */,
+				C28F8A06238EB9EC00672100 /* unagi.g4 */,
+				C28171AF238DFA1F009EAE0A /* Compiler */,
+				C20F03A22389EC8100B4978D /* AppDelegate.swift */,
+				C20F03A42389EC8100B4978D /* SceneDelegate.swift */,
+				C28F89F7238E4B3100672100 /* ShapeViewController.swift */,
+				C20F03A62389EC8100B4978D /* ViewController.swift */,
+				C28171A8238CE47C009EAE0A /* TableViewController.swift */,
+				C20F03A82389EC8100B4978D /* Main.storyboard */,
+				C20F03AB2389EC8200B4978D /* Assets.xcassets */,
+				C20F03AD2389EC8200B4978D /* LaunchScreen.storyboard */,
+				C20F03B02389EC8200B4978D /* Info.plist */,
+				C28F89F1238E2D7F00672100 /* UnagiFunctions.swift */,
+				C28F8A04238E632100672100 /* Shape.swift */,
+			);
+			path = Unagi_IDE;
+			sourceTree = "<group>";
+		};
+		C20F03C52389F4FC00B4978D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BB3962B11F8E71A72F242799 /* Pods_Unagi_IDE.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C28171AF238DFA1F009EAE0A /* Compiler */ = {
+			isa = PBXGroup;
+			children = (
+				C28171B2238DFA1F009EAE0A /* antlr */,
+				C28171B0238DFA1F009EAE0A /* OperationsVM.swift */,
+				C28171B1238DFA1F009EAE0A /* VarTable.swift */,
+				C28171BD238DFA20009EAE0A /* Var.swift */,
+				C28171BE238DFA20009EAE0A /* ErrorHandler.swift */,
+				C28171BF238DFA20009EAE0A /* VirtualMachine.swift */,
+				C28171C0238DFA20009EAE0A /* Memory.swift */,
+				C28171C1238DFA20009EAE0A /* Quadruple.swift */,
+				C28171C2238DFA20009EAE0A /* SemanticCube.swift */,
+				C28171C3238DFA20009EAE0A /* Function.swift */,
+				C28171C4238DFA20009EAE0A /* Types.swift */,
+			);
+			path = Compiler;
+			sourceTree = "<group>";
+		};
+		C28171B2238DFA1F009EAE0A /* antlr */ = {
+			isa = PBXGroup;
+			children = (
+				C28F8A0E238EBA1300672100 /* unagi.interp */,
+				C28F8A0C238EBA1300672100 /* unagi.tokens */,
+				C28F8A09238EBA1300672100 /* unagiLexer.interp */,
+				C28F8A10238EBA1400672100 /* unagiLexer.swift */,
+				C28F8A0A238EBA1300672100 /* unagiLexer.tokens */,
+				C28F8A0B238EBA1300672100 /* unagiLexerATN.swift */,
+				C28F8A0D238EBA1300672100 /* unagiListener.swift */,
+				C28F8A0F238EBA1400672100 /* unagiParser.swift */,
+				C28F8A08238EBA1300672100 /* unagiParserATN.swift */,
+				C28171B8238DFA20009EAE0A /* unagiBaseListener.swift */,
+			);
+			path = antlr;
+			sourceTree = "<group>";
+		};
+		C28171DE238DFB07009EAE0A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C28171E5238DFB07009EAE0A /* Antlr4.framework */,
+				C28171E7238DFB07009EAE0A /* Antlr4Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C20F039E2389EC8100B4978D /* Unagi_IDE */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C20F03B32389EC8200B4978D /* Build configuration list for PBXNativeTarget "Unagi_IDE" */;
+			buildPhases = (
+				E56846806A660F0945DC37DD /* [CP] Check Pods Manifest.lock */,
+				C20F039B2389EC8100B4978D /* Sources */,
+				C20F039C2389EC8100B4978D /* Frameworks */,
+				C20F039D2389EC8100B4978D /* Resources */,
+				2D43784459C08A5889D3EF55 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C28171E9238DFB10009EAE0A /* PBXTargetDependency */,
+			);
+			name = Unagi_IDE;
+			productName = Unagi_IDE;
+			productReference = C20F039F2389EC8100B4978D /* Unagi_IDE.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C20F03972389EC8100B4978D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1120;
+				LastUpgradeCheck = 1120;
+				ORGANIZATIONNAME = "Alejandro Elizondo";
+				TargetAttributes = {
+					C20F039E2389EC8100B4978D = {
+						CreatedOnToolsVersion = 11.2.1;
+					};
+				};
+			};
+			buildConfigurationList = C20F039A2389EC8100B4978D /* Build configuration list for PBXProject "Unagi_IDE" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C20F03962389EC8100B4978D;
+			productRefGroup = C20F03A02389EC8100B4978D /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C28171DE238DFB07009EAE0A /* Products */;
+					ProjectRef = C28171DD238DFB07009EAE0A /* Antlr4.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				C20F039E2389EC8100B4978D /* Unagi_IDE */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C28171E5238DFB07009EAE0A /* Antlr4.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Antlr4.framework;
+			remoteRef = C28171E4238DFB07009EAE0A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C28171E7238DFB07009EAE0A /* Antlr4Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = file;
+			path = Antlr4Tests.xctest;
+			remoteRef = C28171E6238DFB07009EAE0A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C20F039D2389EC8100B4978D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C28F8A17238EBA1400672100 /* unagi.interp in Resources */,
+				C28F8A15238EBA1400672100 /* unagi.tokens in Resources */,
+				C20F03AF2389EC8200B4978D /* LaunchScreen.storyboard in Resources */,
+				C20F03AC2389EC8200B4978D /* Assets.xcassets in Resources */,
+				C28F8A07238EB9EC00672100 /* unagi.g4 in Resources */,
+				C28F8A13238EBA1400672100 /* unagiLexer.tokens in Resources */,
+				C28F8A12238EBA1400672100 /* unagiLexer.interp in Resources */,
+				C20F03AA2389EC8100B4978D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		2D43784459C08A5889D3EF55 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Unagi_IDE/Pods-Unagi_IDE-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Unagi_IDE/Pods-Unagi_IDE-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E56846806A660F0945DC37DD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Unagi_IDE-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C20F039B2389EC8100B4978D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C28171D4238DFA20009EAE0A /* Memory.swift in Sources */,
+				C28171A9238CE47C009EAE0A /* TableViewController.swift in Sources */,
+				C28F89F2238E2D7F00672100 /* UnagiFunctions.swift in Sources */,
+				C28171D3238DFA20009EAE0A /* VirtualMachine.swift in Sources */,
+				C28171D8238DFA20009EAE0A /* Types.swift in Sources */,
+				C28171D2238DFA20009EAE0A /* ErrorHandler.swift in Sources */,
+				C28F8A05238E632100672100 /* Shape.swift in Sources */,
+				C20F03A72389EC8100B4978D /* ViewController.swift in Sources */,
+				C28171C5238DFA20009EAE0A /* OperationsVM.swift in Sources */,
+				C28F8A18238EBA1400672100 /* unagiParser.swift in Sources */,
+				C28F8A16238EBA1400672100 /* unagiListener.swift in Sources */,
+				C28171CC238DFA20009EAE0A /* unagiBaseListener.swift in Sources */,
+				C20F03A32389EC8100B4978D /* AppDelegate.swift in Sources */,
+				C28171D1238DFA20009EAE0A /* Var.swift in Sources */,
+				C28171C6238DFA20009EAE0A /* VarTable.swift in Sources */,
+				C28F8A19238EBA1400672100 /* unagiLexer.swift in Sources */,
+				C28F8A14238EBA1400672100 /* unagiLexerATN.swift in Sources */,
+				C28F8A11238EBA1400672100 /* unagiParserATN.swift in Sources */,
+				C28F89F8238E4B3100672100 /* ShapeViewController.swift in Sources */,
+				C28171D6238DFA20009EAE0A /* SemanticCube.swift in Sources */,
+				C28171D5238DFA20009EAE0A /* Quadruple.swift in Sources */,
+				C20F03A52389EC8100B4978D /* SceneDelegate.swift in Sources */,
+				C28171D7238DFA20009EAE0A /* Function.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C28171E9238DFB10009EAE0A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Antlr4;
+			targetProxy = C28171E8238DFB10009EAE0A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C20F03A82389EC8100B4978D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C20F03A92389EC8100B4978D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C20F03AD2389EC8200B4978D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C20F03AE2389EC8200B4978D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C20F03B12389EC8200B4978D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C20F03B22389EC8200B4978D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C20F03B42389EC8200B4978D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 910D0DD160D517B7671EBE53 /* Pods-Unagi_IDE.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5M2254BM37;
+				INFOPLIST_FILE = Unagi_IDE/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alexelizondo.Unagi-IDE";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C20F03B52389EC8200B4978D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 94126662574AB43B6C7F9825 /* Pods-Unagi_IDE.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5M2254BM37;
+				INFOPLIST_FILE = Unagi_IDE/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alexelizondo.Unagi-IDE";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C20F039A2389EC8100B4978D /* Build configuration list for PBXProject "Unagi_IDE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C20F03B12389EC8200B4978D /* Debug */,
+				C20F03B22389EC8200B4978D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C20F03B32389EC8200B4978D /* Build configuration list for PBXNativeTarget "Unagi_IDE" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C20F03B42389EC8200B4978D /* Debug */,
+				C20F03B52389EC8200B4978D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C20F03972389EC8100B4978D /* Project object */;
+}
